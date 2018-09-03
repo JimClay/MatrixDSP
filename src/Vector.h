@@ -73,6 +73,8 @@ class Vector {
     template <class U>
     Vector<T>(U *data, uint32_t dataLen, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
     
+    Vector<T>(std::initializer_list<T> initVals, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+    
     /**
      * \brief Copy constructor.
      */
@@ -403,6 +405,13 @@ Vector<T>::Vector(U *data, uint32_t dataLen, bool rowVec, std::shared_ptr< std::
     for (uint32_t index=0; index<dataLen; index++) {
         vec[index] = (T) data[index];
     }
+    rowVector = rowVec;
+    scratchBuf = scratch;
+}
+
+template <class T>
+Vector<T>::Vector(std::initializer_list<T> initVals, bool rowVec, std::shared_ptr< std::vector<T> > scratch) : vec(initVals)
+{
     rowVector = rowVec;
     scratchBuf = scratch;
 }
