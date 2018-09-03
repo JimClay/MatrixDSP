@@ -21,7 +21,7 @@ class Vector {
         void copyToScratchBuf(std::unique_ptr< std::vector<T> > from);
 
     public:
-        std::unique_ptr< std::vector<T> > vec;
+        std::vector<T> vec;
         bool rowVector;
     
     /*****************************************************************************************
@@ -54,7 +54,7 @@ class Vector {
      *      then one will be created in methods that require one and destroyed when the method
      *      returns.
      */
-    Vector<T>(std::unique_ptr< std::vector<T> > data, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+    Vector<T>(std::vector<T> *data, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
     
     /**
      * \brief Array constructor.
@@ -388,9 +388,9 @@ Vector<T>::Vector(uint32_t len, bool rowVec, std::shared_ptr< std::vector<T> > s
 }
 
 template <class T>
-Vector<T>::Vector(std::unique_ptr< std::vector<T> > data, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
+Vector<T>::Vector(std::vector<T> *data, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
 {
-    vec = std::move(data);
+    vec = *data;
     rowVector = rowVec;
     scratchBuf = scratch;
 }
