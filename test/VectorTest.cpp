@@ -100,6 +100,48 @@ TEST(Operator, AddScalar) {
     EXPECT_EQ(8, buf2[2]);
 }
 
+TEST(Operator, SubtractEqualVector) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    buf1 -= buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(-7, buf1[0]);
+    EXPECT_EQ(-5, buf1[1]);
+    EXPECT_EQ(-3, buf1[2]);
+}
+
+TEST(Operator, SubtractEqualScalar) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    
+    buf1 -= 5.0f;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(-4, buf1[0]);
+    EXPECT_EQ(-3, buf1[1]);
+    EXPECT_EQ(-2, buf1[2]);
+}
+
+TEST(Operator, SubtractVector) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    MatrixDSP::Vector<float> buf3 = buf1 - buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(-7, buf3[0]);
+    EXPECT_EQ(-5, buf3[1]);
+    EXPECT_EQ(-3, buf3[2]);
+}
+
+TEST(Operator, SubtractScalar) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    
+    MatrixDSP::Vector<float> buf2 = buf1 - 5.0f;
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(-4, buf2[0]);
+    EXPECT_EQ(-3, buf2[1]);
+    EXPECT_EQ(-2, buf2[2]);
+}
+
 /*
 int main(int argc, char *argv[])
 {

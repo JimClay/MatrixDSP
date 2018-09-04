@@ -485,8 +485,8 @@ Vector<T> & Vector<T>::operator-=(const Vector<T> &rhs)
 template <class T>
 Vector<T> & Vector<T>::operator-=(const T &rhs)
 {
-    for (T element : vec) {
-        element -= rhs;
+    for (unsigned index=0; index<vec.size(); index++) {
+        vec[index] -= rhs;
     }
     return *this;
 }
@@ -519,8 +519,8 @@ Vector<T> & Vector<T>::operator*=(const Vector<T> &rhs)
 template <class T>
 Vector<T> & Vector<T>::operator*=(const T &rhs)
 {
-    for (T element : vec) {
-        element *= rhs;
+    for (unsigned index=0; index<vec.size(); index++) {
+        vec[index] *= rhs;
     }
     return *this;
 }
@@ -553,8 +553,8 @@ Vector<T> & Vector<T>::operator/=(const Vector<T> &rhs)
 template <class T>
 Vector<T> & Vector<T>::operator/=(const T &rhs)
 {
-    for (T element : vec) {
-        element /= rhs;
+    for (unsigned index=0; index<vec.size(); index++) {
+        vec[index] /= rhs;
     }
     return *this;
 }
