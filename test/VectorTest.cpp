@@ -58,6 +58,48 @@ TEST(VectorInit, Ctor_Initializer_List) {
     EXPECT_EQ(false, buf.rowVector);
 }
 
+TEST(Operator, AddEqualVector) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 9, 10});
+    
+    buf1 += buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(9, buf1[0]);
+    EXPECT_EQ(11, buf1[1]);
+    EXPECT_EQ(13, buf1[2]);
+}
+
+TEST(Operator, AddEqualScalar) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    
+    buf1 += 5.0f;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(6, buf1[0]);
+    EXPECT_EQ(7, buf1[1]);
+    EXPECT_EQ(8, buf1[2]);
+}
+
+TEST(Operator, AddVector) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 9, 10});
+    
+    MatrixDSP::Vector<float> buf3 = buf1 + buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(9, buf3[0]);
+    EXPECT_EQ(11, buf3[1]);
+    EXPECT_EQ(13, buf3[2]);
+}
+
+TEST(Operator, AddScalar) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    
+    MatrixDSP::Vector<float> buf2 = buf1 + 5.0f;
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(6, buf2[0]);
+    EXPECT_EQ(7, buf2[1]);
+    EXPECT_EQ(8, buf2[2]);
+}
+
 /*
 int main(int argc, char *argv[])
 {

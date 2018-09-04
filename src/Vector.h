@@ -422,6 +422,7 @@ Vector<T> & Vector<T>::operator-()
     for (T element : vec) {
         element = -element;
     }
+    return *this;
 }
 
 template <class T>
@@ -433,6 +434,7 @@ Vector<T> & Vector<T>::operator=(const Vector<T>& rhs)
     }
     rowVector = rhs.rowVector;
     scratchBuf = rhs.scratchBuf;
+    return *this;
 }
 
 template <class T>
@@ -443,14 +445,30 @@ Vector<T> & Vector<T>::operator+=(const Vector<T> &rhs)
     for (unsigned index=0; index<vec.size(); index++) {
         vec[index] += rhs[index];
     }
+    return *this;
 }
 
 template <class T>
 Vector<T> & Vector<T>::operator+=(const T &rhs)
 {
-    for (T element : vec) {
-        element += rhs;
+    for (unsigned index=0; index<vec.size(); index++) {
+        vec[index] += rhs;
     }
+    return *this;
+}
+
+template <class T>
+inline Vector<T> operator+(Vector<T> lhs, const Vector<T>& rhs)
+{
+    lhs += rhs;
+    return lhs;
+}
+
+template <class T>
+inline Vector<T> operator+(Vector<T> lhs, const T& rhs)
+{
+    lhs += rhs;
+    return lhs;
 }
 
 template <class T>
@@ -461,6 +479,7 @@ Vector<T> & Vector<T>::operator-=(const Vector<T> &rhs)
     for (unsigned index=0; index<vec.size(); index++) {
         vec[index] -= rhs[index];
     }
+    return *this;
 }
 
 template <class T>
@@ -469,6 +488,21 @@ Vector<T> & Vector<T>::operator-=(const T &rhs)
     for (T element : vec) {
         element -= rhs;
     }
+    return *this;
+}
+
+template <class T>
+inline Vector<T> operator-(Vector<T> lhs, const Vector<T>& rhs)
+{
+    lhs -= rhs;
+    return lhs;
+}
+
+template <class T>
+inline Vector<T> operator-(Vector<T> lhs, const T& rhs)
+{
+    lhs -= rhs;
+    return lhs;
 }
 
 template <class T>
@@ -479,6 +513,7 @@ Vector<T> & Vector<T>::operator*=(const Vector<T> &rhs)
     for (unsigned index=0; index<vec.size(); index++) {
         vec[index] *= rhs[index];
     }
+    return *this;
 }
 
 template <class T>
@@ -487,6 +522,21 @@ Vector<T> & Vector<T>::operator*=(const T &rhs)
     for (T element : vec) {
         element *= rhs;
     }
+    return *this;
+}
+
+template <class T>
+inline Vector<T> operator*(Vector<T> lhs, const Vector<T>& rhs)
+{
+    lhs *= rhs;
+    return lhs;
+}
+
+template <class T>
+inline Vector<T> operator*(Vector<T> lhs, const T& rhs)
+{
+    lhs *= rhs;
+    return lhs;
 }
 
 template <class T>
@@ -497,6 +547,7 @@ Vector<T> & Vector<T>::operator/=(const Vector<T> &rhs)
     for (unsigned index=0; index<vec.size(); index++) {
         vec[index] /= rhs[index];
     }
+    return *this;
 }
 
 template <class T>
@@ -505,6 +556,21 @@ Vector<T> & Vector<T>::operator/=(const T &rhs)
     for (T element : vec) {
         element /= rhs;
     }
+    return *this;
+}
+
+template <class T>
+inline Vector<T> operator/(Vector<T> lhs, const Vector<T>& rhs)
+{
+    lhs /= rhs;
+    return lhs;
+}
+
+template <class T>
+inline Vector<T> operator/(Vector<T> lhs, const T& rhs)
+{
+    lhs /= rhs;
+    return lhs;
 }
 
 template <class T>
