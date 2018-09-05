@@ -6,6 +6,9 @@
 //  Copyright © 2018 Jim Clay. All rights reserved.
 //
 
+#ifndef __MATRIX_DSP_VECTOR__
+#define __MATRIX_DSP_VECTOR__
+
 //#include <stdio.h>
 #include <vector>
 #include <initializer_list>
@@ -807,4 +810,6 @@ template <class T>
 T modulate(T freq, T sampleFreq = 1.0, T phase = 0.0);
 
 }
+
+#endif
 
