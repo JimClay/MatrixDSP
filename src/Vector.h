@@ -18,7 +18,8 @@ class Vector {
     protected:
         std::shared_ptr< std::vector<T> > scratchBuf;
     
-        void copyToScratchBuf(std::unique_ptr< std::vector<T> > from);
+        void copyToScratchBuf(std::vector<T> &from);
+        void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch);
 
     public:
         std::vector<T> vec;
@@ -381,12 +382,33 @@ class Vector {
     T modulate(T freq, T sampleFreq = 1.0, T phase = 0.0);
 };
 
+
+template <class T>
+void Vector<T>::copyToScratchBuf(std::vector<T> &from)
+{
+    scratchBuf->resize(from.size());
+    for (unsigned index=0; index<from.size(); index++) {
+        (*scratchBuf)[index] = from[index];
+    }
+}
+
+template <class T>
+void Vector<T>::initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch)
+{
+    if (scratch == nullptr) {
+        scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
+    }
+    else {
+        scratchBuf = scratch;
+    }
+}
+    
 template <class T>
 Vector<T>::Vector(uint32_t len, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
 {
     vec.resize(len);
     rowVector = rowVec;
-    scratchBuf = scratch;
+    initializeScratchBuf(scratch);
 }
 
 template <class T>
@@ -394,7 +416,7 @@ Vector<T>::Vector(std::vector<T> *data, bool rowVec, std::shared_ptr< std::vecto
 {
     vec = *data;
     rowVector = rowVec;
-    scratchBuf = scratch;
+    initializeScratchBuf(scratch);
 }
 
 template <class T>
@@ -406,14 +428,14 @@ Vector<T>::Vector(U *data, uint32_t dataLen, bool rowVec, std::shared_ptr< std::
         vec[index] = (T) data[index];
     }
     rowVector = rowVec;
-    scratchBuf = scratch;
+    initializeScratchBuf(scratch);
 }
 
 template <class T>
 Vector<T>::Vector(std::initializer_list<T> initVals, bool rowVec, std::shared_ptr< std::vector<T> > scratch) : vec(initVals)
 {
     rowVector = rowVec;
-    scratchBuf = scratch;
+    initializeScratchBuf(scratch);
 }
 
 template <class T>
@@ -627,29 +649,20 @@ const double Vector<T>::var(const bool subset) const
 }
 
 template <class T>
-void Vector<T>::copyToScratchBuf(std::unique_ptr< std::vector<T> > from)
-{
-    scratchBuf.resize(from.size());
-    for (unsigned index=0; index<from.size(); index++) {
-        scratchBuf[index] = from[index];
-    }
-}
-
-template <class T>
 const T Vector<T>::median()
 {
     assert(vec.size() > 0);
     
     copyToScratchBuf(vec);
-    std::sort(scratchBuf.begin(), scratchBuf.end());
+    std::sort(scratchBuf->begin(), scratchBuf->end());
     if (this->size() & 1) {
         // Odd number of samples
-        return scratchBuf[this->size()/2];
+        return (*scratchBuf)[size()/2];
     }
     else {
         // Even number of samples.  Average the two in the middle.
-        unsigned topHalfIndex = this->size()/2;
-        return (scratchBuf[topHalfIndex] + scratchBuf[topHalfIndex-1]) / ((T) 2);
+        unsigned topHalfIndex = size()/2;
+        return ((*scratchBuf)[topHalfIndex] + (*scratchBuf)[topHalfIndex-1]) / ((T) 2);
     }
 }
 

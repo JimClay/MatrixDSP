@@ -258,6 +258,14 @@ TEST(Method, Var) {
     EXPECT_NEAR(1.66666f, buf.var(false), .001);
 }
 
+TEST(Method, Median) {
+    MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
+    EXPECT_EQ(8, buf1.median());
+    
+    MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
+    EXPECT_EQ(5.5f, buf2.median());
+}
+
 /*
 int main(int argc, char *argv[])
 {
