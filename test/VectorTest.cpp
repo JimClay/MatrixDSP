@@ -226,6 +226,38 @@ TEST(Operator, DivideScalar) {
     EXPECT_EQ(1.5f, buf2[2]);
 }
 
+TEST(Method, Find) {
+    MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
+    
+    EXPECT_EQ(-1, buf.find(6));
+    EXPECT_EQ(0, buf.find(5));
+    EXPECT_EQ(2, buf.find(3));
+    EXPECT_EQ(5, buf.find(1));
+}
+
+TEST(Method, Sum) {
+    MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
+    
+    EXPECT_EQ(18, buf.sum());
+}
+
+TEST(Method, Pow) {
+    MatrixDSP::Vector<float> buf({1, 2, 3});
+    buf.pow(2);
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(1, buf[0]);
+    EXPECT_EQ(4, buf[1]);
+    EXPECT_EQ(9, buf[2]);
+}
+
+TEST(Method, Var) {
+    MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
+    
+    EXPECT_EQ(2, buf.var());
+    EXPECT_NEAR(1.66666f, buf.var(false), .001);
+}
+
 /*
 int main(int argc, char *argv[])
 {

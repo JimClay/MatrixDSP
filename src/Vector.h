@@ -186,7 +186,7 @@ class Vector {
     /**
      * \brief Returns the variance of the data in \ref buf.
      */
-    const double var() const;
+    const double var(const bool subset = true) const;
     
     /**
      * \brief Returns the standard deviation of the data in \ref buf.
@@ -595,7 +595,13 @@ T Vector<T>::sum() const
 }
 
 template <class T>
-Vector<T> & pow(const T exponent);
+Vector<T> & Vector<T>::pow(const T exponent)
+{
+    for (unsigned index=0; index<vec.size(); index++) {
+        vec[index] = std::pow(vec[index], exponent);
+    }
+    return *this;
+}
 
 template <class T>
 const T Vector<T>::mean() const
@@ -604,14 +610,20 @@ const T Vector<T>::mean() const
 }
 
 template <class T>
-const double Vector<T>::var() const
+const double Vector<T>::var(const bool subset) const
 {
     T squaredSum = 0;
-    for (T element : vec) {
-        squaredSum += element * element;
-    }
     T vecMean = mean();
-    return squaredSum / size() - vecMean * vecMean;
+    unsigned normalizer = size();
+    if (subset) {
+        normalizer--;
+    }
+    
+    for (T element : vec) {
+        T val = element - vecMean;
+        squaredSum += val * val;
+    }
+    return squaredSum / normalizer;
 }
 
 template <class T>
