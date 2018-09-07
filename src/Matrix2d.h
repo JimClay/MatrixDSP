@@ -26,13 +26,13 @@ class Matrix2d {
     public:
         unsigned numRows;
         unsigned numCols;
-        bool transpose;
+        bool transposed;
     
         Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr);
         Matrix2d(std::initializer_list< std::initializer_list<T> > data, std::shared_ptr< std::vector<T> > scratch = nullptr);
     
         const T& operator()(unsigned row, unsigned col) const {
-            if (!transpose) {
+            if (!transposed) {
                 return vec[row * numCols + col];
             }
             else {
@@ -40,18 +40,39 @@ class Matrix2d {
             }
         }
     
+        Matrix2d & transpose(void) {
+            transposed = not transposed;
+        }
+    
+        void checkAddr(unsigned row, unsigned col) {
+            if (!transposed) {
+                assert(row < numRows);
+                assert(col < numCols);
+            }
+            else {
+                assert(row < numCols);
+                assert(col < numRows);
+            }
+        }
+    
         RowColIterator<T> rowBegin(int rowNum) {
-            return RowColIterator<T>(vec, numRows, numCols, transpose, true, rowNum, false);
+            checkAddr(rowNum, 0);
+            return RowColIterator<T>(vec, numRows, numCols, transposed, true, rowNum, false);
         }
         RowColIterator<T> rowEnd(int rowNum) {
-            return RowColIterator<T>(vec, numRows, numCols, transpose, true, rowNum, true);
+            checkAddr(rowNum, 0);
+            return RowColIterator<T>(vec, numRows, numCols, transposed, true, rowNum, true);
         }
         RowColIterator<T> colBegin(int colNum) {
-            return RowColIterator<T>(vec, numRows, numCols, transpose, false, colNum, false);
+            checkAddr(0, colNum);
+            return RowColIterator<T>(vec, numRows, numCols, transposed, false, colNum, false);
         }
         RowColIterator<T> colEnd(int colNum) {
-            return RowColIterator<T>(vec, numRows, numCols, transpose, false, colNum, true);
+            checkAddr(0, colNum);
+            return RowColIterator<T>(vec, numRows, numCols, transposed, false, colNum, true);
         }
+    
+    
 };
     
 
@@ -81,7 +102,7 @@ Matrix2d<T>::Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T
     vec.resize(row * col);
     numRows = row;
     numCols = col;
-    transpose = false;
+    transposed = false;
     initializeScratchBuf(scratch);
 }
 
@@ -100,7 +121,7 @@ Matrix2d<T>::Matrix2d(std::initializer_list< std::initializer_list<T> > initVals
             vec[vecIndex++] = element;
         }
     }
-    transpose = false;
+    transposed = false;
     initializeScratchBuf(scratch);
 }
 
