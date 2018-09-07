@@ -6,8 +6,8 @@
 TEST(Iterator, Sort) {
     MatrixDSP::Matrix2d<float> mat({{3, 1, 2}, {5, -1, 7}});
     
-    EXPECT_EQ(2, mat.numRows);
-    EXPECT_EQ(3, mat.numCols);
+    EXPECT_EQ(2, mat.getRows());
+    EXPECT_EQ(3, mat.getCols());
     
     EXPECT_EQ(3, mat(0, 0));
     EXPECT_EQ(1, mat(0, 1));
@@ -39,9 +39,21 @@ TEST(Iterator, Sort) {
     EXPECT_EQ(1, mat(1, 0));
     EXPECT_EQ(5, mat(1, 1));
     EXPECT_EQ(7, mat(1, 2));
-    
 }
 
+TEST(Iterator, SortTransposed) {
+    MatrixDSP::Matrix2d<float> mat({{3, 1, 2}, {5, -1, 7}});
+    
+    EXPECT_EQ(2, mat.getRows());
+    EXPECT_EQ(3, mat.getCols());
+    
+    EXPECT_EQ(3, mat(0, 0));
+    EXPECT_EQ(1, mat(0, 1));
+    EXPECT_EQ(2, mat(0, 2));
+    EXPECT_EQ(5, mat(1, 0));
+    EXPECT_EQ(-1, mat(1, 1));
+    EXPECT_EQ(7, mat(1, 2));
+}
 
 
 

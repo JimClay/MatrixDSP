@@ -19,14 +19,14 @@ class Matrix2d {
     protected:
         std::vector<T> vec;
         std::shared_ptr< std::vector<T> > scratchBuf;
+        unsigned numRows;
+        unsigned numCols;
+        bool transposed;
     
         void copyToScratchBuf(std::vector<T> &from);
         void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch);
 
     public:
-        unsigned numRows;
-        unsigned numCols;
-        bool transposed;
     
         Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr);
         Matrix2d(std::initializer_list< std::initializer_list<T> > data, std::shared_ptr< std::vector<T> > scratch = nullptr);
@@ -39,6 +39,9 @@ class Matrix2d {
                 return vec[col * numCols + row];
             }
         }
+    
+        unsigned getRows(void) {return numRows;}
+        unsigned getCols(void) {return numCols;}
     
         Matrix2d & transpose(void) {
             transposed = not transposed;
