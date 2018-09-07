@@ -40,11 +40,22 @@ class Matrix2d {
             }
         }
     
-        unsigned getRows(void) {return numRows;}
-        unsigned getCols(void) {return numCols;}
+        unsigned getRows(void) {
+            if (!transposed) {
+                return numRows;
+            }
+            return numCols;
+        }
+        unsigned getCols(void)  {
+            if (!transposed) {
+                return numCols;
+            }
+            return numRows;
+        }
     
         Matrix2d & transpose(void) {
             transposed = not transposed;
+            return *this;
         }
     
         void checkAddr(unsigned row, unsigned col) {
