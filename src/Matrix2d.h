@@ -131,6 +131,7 @@ Matrix2d<T>::Matrix2d(std::initializer_list< std::initializer_list<T> > initVals
     
     unsigned vecIndex = 0;
     for (auto rowInitList : initVals) {
+        assert(rowInitList.size() == numCols);
         for (auto element : rowInitList) {
             vec[vecIndex++] = element;
         }
