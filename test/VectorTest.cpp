@@ -1,14 +1,6 @@
 #include "Vector.h"
 #include "gtest/gtest.h"
 
-//using namespace NimbleDSP;
-
-bool FloatsEqual(double float1, double float2) {
-    double epsilon = .00000001;
-    if ((float1 < float2 + epsilon) && (float1 > float2 - epsilon))
-        return true;
-    return false;
-}
 
 void PrintVector(char const *str, MatrixDSP::Vector<float> &vec)
 {
