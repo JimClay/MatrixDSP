@@ -53,6 +53,7 @@ class RowColIterator {
         RowColIterator<T> &operator=(const RowColIterator<T> &iterator) {
             this->iterator = iterator.iterator;
             this->increment = iterator.increment;
+            return *this;
         }
 
         T &operator*() const {
@@ -104,24 +105,15 @@ class RowColIterator {
             return dist / increment;
         }
 
-        bool operator==(const RowColIterator<T>& rhs) const {
-            return *iterator == *rhs.iterator;
-        }
-        bool operator!=(const RowColIterator<T>& rhs) const {
-            return *iterator != *rhs.iterator;
-        }
-        bool operator<(const RowColIterator<T>& rhs) const {
-            return *iterator < *rhs.iterator;
-        }
-        bool operator>(const RowColIterator<T>& rhs) const {
-            return *iterator > *rhs.iterator;
-        }
-        bool operator<=(const RowColIterator<T>& rhs) const {
-            return *iterator <= *rhs.iterator;
-        }
-        bool operator>=(const RowColIterator<T>& rhs) const {
-            return *iterator >= *rhs.iterator;
-        }
+        bool operator==(const RowColIterator<T>& rhs) const {return *iterator == *rhs.iterator;}
+        bool operator!=(const RowColIterator<T>& rhs) const {return *iterator != *rhs.iterator;}
+        bool operator<(const RowColIterator<T>& rhs) const {return *iterator < *rhs.iterator;}
+        bool operator>(const RowColIterator<T>& rhs) const {return *iterator > *rhs.iterator;}
+        bool operator<=(const RowColIterator<T>& rhs) const {return *iterator <= *rhs.iterator;}
+        bool operator>=(const RowColIterator<T>& rhs) const {return *iterator >= *rhs.iterator;}
+    
+        T& operator[](unsigned index) {return *(iterator + index * increment);}
+        const T& operator[](unsigned index) const {return *(iterator + index * increment);}
 };
 
 template <class T>
