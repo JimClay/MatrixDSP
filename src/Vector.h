@@ -88,6 +88,8 @@ class Vector {
      * \brief Virtual destructor.
      */
     virtual ~Vector() = default;
+    
+    std::shared_ptr< std::vector<T> > getScratchBuf(void) const {return scratchBuf;}
 
     /*****************************************************************************************
                                             Operators
@@ -190,12 +192,12 @@ class Vector {
     /**
      * \brief Returns the variance of the data in \ref buf.
      */
-    const double var(const bool subset = true) const;
+    const T var(const bool subset = true) const;
     
     /**
      * \brief Returns the standard deviation of the data in \ref buf.
      */
-    const double stdDev() const {return std::sqrt(this->var());}
+    const T stdDev() const {return std::sqrt(this->var());}
     
     /**
      * \brief Returns the median element of \ref buf.
@@ -631,11 +633,11 @@ Vector<T> & Vector<T>::pow(const T exponent)
 template <class T>
 const T Vector<T>::mean() const
 {
-    return sum() / size();
+    return sum() / ((T) size());
 }
 
 template <class T>
-const double Vector<T>::var(const bool subset) const
+const T Vector<T>::var(const bool subset) const
 {
     T squaredSum = 0;
     T vecMean = mean();
@@ -648,7 +650,7 @@ const double Vector<T>::var(const bool subset) const
         T val = element - vecMean;
         squaredSum += val * val;
     }
-    return squaredSum / normalizer;
+    return squaredSum / ((T) normalizer);
 }
 
 template <class T>
