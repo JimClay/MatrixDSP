@@ -18,15 +18,29 @@ namespace MatrixDSP {
  
 template <class T>
 class Vector {
-    protected:
-        std::shared_ptr< std::vector<T> > scratchBuf;
-    
-        void copyToScratchBuf(std::vector<T> &from);
-        void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch);
 
-    public:
-        std::vector<T> vec;
-        bool rowVector;
+protected:
+    std::shared_ptr< std::vector<T> > scratchBuf;
+    
+    void copyToScratchBuf(std::vector<T> &from) {
+        scratchBuf->resize(from.size());
+        for (unsigned index=0; index<from.size(); index++) {
+            (*scratchBuf)[index] = from[index];
+        }
+    }
+
+    void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch) {
+        if (scratch == nullptr) {
+            scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
+        }
+        else {
+            scratchBuf = scratch;
+        }
+    }
+
+public:
+    std::vector<T> vec;
+    bool rowVector;
     
     /*****************************************************************************************
                                         Constructors
@@ -43,7 +57,11 @@ class Vector {
      *      then one will be created in methods that require one and destroyed when the method
      *      returns.
      */
-    Vector<T>(uint32_t len = 0, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+    Vector<T>(uint32_t len = 0, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+        vec.resize(len);
+        rowVector = rowVec;
+        initializeScratchBuf(scratch);
+    }
     
     /**
      * \brief Vector constructor.
@@ -58,7 +76,11 @@ class Vector {
      *      then one will be created in methods that require one and destroyed when the method
      *      returns.
      */
-    Vector<T>(std::vector<T> *data, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+    Vector<T>(std::vector<T> *data, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+        vec = *data;
+        rowVector = rowVec;
+        initializeScratchBuf(scratch);
+    }
     
     /**
      * \brief Array constructor.
@@ -75,9 +97,19 @@ class Vector {
      *      returns.
      */
     template <class U>
-    Vector<T>(U *data, uint32_t dataLen, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+        Vector<T>(U *data, uint32_t dataLen, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+        vec.resize(dataLen);
+        for (uint32_t index=0; index<dataLen; index++) {
+            vec[index] = (T) data[index];
+        }
+        rowVector = rowVec;
+        initializeScratchBuf(scratch);
+    }
     
-    Vector<T>(std::initializer_list<T> initVals, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr);
+    Vector<T>(std::initializer_list<T> initVals, bool rowVec = false, std::shared_ptr< std::vector<T> > scratch = nullptr) : vec(initVals) {
+        rowVector = rowVec;
+        initializeScratchBuf(scratch);
+    }
     
     /**
      * \brief Copy constructor.
@@ -107,52 +139,113 @@ class Vector {
     /**
      * \brief Assignment operator.
      */
-    Vector<T>& operator=(const Vector<T>& rhs);
+    Vector<T>& operator=(const Vector<T>& rhs) {
+        vec.resize(rhs.size());
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = rhs[index];
+        }
+        rowVector = rhs.rowVector;
+        scratchBuf = rhs.scratchBuf;
+        return *this;
+    }
     
     /**
      * \brief Unary minus (negation) operator.
      */
-    Vector<T> & operator-();
+    Vector<T> & operator-() {
+        for (T element : vec) {
+            element = -element;
+        }
+        return *this;
+    }
     
     /**
      * \brief Add Buffer/Assignment operator.
      */
-    Vector<T> & operator+=(const Vector<T> &rhs);
+    Vector<T> & operator+=(const Vector<T> &rhs) {
+        assert(vec.size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] += rhs[index];
+        }
+        return *this;
+    }
     
     /**
      * \brief Add Scalar/Assignment operator.
      */
-    Vector<T> & operator+=(const T &rhs);
+    Vector<T> & operator+=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] += rhs;
+        }
+        return *this;
+    }
     
     /**
      * \brief Subtract Buffer/Assignment operator.
      */
-    Vector<T> & operator-=(const Vector<T> &rhs);
+    Vector<T> & operator-=(const Vector<T> &rhs) {
+        assert(vec.size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] -= rhs[index];
+        }
+        return *this;
+    }
     
     /**
      * \brief Subtract Scalar/Assignment operator.
      */
-    Vector<T> & operator-=(const T &rhs);
+    Vector<T> & operator-=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] -= rhs;
+        }
+        return *this;
+    }
     
     /**
      * \brief Multiply Buffer/Assignment operator.
      */
-    Vector<T> & operator*=(const Vector<T> &rhs);
+    Vector<T> & operator*=(const Vector<T> &rhs) {
+        assert(vec.size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] *= rhs[index];
+        }
+        return *this;
+    }
     
     /**
      * \brief Multiply Scalar/Assignment operator.
      */
-    Vector<T> & operator*=(const T &rhs);
+    Vector<T> & operator*=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] *= rhs;
+        }
+        return *this;
+    }
 
     /**
      * \brief Divide Buffer/Assignment operator.
      */
-    Vector<T> & operator/=(const Vector<T> &rhs);
+    Vector<T> & operator/=(const Vector<T> &rhs) {
+        assert(vec.size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] /= rhs[index];
+        }
+        return *this;
+    }
     
     /**
      * \brief Divide Scalar/Assignment operator.
      */
-    Vector<T> & operator/=(const T &rhs);
+    Vector<T> & operator/=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] /= rhs;
+        }
+        return *this;
+    }
     
     /*****************************************************************************************
                                             Methods
@@ -169,12 +262,25 @@ class Vector {
      * \return Index of first instance of "val".  If there aren't any elements equal to "val"
      *      it returns -1.
      */
-    const int find(const T val) const;
+    const int find(const T val) const {
+        for (int index=0; index<vec.size(); index++) {
+            if (vec[index] == val) {
+                return index;
+            }
+        }
+        return -1;
+    }
     
     /**
      * \brief Returns the sum of all the elements in \ref vec.
      */
-    T sum() const;
+    T sum() const {
+        T vecSum = 0;
+        for (T element : vec) {
+            vecSum += element;
+        }
+        return vecSum;
+    }
 
     /**
      * \brief Sets each element of \ref buf equal to its value to the power of "exponent".
@@ -182,17 +288,37 @@ class Vector {
      * \param exponent Exponent to use.
      * \return Reference to "this".
      */
-    Vector<T> & pow(const T exponent);
+    Vector<T> & pow(const T exponent) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::pow(vec[index], exponent);
+        }
+        return *this;
+    }
     
     /**
      * \brief Returns the mean (average) of the data in \ref buf.
      */
-    const T mean() const;
+    const T mean() const {
+        return sum() / ((T) size());
+    }
     
     /**
      * \brief Returns the variance of the data in \ref buf.
      */
-    const T var(const bool subset = true) const;
+    const T var(const bool subset = true) const {
+        T squaredSum = 0;
+        T vecMean = mean();
+        unsigned normalizer = size();
+        if (subset) {
+            normalizer--;
+        }
+        
+        for (T element : vec) {
+            T val = element - vecMean;
+            squaredSum += val * val;
+        }
+        return squaredSum / ((T) normalizer);
+    }
     
     /**
      * \brief Returns the standard deviation of the data in \ref buf.
@@ -202,7 +328,21 @@ class Vector {
     /**
      * \brief Returns the median element of \ref buf.
      */
-    const T median();
+    const T median() {
+        assert(vec.size() > 0);
+        
+        copyToScratchBuf(vec);
+        std::sort(scratchBuf->begin(), scratchBuf->end());
+        if (this->size() & 1) {
+            // Odd number of samples
+            return (*scratchBuf)[size()/2];
+        }
+        else {
+            // Even number of samples.  Average the two in the middle.
+            unsigned topHalfIndex = size()/2;
+            return ((*scratchBuf)[topHalfIndex] + (*scratchBuf)[topHalfIndex-1]) / ((T) 2);
+        }
+    }
     
     /**
      * \brief Returns the maximum element in \ref buf.
@@ -212,7 +352,23 @@ class Vector {
      *      to the maximum value the index of the first will be returned.
      *      Defaults to NULL.
      */
-    const T max(unsigned *maxLoc = NULL) const;
+    const T max(unsigned *maxLoc = NULL) const {
+        assert(vec.size() > 0);
+        
+        T maxVal = vec[0];
+        unsigned maxIndex = 0;
+        
+        for (unsigned index=1; index<vec.size(); index++) {
+            if (maxVal < vec[index]) {
+                maxVal = vec[index];
+                maxIndex = index;
+            }
+        }
+        if (maxLoc != nullptr) {
+            *maxLoc = maxIndex;
+        }
+        return maxVal;
+    }
     
     /**
      * \brief Returns the minimum element in \ref buf.
@@ -222,7 +378,23 @@ class Vector {
      *      to the minimum value the index of the first will be returned.
      *      Defaults to NULL.
      */
-    const T min(unsigned *minLoc = NULL) const;
+    const T min(unsigned *minLoc = NULL) const {
+        assert(vec.size() > 0);
+        
+        T minVal = vec[0];
+        unsigned minIndex = 0;
+        
+        for (unsigned index=1; index<vec.size(); index++) {
+            if (minVal > vec[index]) {
+                minVal = vec[index];
+                minIndex = index;
+            }
+        }
+        if (minLoc != nullptr) {
+            *minLoc = minIndex;
+        }
+        return minVal;
+    }
     
     /**
      * \brief Sets the upper and lower limit of the values in \ref buf.
@@ -232,13 +404,24 @@ class Vector {
      *      any that are less than -val are made equal to -val.
      * \return Reference to "this".
      */
-    Vector<T> & saturate(T val);
+    Vector<T> & saturate(T val) {
+        for (T element : vec) {
+            element = std::min(element, val);
+            element = std::max(element, -val);
+        }
+        return *this;
+    }
 
     /**
      * \brief Does a "ceil" operation on \ref vec.
      * \return Reference to "this".
      */
-    Vector<T> & ceil(void);
+    Vector<T> & ceil(void) {
+        for (T element : vec) {
+            element = std::ceil(element);
+        }
+        return *this;
+    }
 
     /**
      * \brief Does a "floor" operation on \ref vec.
@@ -389,102 +572,6 @@ class Vector {
 
 
 template <class T>
-void Vector<T>::copyToScratchBuf(std::vector<T> &from)
-{
-    scratchBuf->resize(from.size());
-    for (unsigned index=0; index<from.size(); index++) {
-        (*scratchBuf)[index] = from[index];
-    }
-}
-
-template <class T>
-void Vector<T>::initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch)
-{
-    if (scratch == nullptr) {
-        scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
-    }
-    else {
-        scratchBuf = scratch;
-    }
-}
-    
-template <class T>
-Vector<T>::Vector(uint32_t len, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
-{
-    vec.resize(len);
-    rowVector = rowVec;
-    initializeScratchBuf(scratch);
-}
-
-template <class T>
-Vector<T>::Vector(std::vector<T> *data, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
-{
-    vec = *data;
-    rowVector = rowVec;
-    initializeScratchBuf(scratch);
-}
-
-template <class T>
-template <class U>
-Vector<T>::Vector(U *data, uint32_t dataLen, bool rowVec, std::shared_ptr< std::vector<T> > scratch)
-{
-    vec.resize(dataLen);
-    for (uint32_t index=0; index<dataLen; index++) {
-        vec[index] = (T) data[index];
-    }
-    rowVector = rowVec;
-    initializeScratchBuf(scratch);
-}
-
-template <class T>
-Vector<T>::Vector(std::initializer_list<T> initVals, bool rowVec, std::shared_ptr< std::vector<T> > scratch) : vec(initVals)
-{
-    rowVector = rowVec;
-    initializeScratchBuf(scratch);
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator-()
-{
-    for (T element : vec) {
-        element = -element;
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator=(const Vector<T>& rhs)
-{
-    vec.resize(rhs.size());
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] = rhs[index];
-    }
-    rowVector = rhs.rowVector;
-    scratchBuf = rhs.scratchBuf;
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator+=(const Vector<T> &rhs)
-{
-    assert(vec.size() == rhs.size());
-    
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] += rhs[index];
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator+=(const T &rhs)
-{
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] += rhs;
-    }
-    return *this;
-}
-
-template <class T>
 inline Vector<T> operator+(Vector<T> lhs, const Vector<T>& rhs)
 {
     lhs += rhs;
@@ -496,26 +583,6 @@ inline Vector<T> operator+(Vector<T> lhs, const T& rhs)
 {
     lhs += rhs;
     return lhs;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator-=(const Vector<T> &rhs)
-{
-    assert(vec.size() == rhs.size());
-    
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] -= rhs[index];
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator-=(const T &rhs)
-{
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] -= rhs;
-    }
-    return *this;
 }
 
 template <class T>
@@ -533,26 +600,6 @@ inline Vector<T> operator-(Vector<T> lhs, const T& rhs)
 }
 
 template <class T>
-Vector<T> & Vector<T>::operator*=(const Vector<T> &rhs)
-{
-    assert(vec.size() == rhs.size());
-    
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] *= rhs[index];
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator*=(const T &rhs)
-{
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] *= rhs;
-    }
-    return *this;
-}
-
-template <class T>
 inline Vector<T> operator*(Vector<T> lhs, const Vector<T>& rhs)
 {
     lhs *= rhs;
@@ -564,26 +611,6 @@ inline Vector<T> operator*(Vector<T> lhs, const T& rhs)
 {
     lhs *= rhs;
     return lhs;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator/=(const Vector<T> &rhs)
-{
-    assert(vec.size() == rhs.size());
-    
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] /= rhs[index];
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::operator/=(const T &rhs)
-{
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] /= rhs;
-    }
-    return *this;
 }
 
 template <class T>
@@ -599,217 +626,6 @@ inline Vector<T> operator/(Vector<T> lhs, const T& rhs)
     lhs /= rhs;
     return lhs;
 }
-
-template <class T>
-const int Vector<T>::find(const T val) const
-{
-    for (int index=0; index<vec.size(); index++) {
-        if (vec[index] == val) {
-            return index;
-        }
-    }
-    return -1;
-}
-
-template <class T>
-T Vector<T>::sum() const
-{
-    T vecSum = 0;
-    for (T element : vec) {
-        vecSum += element;
-    }
-    return vecSum;
-}
-
-template <class T>
-Vector<T> & Vector<T>::pow(const T exponent)
-{
-    for (unsigned index=0; index<vec.size(); index++) {
-        vec[index] = std::pow(vec[index], exponent);
-    }
-    return *this;
-}
-
-template <class T>
-const T Vector<T>::mean() const
-{
-    return sum() / ((T) size());
-}
-
-template <class T>
-const T Vector<T>::var(const bool subset) const
-{
-    T squaredSum = 0;
-    T vecMean = mean();
-    unsigned normalizer = size();
-    if (subset) {
-        normalizer--;
-    }
-    
-    for (T element : vec) {
-        T val = element - vecMean;
-        squaredSum += val * val;
-    }
-    return squaredSum / ((T) normalizer);
-}
-
-template <class T>
-const T Vector<T>::median()
-{
-    assert(vec.size() > 0);
-    
-    copyToScratchBuf(vec);
-    std::sort(scratchBuf->begin(), scratchBuf->end());
-    if (this->size() & 1) {
-        // Odd number of samples
-        return (*scratchBuf)[size()/2];
-    }
-    else {
-        // Even number of samples.  Average the two in the middle.
-        unsigned topHalfIndex = size()/2;
-        return ((*scratchBuf)[topHalfIndex] + (*scratchBuf)[topHalfIndex-1]) / ((T) 2);
-    }
-}
-
-template <class T>
-const T Vector<T>::max(unsigned *maxLoc) const
-{
-    assert(vec.size() > 0);
-    
-    T maxVal = vec[0];
-    unsigned maxIndex = 0;
-    
-    for (unsigned index=1; index<vec.size(); index++) {
-        if (maxVal < vec[index]) {
-            maxVal = vec[index];
-            maxIndex = index;
-        }
-    }
-    if (maxLoc != nullptr) {
-        *maxLoc = maxIndex;
-    }
-    return maxVal;
-}
-
-template <class T>
-const T Vector<T>::min(unsigned *minLoc) const
-{
-    assert(vec.size() > 0);
-    
-    T minVal = vec[0];
-    unsigned minIndex = 0;
-    
-    for (unsigned index=1; index<vec.size(); index++) {
-        if (minVal > vec[index]) {
-            minVal = vec[index];
-            minIndex = index;
-        }
-    }
-    if (minLoc != nullptr) {
-        *minLoc = minIndex;
-    }
-    return minVal;
-}
-
-template <class T>
-Vector<T> & Vector<T>::saturate(T val)
-{
-    for (T element : vec) {
-        element = std::min(element, val);
-        element = std::max(element, -val);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::ceil(void)
-{
-    for (T element : vec) {
-        element = std::ceil(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::floor(void)
-{
-    for (T element : vec) {
-        element = std::floor(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::round(void)
-{
-    for (T element : vec) {
-        element = std::round(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::abs()
-{
-    for (T element : vec) {
-        element = std::abs(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::exp()
-{
-    for (T element : vec) {
-        element = std::exp(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::log()
-{
-    for (T element : vec) {
-        element = std::log(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & Vector<T>::log10()
-{
-    for (T element : vec) {
-        element = std::log10(element);
-    }
-    return *this;
-}
-
-template <class T>
-Vector<T> & vectorRotate(int numToShift);
-
-template <class T>
-Vector<T> & reverse();
-
-template <class T>
-Vector<T> & upsample(int rate, int phase = 0);
-
-template <class T>
-Vector<T> & downsample(int rate, int phase = 0);
-
-template <class T>
-Vector<T> & cumsum(T initialVal = 0);
-
-template <class T>
-Vector<T> & diff();
-
-template <class T>
-Vector<T> & diff(T & previousVal);
-
-template <class T>
-T tone(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0);
-
-template <class T>
-T modulate(T freq, T sampleFreq = 1.0, T phase = 0.0);
 
 }
 
