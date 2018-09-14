@@ -21,7 +21,7 @@ TEST(ComplexVectorInit, Ctor_Vector) {
 }
 
 TEST(ComplexVectorInit, Ctor_Array) {
-    std::complex<float> data[] = {1, 2, 3, 4, 5};
+    std::complex<float> data[] = {1, 2, {3, 1}, 4, 5};
     MatrixDSP::ComplexVector<float> buf(data, 5);
     
     EXPECT_EQ(5, buf.vec.size());
@@ -32,10 +32,10 @@ TEST(ComplexVectorInit, Ctor_Array) {
 }
 
 TEST(ComplexVectorInit, Ctor_Initializer_List) {
-    MatrixDSP::ComplexVector<float> buf({3, 4, 5});
+    MatrixDSP::ComplexVector<float> buf({{3, 7}, 4, 5});
     
     EXPECT_EQ(3, buf.vec.size());
-    EXPECT_EQ(std::complex<float>(3, 0), buf.vec[0]);
+    EXPECT_EQ(std::complex<float>(3, 7), buf.vec[0]);
     EXPECT_EQ(std::complex<float>(4, 0), buf.vec[1]);
     EXPECT_EQ(std::complex<float>(5, 0), buf.vec[2]);
     EXPECT_EQ(false, buf.rowVector);
@@ -53,13 +53,13 @@ TEST(ComplexVector_Operator, AddEqualVector) {
 }
 
 TEST(ComplexVector_Operator, AddEqualScalar) {
-    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::ComplexVector<float> buf1({1, 2, {3, 6}});
     
-    buf1 += std::complex<float>(5.0f, 0);
+    buf1 += std::complex<float>(5.0f, 2);
     EXPECT_EQ(3, buf1.size());
-    EXPECT_EQ(std::complex<float>(6, 0), buf1[0]);
-    EXPECT_EQ(std::complex<float>(7, 0), buf1[1]);
-    EXPECT_EQ(std::complex<float>(8, 0), buf1[2]);
+    EXPECT_EQ(std::complex<float>(6, 2), buf1[0]);
+    EXPECT_EQ(std::complex<float>(7, 2), buf1[1]);
+    EXPECT_EQ(std::complex<float>(8, 8), buf1[2]);
 }
 
 TEST(ComplexVector_Operator, AddVector) {
