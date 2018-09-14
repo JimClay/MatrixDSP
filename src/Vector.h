@@ -347,12 +347,12 @@ public:
     /**
      * \brief Returns the maximum element in \ref buf.
      *
-     * \param maxLoc If it isn't equal to NULL the index of the maximum element
+     * \param maxLoc If it isn't equal to nullptr the index of the maximum element
      *      will be returned via this pointer.  If more than one element is equal
      *      to the maximum value the index of the first will be returned.
-     *      Defaults to NULL.
+     *      Defaults to nullptr.
      */
-    const T max(unsigned *maxLoc = NULL) const {
+    const T max(unsigned *maxLoc = nullptr) const {
         assert(vec.size() > 0);
         
         T maxVal = vec[0];
@@ -373,12 +373,12 @@ public:
     /**
      * \brief Returns the minimum element in \ref buf.
      *
-     * \param minLoc If it isn't equal to NULL the index of the minimum element
+     * \param minLoc If it isn't equal to nullptr the index of the minimum element
      *      will be returned via this pointer.  If more than one element is equal
      *      to the minimum value the index of the first will be returned.
-     *      Defaults to NULL.
+     *      Defaults to nullptr.
      */
-    const T min(unsigned *minLoc = NULL) const {
+    const T min(unsigned *minLoc = nullptr) const {
         assert(vec.size() > 0);
         
         T minVal = vec[0];
