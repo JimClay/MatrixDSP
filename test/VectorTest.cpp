@@ -302,11 +302,71 @@ TEST(Method, Saturate) {
 }
 
 TEST(Method, Ceil) {
-    MatrixDSP::Vector<float> buf({-1.2, 2.3, 4});
+    MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
     buf.ceil();
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(-1, buf[0]);
     EXPECT_EQ(3, buf[1]);
     EXPECT_EQ(4, buf[2]);
+}
+
+TEST(Method, Floor) {
+    MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
+    buf.floor();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-2, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(4, buf[2]);
+}
+
+TEST(Method, Round) {
+    MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
+    buf.round();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0]);
+    EXPECT_EQ(3, buf[1]);
+    EXPECT_EQ(4, buf[2]);
+}
+
+TEST(Method, Abs) {
+    MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
+    buf.abs();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(1.2, buf[0], .001);
+    EXPECT_NEAR(2.6, buf[1], .001);
+    EXPECT_EQ(4, buf[2]);
+}
+
+TEST(Method, Exp) {
+    MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
+    buf.exp();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(.3012, buf[0], .001);
+    EXPECT_NEAR(13.4637, buf[1], .001);
+    EXPECT_NEAR(54.5982, buf[2], .001);
+}
+
+TEST(Method, Log) {
+    MatrixDSP::Vector<float> buf({1.2, 2.6, 4});
+    buf.log();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(0.1823, buf[0], .001);
+    EXPECT_NEAR(0.9555, buf[1], .001);
+    EXPECT_NEAR(1.3863, buf[2], .001);
+}
+
+TEST(Method, Log10) {
+    MatrixDSP::Vector<float> buf({.1, 10, 1000});
+    buf.log10();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0]);
+    EXPECT_EQ(1, buf[1]);
+    EXPECT_EQ(3, buf[2]);
 }

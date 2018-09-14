@@ -405,9 +405,11 @@ public:
      * \return Reference to "this".
      */
     Vector<T> & saturate(T val) {
-        for (T element : vec) {
-            element = std::min(element, val);
-            element = std::max(element, -val);
+        assert(val >= 0);
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::min(vec[index], val);
+            vec[index] = std::max(vec[index], -val);
         }
         return *this;
     }
@@ -417,8 +419,8 @@ public:
      * \return Reference to "this".
      */
     Vector<T> & ceil(void) {
-        for (T element : vec) {
-            element = std::ceil(element);
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::ceil(vec[index]);
         }
         return *this;
     }
@@ -427,41 +429,71 @@ public:
      * \brief Does a "floor" operation on \ref vec.
      * \return Reference to "this".
      */
-    Vector<T> & floor(void);
+    Vector<T> & floor(void) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::floor(vec[index]);
+        }
+        return *this;
+    }
 
     /**
      * \brief Does a "round" operation on \ref vec.
      * \return Reference to "this".
      */
-    Vector<T> & round(void);
+    Vector<T> & round(void) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::round(vec[index]);
+        }
+        return *this;
+    }
 
     /**
      * \brief Changes the elements of \ref vec to their absolute value.
      *
      * \return Reference to "this".
      */
-    Vector<T> & abs();
+    Vector<T> & abs() {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::abs(vec[index]);
+        }
+        return *this;
+    }
     
     /**
      * \brief Sets each element of \ref vec to e^(element).
      *
      * \return Reference to "this".
      */
-    Vector<T> & exp();
+    Vector<T> & exp() {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::exp(vec[index]);
+        }
+        return *this;
+    }
     
     /**
      * \brief Sets each element of \ref vec to the natural log of the element.
      *
      * \return Reference to "this".
      */
-    Vector<T> & log();
+    Vector<T> & log() {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::log(vec[index]);
+        }
+        return *this;
+    }
     
     /**
      * \brief Sets each element of \ref vec to the base 10 log of the element.
      *
      * \return Reference to "this".
      */
-    Vector<T> & log10();
+    Vector<T> & log10() {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = std::log10(vec[index]);
+        }
+        return *this;
+    }
 
     /**
      * \brief Circular rotation.
