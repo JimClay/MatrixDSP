@@ -370,3 +370,39 @@ TEST(Method, Log10) {
     EXPECT_EQ(1, buf[1]);
     EXPECT_EQ(3, buf[2]);
 }
+
+TEST(Method, Rotate) {
+    MatrixDSP::Vector<float> buf({10, 2, 3, 8, 9});
+    
+    buf.vectorRotate(2);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(3, buf[0]);
+    EXPECT_EQ(8, buf[1]);
+    EXPECT_EQ(9, buf[2]);
+    EXPECT_EQ(10, buf[3]);
+    EXPECT_EQ(2, buf[4]);
+    
+    buf.vectorRotate(-3);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(10, buf[1]);
+    EXPECT_EQ(2, buf[2]);
+    EXPECT_EQ(3, buf[3]);
+    EXPECT_EQ(8, buf[4]);
+    
+    buf.vectorRotate(5);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(10, buf[1]);
+    EXPECT_EQ(2, buf[2]);
+    EXPECT_EQ(3, buf[3]);
+    EXPECT_EQ(8, buf[4]);
+    
+    buf.vectorRotate(-11);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(8, buf[0]);
+    EXPECT_EQ(9, buf[1]);
+    EXPECT_EQ(10, buf[2]);
+    EXPECT_EQ(2, buf[3]);
+    EXPECT_EQ(3, buf[4]);
+}

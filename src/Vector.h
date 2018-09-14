@@ -504,7 +504,20 @@ public:
      *      the left, and negative values shift it to the right.
      * \return Reference to "this".
      */
-    Vector<T> & vectorRotate(int numToShift);
+    Vector<T> & vectorRotate(int numToShift) {
+        if (vec.size() <= 1) {
+            return *this;
+        }
+        while (numToShift >= (int) vec.size()) {
+            numToShift -= (int) vec.size();
+        }
+        while (numToShift < 0) {
+            numToShift += (int) vec.size();
+        }
+        
+        std::rotate(vec.begin(), vec.begin() + numToShift, vec.end());
+        return *this;
+    }
     
     /**
      * \brief Reverses the order of the elements in \ref vec.
