@@ -243,11 +243,24 @@ TEST(Method, Pow) {
     EXPECT_EQ(9, buf[2]);
 }
 
+TEST(Method, Mean) {
+    MatrixDSP::Vector<float> buf({11, 2, 3, 3, 4, 1});
+    
+    EXPECT_EQ(4, buf.mean());
+}
+
 TEST(Method, Var) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     
     EXPECT_EQ(2, buf.var());
     EXPECT_NEAR(1.66666f, buf.var(false), .001);
+}
+
+TEST(Method, StdDev) {
+    MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
+    
+    EXPECT_NEAR(1.4142f, buf.stdDev(), .001);
+    EXPECT_NEAR(1.2910f, buf.stdDev(false), .001);
 }
 
 TEST(Method, Median) {
@@ -258,21 +271,42 @@ TEST(Method, Median) {
     EXPECT_EQ(5.5f, buf2.median());
 }
 
-/*
-int main(int argc, char *argv[])
-{
-	MatrixDSP::Vector<float> vec1(5);
-    MatrixDSP::Vector<float> vec2(new std::vector<float>(5));
-    float data[] = {1, 2, 3, 4, 5};
-    MatrixDSP::Vector<float> vec3(data, 5);
-    MatrixDSP::Vector<float> vec4({6, 7, 8, 9, 10});
+TEST(Method, Max) {
+    MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
+    EXPECT_EQ(10, buf1.max());
     
-    PrintVector("vec1", vec1);
-    PrintVector("vec2", vec2);
-    PrintVector("vec3", vec3);
-    PrintVector("vec4", vec4);
-    //PrintVector("vec1 + vec2", vec1 + vec2);
-
-	return 0;
+    MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
+    unsigned maxLoc;
+    EXPECT_EQ(10, buf2.max(&maxLoc));
+    EXPECT_EQ(1, maxLoc);
 }
-*/
+
+TEST(Method, Min) {
+    MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
+    EXPECT_EQ(2, buf1.min());
+    
+    MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
+    unsigned minLoc;
+    EXPECT_EQ(1, buf2.min(&minLoc));
+    EXPECT_EQ(0, minLoc);
+}
+
+TEST(Method, Saturate) {
+    MatrixDSP::Vector<float> buf({-10, 8, 3});
+    buf.saturate(5);
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-5, buf[0]);
+    EXPECT_EQ(5, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+}
+
+TEST(Method, Ceil) {
+    MatrixDSP::Vector<float> buf({-1.2, 2.3, 4});
+    buf.ceil();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0]);
+    EXPECT_EQ(3, buf[1]);
+    EXPECT_EQ(4, buf[2]);
+}
