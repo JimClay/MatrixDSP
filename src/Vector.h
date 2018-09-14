@@ -323,7 +323,7 @@ public:
     /**
      * \brief Returns the standard deviation of the data in \ref buf.
      */
-    const T stdDev() const {return std::sqrt(this->var());}
+    const T stdDev(const bool subset = true) const {return std::sqrt(this->var(subset));}
     
     /**
      * \brief Returns the median element of \ref buf.
