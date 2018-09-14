@@ -441,5 +441,31 @@ TEST(Method, Pad) {
     EXPECT_EQ(3, buf[2]);
     EXPECT_EQ(-1, buf[3]);
     EXPECT_EQ(-1, buf[4]);
-    EXPECT_EQ(-1, buf[4]);
+    EXPECT_EQ(-1, buf[5]);
+}
+
+TEST(Method, Upsmaple) {
+    MatrixDSP::Vector<float> buf({9, 2, 3});
+    
+    buf.upsample(3, 1);
+    EXPECT_EQ(9, buf.size());
+    EXPECT_EQ(0, buf[0]);
+    EXPECT_EQ(9, buf[1]);
+    EXPECT_EQ(0, buf[2]);
+    EXPECT_EQ(0, buf[3]);
+    EXPECT_EQ(2, buf[4]);
+    EXPECT_EQ(0, buf[5]);
+    EXPECT_EQ(0, buf[6]);
+    EXPECT_EQ(3, buf[7]);
+    EXPECT_EQ(0, buf[8]);
+}
+
+TEST(Method, Downsmaple) {
+    MatrixDSP::Vector<float> buf({0, 9, 0, 0, 2, 0, 0, 3, 0});
+    
+    buf.downsample(3, 1);
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(3, buf[2]);
 }

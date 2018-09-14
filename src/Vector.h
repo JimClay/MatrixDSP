@@ -557,8 +557,23 @@ public:
      *      after).  Valid values are 0 to "rate"-1.  Defaults to 0.
      * \return Reference to "this".
      */
-    Vector<T> & upsample(int rate, int phase = 0);
-    
+    Vector<T> & upsample(int rate, int phase = 0) {
+        assert(rate > 0);
+        assert(phase >= 0 && phase < rate);
+        
+        if (rate == 1)
+            return *this;
+
+        int originalSize = this->size();
+        this->vec.resize(originalSize*rate);
+        int from, to;
+        for (from = originalSize - 1, to = this->size() - (rate - phase); to > 0; from--, to -= rate) {
+            this->vec[to] = this->vec[from];
+            this->vec[from] = 0;
+        }
+        return *this;
+    }
+
     /**
      * \brief Removes rate-1 samples out of every rate samples.
      *
@@ -567,7 +582,20 @@ public:
      *      are 0 to "rate"-1.  Defaults to 0.
      * \return Reference to "this".
      */
-    Vector<T> & downsample(int rate, int phase = 0);
+    Vector<T> & downsample(int rate, int phase = 0) {
+        assert(rate > 0);
+        assert(phase >= 0 && phase < rate);
+        if (rate == 1)
+            return *this;
+
+        int newSize = this->size() / rate;
+        int from, to;
+        for (from = phase, to = 0; to < newSize; from += rate, to++) {
+            this->vec[to] = this->vec[from];
+        }
+        this->vec.resize(newSize);
+        return *this;
+    }
     
     /**
      * \brief Replaces \ref vec with the cumulative sum of the samples in \ref vec.
