@@ -406,3 +406,40 @@ TEST(Method, Rotate) {
     EXPECT_EQ(2, buf[3]);
     EXPECT_EQ(3, buf[4]);
 }
+
+TEST(Method, Reverse) {
+    MatrixDSP::Vector<float> buf({10, 2, 3, 8, 9});
+    
+    buf.reverse();
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(8, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(2, buf[3]);
+    EXPECT_EQ(10, buf[4]);
+}
+
+TEST(Method, Resize) {
+    MatrixDSP::Vector<float> buf({10, 2, 3});
+    
+    buf.resize(5, 1);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(10, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(1, buf[3]);
+    EXPECT_EQ(1, buf[4]);
+}
+
+TEST(Method, Pad) {
+    MatrixDSP::Vector<float> buf({10, 2, 3});
+    
+    buf.pad(3, -1);
+    EXPECT_EQ(6, buf.size());
+    EXPECT_EQ(10, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(-1, buf[3]);
+    EXPECT_EQ(-1, buf[4]);
+    EXPECT_EQ(-1, buf[4]);
+}

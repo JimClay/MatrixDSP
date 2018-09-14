@@ -524,7 +524,10 @@ public:
      *
      * \return Reference to "this".
      */
-    Vector<T> & reverse();
+    Vector<T> & reverse() {
+        std::reverse(vec.begin(), vec.end());
+        return *this;
+    }
 
     /**
      * \brief Sets the length of \ref vec to "len".
