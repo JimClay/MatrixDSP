@@ -564,12 +564,12 @@ public:
         if (rate == 1)
             return *this;
 
-        int originalSize = this->size();
-        this->vec.resize(originalSize*rate);
+        int originalSize = vec.size();
+        vec.resize(originalSize*rate);
         int from, to;
-        for (from = originalSize - 1, to = this->size() - (rate - phase); to > 0; from--, to -= rate) {
-            this->vec[to] = this->vec[from];
-            this->vec[from] = 0;
+        for (from = originalSize - 1, to = vec.size() - (rate - phase); to > 0; from--, to -= rate) {
+            vec[to] = vec[from];
+            vec[from] = 0;
         }
         return *this;
     }
@@ -588,12 +588,12 @@ public:
         if (rate == 1)
             return *this;
 
-        int newSize = this->size() / rate;
+        int newSize = vec.size() / rate;
         int from, to;
         for (from = phase, to = 0; to < newSize; from += rate, to++) {
-            this->vec[to] = this->vec[from];
+            vec[to] = vec[from];
         }
-        this->vec.resize(newSize);
+        vec.resize(newSize);
         return *this;
     }
     
@@ -603,7 +603,14 @@ public:
      * \param initialVal Initializing value for the cumulative sum.  Defaults to zero.
      * \return Reference to "this".
      */
-    Vector<T> & cumsum(T initialVal = 0);
+    Vector<T> & cumsum(T initialVal = 0) {
+        T sum = initialVal;
+        for (unsigned i=0; i<vec.size(); i++) {
+            sum += vec[i];
+            vec[i] = sum;
+        }
+        return *this;
+    }
     
     /**
      * \brief Replaces \ref vec with the difference between successive samples in vec.

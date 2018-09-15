@@ -469,3 +469,13 @@ TEST(Method, Downsmaple) {
     EXPECT_EQ(2, buf[1]);
     EXPECT_EQ(3, buf[2]);
 }
+
+TEST(Method, CumSum) {
+    MatrixDSP::Vector<float> buf({10, 2, 3});
+    
+    buf.cumsum();
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(10, buf[0]);
+    EXPECT_EQ(12, buf[1]);
+    EXPECT_EQ(15, buf[2]);
+}
