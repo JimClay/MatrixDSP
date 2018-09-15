@@ -479,3 +479,46 @@ TEST(Method, CumSum) {
     EXPECT_EQ(12, buf[1]);
     EXPECT_EQ(15, buf[2]);
 }
+
+TEST(Method, Diff) {
+    MatrixDSP::Vector<float> buf1({10, 2, 3});
+    
+    buf1.diff();
+    EXPECT_EQ(2, buf1.size());
+    EXPECT_EQ(-8, buf1[0]);
+    EXPECT_EQ(1, buf1[1]);
+    
+    MatrixDSP::Vector<float> buf2({10, 2, 3});
+    float previousVal = 5;
+    buf2.diff(&previousVal);
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(5, buf2[0]);
+    EXPECT_EQ(-8, buf2[1]);
+    EXPECT_EQ(1, buf2[2]);
+    EXPECT_EQ(3, previousVal);
+}
+
+TEST(Method, Sine) {
+    MatrixDSP::Vector<float> buf;
+    
+    float phase = buf.sine(0.25, 1, 0, 4);
+    EXPECT_EQ(4, buf.size());
+    EXPECT_NEAR(0, buf[0], .0001);
+    EXPECT_NEAR(1, buf[1], .0001);
+    EXPECT_NEAR(0, buf[2], .0001);
+    EXPECT_NEAR(-1, buf[3], .0001);
+    EXPECT_NEAR(2 * M_PI, phase, .0001);
+}
+
+TEST(Method, Modulate) {
+    MatrixDSP::Vector<float> buf({1, 1, 1, 1});
+    
+    float phase = buf.modulate(0.25, 1, 0);
+    EXPECT_EQ(4, buf.size());
+    EXPECT_NEAR(0, buf[0], .0001);
+    EXPECT_NEAR(1, buf[1], .0001);
+    EXPECT_NEAR(0, buf[2], .0001);
+    EXPECT_NEAR(-1, buf[3], .0001);
+    EXPECT_NEAR(2 * M_PI, phase, .0001);
+}
+

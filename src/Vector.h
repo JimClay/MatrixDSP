@@ -615,23 +615,33 @@ public:
     /**
      * \brief Replaces \ref vec with the difference between successive samples in vec.
      *
-     * The resulting \ref vec is one element shorter than it was previously.
-     * \return Reference to "this".
-     */
-    Vector<T> & diff();
-    
-    /**
-     * \brief Replaces \ref vec with the difference between successive samples in vec.
-     *
      * \param previousVal The last value in the sample stream before the current contents
      *      of \ref vec.  previousVal allows the resulting vec to be the same size as the
-     *      previous vec.
+     *      previous vec.  Defaults to nullptr.
      * \return Reference to "this".
      */
-    Vector<T> & diff(T & previousVal);
+    Vector<T> & diff(T *previousVal = nullptr) {
+        if (previousVal == nullptr) {
+            assert(size() > 1);
+            for (unsigned i=0; i<(size()-1); i++) {
+                vec[i] = vec[i + 1] - vec[i];
+            }
+            resize(size()-1);
+        }
+        else {
+            assert(this->size() > 0);
+            T nextPreviousVal = vec[size()-1];
+            for (unsigned i=size()-1; i>0; i--) {
+                vec[i] = vec[i] - vec[i - 1];
+            }
+            vec[0] = vec[0] - *previousVal;
+            *previousVal = nextPreviousVal;
+        }
+        return *this;
+    }
     
     /**
-     * \brief Generates a real tone.
+     * \brief Generates a real sinusoid.
      *
      * \param freq The tone frequency.
      * \param sampleFreq The sample frequency.  Defaults to 1 Hz.
@@ -640,7 +650,20 @@ public:
      *      this->size() samples.  Defaults to 0.
      * \return The next phase if the tone were to continue.
      */
-    T tone(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0);
+    T sine(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {
+        assert(sampleFreq > 0.0);
+        
+        if (numSamples && numSamples != size()) {
+            this->resize(numSamples);
+        }
+        
+        T phaseInc = (freq / sampleFreq) * 2 * M_PI;
+        for (unsigned i=0; i<size(); i++) {
+            vec[i] = std::sin(phase);
+            phase += phaseInc;
+        }
+        return phase;
+    }
     
     /**
      * \brief Modulates the data with a real sinusoid.
@@ -650,7 +673,16 @@ public:
      * \param phase The modulating tone's starting phase, in radians.  Defaults to 0.
      * \return The next phase if the tone were to continue.
      */
-    T modulate(T freq, T sampleFreq = 1.0, T phase = 0.0);
+    T modulate(T freq, T sampleFreq = 1.0, T phase = 0.0) {
+        assert(sampleFreq > 0.0);
+        
+        T phaseInc = (freq / sampleFreq) * 2 * M_PI;
+        for (unsigned i=0; i<size(); i++) {
+            vec[i] *= std::sin(phase);
+            phase += phaseInc;
+        }
+        return phase;
+    }
 };
 
 
