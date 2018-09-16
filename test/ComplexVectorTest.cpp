@@ -234,6 +234,13 @@ TEST(ComplexVector_Method, Pow) {
     EXPECT_EQ(std::complex<float>(9, 0), buf[2]);
 }
 
+TEST(ComplexVector_Method, Mean) {
+    MatrixDSP::ComplexVector<float> buf({11, {2, 6}, 3, 3, 4, 1});
+    
+    EXPECT_EQ(4, buf.mean().real());
+    EXPECT_EQ(1, buf.mean().imag());
+}
+
 TEST(ComplexVector_Method, Var) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
@@ -243,21 +250,303 @@ TEST(ComplexVector_Method, Var) {
     EXPECT_NEAR(0, var.imag(), .001);
 }
 
-/*
-int main(int argc, char *argv[])
-{
-	MatrixDSP::ComplexVector<float> vec1(5);
-    MatrixDSP::ComplexVector<float> vec2(new std::vector<float>(5));
-    float data[] = {1, 2, 3, 4, 5};
-    MatrixDSP::ComplexVector<float> vec3(data, 5);
-    MatrixDSP::ComplexVector<float> vec4({6, 7, 8, 9, 10});
+TEST(ComplexVector_Method, StdDev) {
+    MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
-    PrintVector("vec1", vec1);
-    PrintVector("vec2", vec2);
-    PrintVector("vec3", vec3);
-    PrintVector("vec4", vec4);
-    //PrintVector("vec1 + vec2", vec1 + vec2);
-
-	return 0;
+    EXPECT_NEAR(1.4142f, buf.stdDev().real(), .001);
+    EXPECT_NEAR(1.2910f, buf.stdDev(false).real(), .001);
 }
-*/
+
+TEST(ComplexVector_Method, Max) {
+    MatrixDSP::ComplexVector<float> buf({1, 4, {3, 4}, 2, 4.9});
+    unsigned maxLoc;
+    
+    EXPECT_EQ(std::complex<float>(3, 4), buf.max(&maxLoc));
+    EXPECT_EQ(2, maxLoc);
+}
+
+TEST(ComplexVector_Method, Min) {
+    MatrixDSP::ComplexVector<float> buf({3, 4, {0, 4}, 2, 4.9});
+    unsigned minLoc;
+    
+    EXPECT_EQ(std::complex<float>(2, 0), buf.min(&minLoc));
+    EXPECT_EQ(3, minLoc);
+}
+
+TEST(ComplexVector_Method, Saturate) {
+    MatrixDSP::ComplexVector<float> buf({{-10, 1}, {8, 12}, {3, -6}});
+    buf.saturate(std::complex<float>(5, 4));
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-5, buf[0].real());
+    EXPECT_EQ(1, buf[0].imag());
+    EXPECT_EQ(5, buf[1].real());
+    EXPECT_EQ(4, buf[1].imag());
+    EXPECT_EQ(3, buf[2].real());
+    EXPECT_EQ(-4, buf[2].imag());
+}
+
+TEST(ComplexVector_Method, Ceil) {
+    MatrixDSP::ComplexVector<float> buf({-1.2, {2.6, -1.9}, 4});
+    buf.ceil();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0].real());
+    EXPECT_EQ(0, buf[0].imag());
+    EXPECT_EQ(3, buf[1].real());
+    EXPECT_EQ(-1, buf[1].imag());
+    EXPECT_EQ(4, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+}
+
+TEST(ComplexVector_Method, Floor) {
+    MatrixDSP::ComplexVector<float> buf({-1.2, {2.6, -1.9}, 4});
+    buf.floor();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-2, buf[0].real());
+    EXPECT_EQ(0, buf[0].imag());
+    EXPECT_EQ(2, buf[1].real());
+    EXPECT_EQ(-2, buf[1].imag());
+    EXPECT_EQ(4, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+}
+
+TEST(ComplexVector_Method, Round) {
+    MatrixDSP::ComplexVector<float> buf({-1.2, {2.6, -1.9}, 4});
+    buf.round();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0].real());
+    EXPECT_EQ(0, buf[0].imag());
+    EXPECT_EQ(3, buf[1].real());
+    EXPECT_EQ(-2, buf[1].imag());
+    EXPECT_EQ(4, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+}
+
+TEST(ComplexVector_Method, Abs) {
+    MatrixDSP::ComplexVector<float> buf({-1.2, 2.6, 4});
+    buf.abs();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(1.2, buf[0].real(), .001);
+    EXPECT_NEAR(0, buf[0].imag(), .001);
+    EXPECT_NEAR(2.6, buf[1].real(), .001);
+    EXPECT_NEAR(0, buf[1].imag(), .001);
+    EXPECT_EQ(4, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+}
+
+TEST(ComplexVector_Method, Exp) {
+    MatrixDSP::ComplexVector<float> buf({-1.2, {2.6, 1}, 4});
+    buf.exp();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(.3012, buf[0].real(), .001);
+    EXPECT_NEAR(0, buf[0].imag(), .001);
+    EXPECT_NEAR(7.2745, buf[1].real(), .001);
+    EXPECT_NEAR(11.3293, buf[1].imag(), .001);
+    EXPECT_NEAR(54.5982, buf[2].real(), .001);
+    EXPECT_NEAR(0, buf[2].imag(), .001);
+}
+
+TEST(ComplexVector_Method, Log) {
+    MatrixDSP::ComplexVector<float> buf({1.2, {2.6, 1}, 4});
+    buf.log();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_NEAR(0.1823, buf[0].real(), .001);
+    EXPECT_NEAR(0, buf[0].imag(), .001);
+    EXPECT_NEAR(1.0245, buf[1].real(), .001);
+    EXPECT_NEAR(0.3672, buf[1].imag(), .001);
+    EXPECT_NEAR(1.3863, buf[2].real(), .001);
+    EXPECT_NEAR(0, buf[2].imag(), .001);
+}
+
+TEST(ComplexVector_Method, Log10) {
+    MatrixDSP::ComplexVector<float> buf({.1, {10, 1}, 1000});
+    buf.log10();
+    
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(-1, buf[0].real());
+    EXPECT_NEAR(0, buf[0].imag(), .001);
+    EXPECT_NEAR(1.0022, buf[1].real(), .001);
+    EXPECT_NEAR(0.0433, buf[1].imag(), .001);
+    EXPECT_EQ(3, buf[2].real());
+    EXPECT_NEAR(0, buf[2].imag(), .001);
+}
+
+TEST(ComplexVector_Method, Rotate) {
+    MatrixDSP::ComplexVector<float> buf({10, 2, 3, 8, 9});
+    
+    buf.vectorRotate(2);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(3, buf[0].real());
+    EXPECT_EQ(8, buf[1].real());
+    EXPECT_EQ(9, buf[2].real());
+    EXPECT_EQ(10, buf[3].real());
+    EXPECT_EQ(2, buf[4].real());
+    
+    buf.vectorRotate(-3);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0].real());
+    EXPECT_EQ(10, buf[1].real());
+    EXPECT_EQ(2, buf[2].real());
+    EXPECT_EQ(3, buf[3].real());
+    EXPECT_EQ(8, buf[4].real());
+    
+    buf.vectorRotate(5);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0].real());
+    EXPECT_EQ(10, buf[1].real());
+    EXPECT_EQ(2, buf[2].real());
+    EXPECT_EQ(3, buf[3].real());
+    EXPECT_EQ(8, buf[4].real());
+    
+    buf.vectorRotate(-11);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(8, buf[0].real());
+    EXPECT_EQ(9, buf[1].real());
+    EXPECT_EQ(10, buf[2].real());
+    EXPECT_EQ(2, buf[3].real());
+    EXPECT_EQ(3, buf[4].real());
+}
+
+TEST(ComplexVector_Method, Reverse) {
+    MatrixDSP::ComplexVector<float> buf({10, 2, 3, 8, 9});
+    
+    buf.reverse();
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0].real());
+    EXPECT_EQ(8, buf[1].real());
+    EXPECT_EQ(3, buf[2].real());
+    EXPECT_EQ(2, buf[3].real());
+    EXPECT_EQ(10, buf[4].real());
+}
+
+TEST(ComplexVector_Method, Resize) {
+    MatrixDSP::ComplexVector<float> buf({10, 2, 3});
+    
+    buf.resize(5, std::complex<float>(1, -1));
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(10, buf[0].real());
+    EXPECT_EQ(0, buf[0].imag());
+    EXPECT_EQ(2, buf[1].real());
+    EXPECT_EQ(0, buf[1].imag());
+    EXPECT_EQ(3, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+    EXPECT_EQ(1, buf[3].real());
+    EXPECT_EQ(-1, buf[3].imag());
+    EXPECT_EQ(1, buf[4].real());
+    EXPECT_EQ(-1, buf[4].imag());
+}
+
+TEST(ComplexVector_Method, Pad) {
+    MatrixDSP::ComplexVector<float> buf({10, 2, 3});
+    
+    buf.pad(3, std::complex<float>(1, -1));
+    EXPECT_EQ(6, buf.size());
+    EXPECT_EQ(10, buf[0].real());
+    EXPECT_EQ(0, buf[0].imag());
+    EXPECT_EQ(2, buf[1].real());
+    EXPECT_EQ(0, buf[1].imag());
+    EXPECT_EQ(3, buf[2].real());
+    EXPECT_EQ(0, buf[2].imag());
+    EXPECT_EQ(1, buf[3].real());
+    EXPECT_EQ(-1, buf[3].imag());
+    EXPECT_EQ(1, buf[4].real());
+    EXPECT_EQ(-1, buf[4].imag());
+    EXPECT_EQ(1, buf[5].real());
+    EXPECT_EQ(-1, buf[5].imag());
+}
+
+TEST(ComplexVector_Method, Upsmaple) {
+    MatrixDSP::ComplexVector<float> buf({9, 2, 3});
+    
+    buf.upsample(3, 1);
+    EXPECT_EQ(9, buf.size());
+    EXPECT_EQ(0, buf[0].real());
+    EXPECT_EQ(9, buf[1].real());
+    EXPECT_EQ(0, buf[2].real());
+    EXPECT_EQ(0, buf[3].real());
+    EXPECT_EQ(2, buf[4].real());
+    EXPECT_EQ(0, buf[5].real());
+    EXPECT_EQ(0, buf[6].real());
+    EXPECT_EQ(3, buf[7].real());
+    EXPECT_EQ(0, buf[8].real());
+}
+
+TEST(ComplexVector_Method, Downsmaple) {
+    MatrixDSP::ComplexVector<float> buf({0, 9, 0, 0, 2, 0, 0, 3, 0});
+    
+    buf.downsample(3, 1);
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(9, buf[0].real());
+    EXPECT_EQ(2, buf[1].real());
+    EXPECT_EQ(3, buf[2].real());
+}
+
+TEST(ComplexVector_Method, CumSum) {
+    MatrixDSP::ComplexVector<float> buf({10, 2, 3});
+    
+    buf.cumsum();
+    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(10, buf[0].real());
+    EXPECT_EQ(12, buf[1].real());
+    EXPECT_EQ(15, buf[2].real());
+}
+
+TEST(ComplexVector_Method, Diff) {
+    MatrixDSP::ComplexVector<float> buf1({10, 2, 3});
+    
+    buf1.diff();
+    EXPECT_EQ(2, buf1.size());
+    EXPECT_EQ(-8, buf1[0].real());
+    EXPECT_EQ(1, buf1[1].real());
+    
+    MatrixDSP::ComplexVector<float> buf2({10, 2, 3});
+    std::complex<float> previousVal = std::complex<float>(1, 2);
+    buf2.diff(&previousVal);
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(9, buf2[0].real());
+    EXPECT_EQ(-2, buf2[0].imag());
+    EXPECT_EQ(-8, buf2[1].real());
+    EXPECT_EQ(0, buf2[1].imag());
+    EXPECT_EQ(1, buf2[2].real());
+    EXPECT_EQ(0, buf2[2].imag());
+    EXPECT_EQ(std::complex<float>(3, 0), previousVal);
+}
+
+TEST(ComplexVector_Method, Tone) {
+    MatrixDSP::ComplexVector<float> buf;
+    
+    float phase = buf.tone(0.25, 1, 0, 4);
+    EXPECT_EQ(4, buf.size());
+    EXPECT_NEAR(1, buf[0].real(), .0001);
+    EXPECT_NEAR(0, buf[0].imag(), .0001);
+    EXPECT_NEAR(0, buf[1].real(), .0001);
+    EXPECT_NEAR(1, buf[1].imag(), .0001);
+    EXPECT_NEAR(-1, buf[2].real(), .0001);
+    EXPECT_NEAR(0, buf[2].imag(), .0001);
+    EXPECT_NEAR(0, buf[3].real(), .0001);
+    EXPECT_NEAR(-1, buf[3].imag(), .0001);
+    EXPECT_NEAR(2 * M_PI, phase, .0001);
+}
+
+TEST(ComplexVector_Method, Modulate) {
+    MatrixDSP::ComplexVector<float> buf({1, 1, 1, 1});
+    
+    float phase = buf.modulate(0.25, 1, 0);
+    EXPECT_EQ(4, buf.size());
+    EXPECT_NEAR(1, buf[0].real(), .0001);
+    EXPECT_NEAR(0, buf[0].imag(), .0001);
+    EXPECT_NEAR(0, buf[1].real(), .0001);
+    EXPECT_NEAR(1, buf[1].imag(), .0001);
+    EXPECT_NEAR(-1, buf[2].real(), .0001);
+    EXPECT_NEAR(0, buf[2].imag(), .0001);
+    EXPECT_NEAR(0, buf[3].real(), .0001);
+    EXPECT_NEAR(-1, buf[3].imag(), .0001);
+    EXPECT_NEAR(2 * M_PI, phase, .0001);
+}
+

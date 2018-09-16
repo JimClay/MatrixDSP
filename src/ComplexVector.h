@@ -97,6 +97,121 @@ class ComplexVector : public Vector< std::complex<T> > {
     const std::complex<T> median() {assert(false); return std::complex<T>(0, 0);}
     
     /**
+     * \brief Returns the element in \ref vec with the largest absolute value.
+     *
+     * \param maxLoc If it isn't equal to nullptr the index of the maximum element
+     *      will be returned via this pointer.  If more than one element is equal
+     *      to the maximum value the index of the first will be returned.
+     *      Defaults to nullptr.
+     */
+    const std::complex<T> max(unsigned *maxLoc = nullptr) const {
+        assert(this->size() > 0);
+        
+        T maxVal = std::abs(this->vec[0]);
+        std::complex<T> maxElement = this->vec[0];
+        unsigned maxIndex = 0;
+        
+        for (unsigned index=1; index<this->size(); index++) {
+            T absVal = std::abs(this->vec[index]);
+            if (maxVal < absVal) {
+                maxVal = absVal;
+                maxElement = this->vec[index];
+                maxIndex = index;
+            }
+        }
+        if (maxLoc != nullptr) {
+            *maxLoc = maxIndex;
+        }
+        return maxElement;
+    }
+    
+    /**
+     * \brief Returns the element in \ref vec with the smallest absolute value.
+     *
+     * \param minLoc If it isn't equal to nullptr the index of the minimum element
+     *      will be returned via this pointer.  If more than one element is equal
+     *      to the minimum value the index of the first will be returned.
+     *      Defaults to nullptr.
+     */
+    const std::complex<T> min(unsigned *minLoc = nullptr) const {
+        assert(this->size() > 0);
+        
+        T minVal = std::abs(this->vec[0]);
+        std::complex<T> minElement = this->vec[0];
+        unsigned minIndex = 0;
+        
+        for (unsigned index=1; index<this->size(); index++) {
+            T absVal = std::abs(this->vec[index]);
+            if (minVal > absVal) {
+                minVal = absVal;
+                minElement = this->vec[index];
+                minIndex = index;
+            }
+        }
+        if (minLoc != nullptr) {
+            *minLoc = minIndex;
+        }
+        return minElement;
+    }
+    
+    /**
+     * \brief Sets the upper and lower limit of the values in \ref buf.
+     *
+     * \param val Limiting value for the data in \ref buf.  Any values that
+     *      are greater than "val" are made equal to "val", and
+     *      any that are less than -val are made equal to -val.
+     * \return Reference to "this".
+     */
+    ComplexVector<T> & saturate(std::complex<T> val) {
+        assert(val.real() >= 0);
+        assert(val.imag() >= 0);
+        
+        for (unsigned index=0; index<this->size(); index++) {
+            this->vec[index].real(std::min(this->vec[index].real(), val.real()));
+            this->vec[index].real(std::max(this->vec[index].real(), -val.real()));
+            this->vec[index].imag(std::min(this->vec[index].imag(), val.imag()));
+            this->vec[index].imag(std::max(this->vec[index].imag(), -val.imag()));
+        }
+        return *this;
+    }
+
+    /**
+     * \brief Does a "ceil" operation on \ref vec.
+     * \return Reference to "this".
+     */
+    ComplexVector<T> & ceil(void) {
+        for (unsigned index=0; index<this->size(); index++) {
+            this->vec[index].real(std::ceil(this->vec[index].real()));
+            this->vec[index].imag(std::ceil(this->vec[index].imag()));
+        }
+        return *this;
+    }
+
+    /**
+     * \brief Does a "floor" operation on \ref vec.
+     * \return Reference to "this".
+     */
+    ComplexVector<T> & floor(void) {
+        for (unsigned index=0; index<this->size(); index++) {
+            this->vec[index].real(std::floor(this->vec[index].real()));
+            this->vec[index].imag(std::floor(this->vec[index].imag()));
+        }
+        return *this;
+    }
+
+    /**
+     * \brief Does a "round" operation on \ref vec.
+     * \return Reference to "this".
+     */
+    ComplexVector<T> & round(void) {
+        for (unsigned index=0; index<this->size(); index++) {
+            this->vec[index].real(std::round(this->vec[index].real()));
+            this->vec[index].imag(std::round(this->vec[index].imag()));
+        }
+        return *this;
+    }
+
+    /**
      * \brief Generates a complex tone.
      *
      * \param freq The tone frequency.
