@@ -650,7 +650,7 @@ public:
      *      this->size() samples.  Defaults to 0.
      * \return The next phase if the tone were to continue.
      */
-    T sine(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {
+    T sin(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {
         assert(sampleFreq > 0.0);
         
         if (numSamples && numSamples != size()) {
@@ -994,7 +994,7 @@ Vector<T> & diff(Vector<T> &vec, T *previousVal = nullptr) {return vec.diff(prev
  * \return The next phase if the tone were to continue.
  */
 template <class T>
-T sine(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {return vec.sine(freq, sampleFreq, phase, numSamples);}
+T sin(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {return vec.sin(freq, sampleFreq, phase, numSamples);}
 
 /**
  * \brief Modulates the data with a real sinusoid.

@@ -535,7 +535,7 @@ TEST(Method, Diff) {
 TEST(Method, Sine) {
     MatrixDSP::Vector<float> buf;
     
-    float phase = MatrixDSP::sine(buf, 0.25f, 1.0f, 0.0f, 4);
+    float phase = MatrixDSP::sin(buf, 0.25f, 1.0f, 0.0f, 4);
     EXPECT_EQ(4, buf.size());
     EXPECT_NEAR(0, buf[0], .0001);
     EXPECT_NEAR(1, buf[1], .0001);
