@@ -1,0 +1,3 @@
+xcrun llvm-profdata merge -o testprof.profdata default.profraw
+xcrun llvm-cov show -instr-profile=testprof.profdata ../MatrixDSP.build/Debug/MatrixDspTests.build/Objects-normal/x86_64/VectorTest.o > cov.txt
+
