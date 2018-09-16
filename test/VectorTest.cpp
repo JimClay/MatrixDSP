@@ -221,7 +221,7 @@ TEST(Operator, DivideScalar) {
 TEST(Method, Find) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     
-    EXPECT_EQ(-1, buf.find(6));
+    EXPECT_EQ(-1, MatrixDSP::find(buf, 6.0f));
     EXPECT_EQ(0, buf.find(5));
     EXPECT_EQ(2, buf.find(3));
     EXPECT_EQ(5, buf.find(1));
@@ -230,12 +230,12 @@ TEST(Method, Find) {
 TEST(Method, Sum) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     
-    EXPECT_EQ(18, buf.sum());
+    EXPECT_EQ(18, MatrixDSP::sum(buf));
 }
 
 TEST(Method, Pow) {
     MatrixDSP::Vector<float> buf({1, 2, 3});
-    buf.pow(2);
+    MatrixDSP::pow(buf, 2.0f);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(1, buf[0]);
@@ -246,54 +246,54 @@ TEST(Method, Pow) {
 TEST(Method, Mean) {
     MatrixDSP::Vector<float> buf({11, 2, 3, 3, 4, 1});
     
-    EXPECT_EQ(4, buf.mean());
+    EXPECT_EQ(4, MatrixDSP::mean(buf));
 }
 
 TEST(Method, Var) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     
     EXPECT_EQ(2, buf.var());
-    EXPECT_NEAR(1.66666f, buf.var(false), .001);
+    EXPECT_NEAR(1.66666f, MatrixDSP::var(buf, false), .001);
 }
 
 TEST(Method, StdDev) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     
-    EXPECT_NEAR(1.4142f, buf.stdDev(), .001);
-    EXPECT_NEAR(1.2910f, buf.stdDev(false), .001);
+    EXPECT_NEAR(1.4142f, MatrixDSP::stdDev(buf), .001);
+    EXPECT_NEAR(1.2910f, MatrixDSP::stdDev(buf, false), .001);
 }
 
 TEST(Method, Median) {
     MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
-    EXPECT_EQ(8, buf1.median());
+    EXPECT_EQ(8, MatrixDSP::median(buf1));
     
     MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
-    EXPECT_EQ(5.5f, buf2.median());
+    EXPECT_EQ(5.5f, MatrixDSP::median(buf2));
 }
 
 TEST(Method, Max) {
     MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
-    EXPECT_EQ(10, buf1.max());
+    EXPECT_EQ(10, MatrixDSP::max(buf1));
     
     MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
     unsigned maxLoc;
-    EXPECT_EQ(10, buf2.max(&maxLoc));
+    EXPECT_EQ(10, MatrixDSP::max(buf2, &maxLoc));
     EXPECT_EQ(1, maxLoc);
 }
 
 TEST(Method, Min) {
     MatrixDSP::Vector<float> buf1({10, 2, 3, 8, 9});
-    EXPECT_EQ(2, buf1.min());
+    EXPECT_EQ(2, MatrixDSP::min(buf1));
     
     MatrixDSP::Vector<float> buf2({1, 10, 2, 3, 8, 9});
     unsigned minLoc;
-    EXPECT_EQ(1, buf2.min(&minLoc));
+    EXPECT_EQ(1, MatrixDSP::min(buf2, &minLoc));
     EXPECT_EQ(0, minLoc);
 }
 
 TEST(Method, Saturate) {
     MatrixDSP::Vector<float> buf({-10, 8, 3});
-    buf.saturate(5);
+    MatrixDSP::saturate(buf, 5.0f);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(-5, buf[0]);
@@ -303,7 +303,7 @@ TEST(Method, Saturate) {
 
 TEST(Method, Ceil) {
     MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
-    buf.ceil();
+    MatrixDSP::ceil(buf);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(-1, buf[0]);
@@ -313,7 +313,7 @@ TEST(Method, Ceil) {
 
 TEST(Method, Floor) {
     MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
-    buf.floor();
+    MatrixDSP::floor(buf);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(-2, buf[0]);
@@ -323,7 +323,7 @@ TEST(Method, Floor) {
 
 TEST(Method, Round) {
     MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
-    buf.round();
+    MatrixDSP::round(buf);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(-1, buf[0]);
@@ -333,7 +333,7 @@ TEST(Method, Round) {
 
 TEST(Method, Abs) {
     MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
-    buf.abs();
+    MatrixDSP::abs(buf);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_NEAR(1.2, buf[0], .001);
@@ -343,7 +343,7 @@ TEST(Method, Abs) {
 
 TEST(Method, Exp) {
     MatrixDSP::Vector<float> buf({-1.2, 2.6, 4});
-    buf.exp();
+    MatrixDSP::exp(buf);
     
     EXPECT_EQ(3, buf.size());
     EXPECT_NEAR(.3012, buf[0], .001);
@@ -353,9 +353,9 @@ TEST(Method, Exp) {
 
 TEST(Method, Log) {
     MatrixDSP::Vector<float> buf({1.2, 2.6, 4});
-    buf.log();
+    MatrixDSP::log(buf);
     
-    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(3, MatrixDSP::size(buf));
     EXPECT_NEAR(0.1823, buf[0], .001);
     EXPECT_NEAR(0.9555, buf[1], .001);
     EXPECT_NEAR(1.3863, buf[2], .001);
@@ -363,9 +363,9 @@ TEST(Method, Log) {
 
 TEST(Method, Log10) {
     MatrixDSP::Vector<float> buf({.1, 10, 1000});
-    buf.log10();
+    MatrixDSP::log10(buf);
     
-    EXPECT_EQ(3, buf.size());
+    EXPECT_EQ(3, MatrixDSP::length(buf));
     EXPECT_EQ(-1, buf[0]);
     EXPECT_EQ(1, buf[1]);
     EXPECT_EQ(3, buf[2]);
@@ -374,7 +374,7 @@ TEST(Method, Log10) {
 TEST(Method, Rotate) {
     MatrixDSP::Vector<float> buf({10, 2, 3, 8, 9});
     
-    buf.vectorRotate(2);
+    MatrixDSP::vectorRotate(buf, 2);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(3, buf[0]);
     EXPECT_EQ(8, buf[1]);
@@ -382,7 +382,7 @@ TEST(Method, Rotate) {
     EXPECT_EQ(10, buf[3]);
     EXPECT_EQ(2, buf[4]);
     
-    buf.vectorRotate(-3);
+    MatrixDSP::vectorRotate(buf, -3);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(9, buf[0]);
     EXPECT_EQ(10, buf[1]);
@@ -390,7 +390,7 @@ TEST(Method, Rotate) {
     EXPECT_EQ(3, buf[3]);
     EXPECT_EQ(8, buf[4]);
     
-    buf.vectorRotate(5);
+    MatrixDSP::vectorRotate(buf, 5);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(9, buf[0]);
     EXPECT_EQ(10, buf[1]);
@@ -398,7 +398,7 @@ TEST(Method, Rotate) {
     EXPECT_EQ(3, buf[3]);
     EXPECT_EQ(8, buf[4]);
     
-    buf.vectorRotate(-11);
+    MatrixDSP::vectorRotate(buf, -11);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(8, buf[0]);
     EXPECT_EQ(9, buf[1]);
@@ -410,19 +410,53 @@ TEST(Method, Rotate) {
 TEST(Method, Reverse) {
     MatrixDSP::Vector<float> buf({10, 2, 3, 8, 9});
     
-    buf.reverse();
+    MatrixDSP::reverse(buf);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(9, buf[0]);
     EXPECT_EQ(8, buf[1]);
     EXPECT_EQ(3, buf[2]);
     EXPECT_EQ(2, buf[3]);
     EXPECT_EQ(10, buf[4]);
+    
+    buf.rowVector = true;
+    MatrixDSP::flipud(buf);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(8, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(2, buf[3]);
+    EXPECT_EQ(10, buf[4]);
+    
+    buf.rowVector = false;
+    MatrixDSP::flipud(buf);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(10, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(8, buf[3]);
+    EXPECT_EQ(9, buf[4]);
+    
+    MatrixDSP::fliplr(buf);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(10, buf[0]);
+    EXPECT_EQ(2, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(8, buf[3]);
+    EXPECT_EQ(9, buf[4]);
+    
+    buf.rowVector = true;
+    MatrixDSP::fliplr(buf);
+    EXPECT_EQ(5, buf.size());
+    EXPECT_EQ(9, buf[0]);
+    EXPECT_EQ(8, buf[1]);
+    EXPECT_EQ(3, buf[2]);
+    EXPECT_EQ(2, buf[3]);
 }
 
 TEST(Method, Resize) {
     MatrixDSP::Vector<float> buf({10, 2, 3});
     
-    buf.resize(5, 1);
+    MatrixDSP::resize(buf, 5, 1.0f);
     EXPECT_EQ(5, buf.size());
     EXPECT_EQ(10, buf[0]);
     EXPECT_EQ(2, buf[1]);
@@ -434,7 +468,7 @@ TEST(Method, Resize) {
 TEST(Method, Pad) {
     MatrixDSP::Vector<float> buf({10, 2, 3});
     
-    buf.pad(3, -1);
+    MatrixDSP::pad(buf, 3, -1.0f);
     EXPECT_EQ(6, buf.size());
     EXPECT_EQ(10, buf[0]);
     EXPECT_EQ(2, buf[1]);
@@ -447,7 +481,7 @@ TEST(Method, Pad) {
 TEST(Method, Upsmaple) {
     MatrixDSP::Vector<float> buf({9, 2, 3});
     
-    buf.upsample(3, 1);
+    MatrixDSP::upsample(buf, 3, 1);
     EXPECT_EQ(9, buf.size());
     EXPECT_EQ(0, buf[0]);
     EXPECT_EQ(9, buf[1]);
@@ -463,7 +497,7 @@ TEST(Method, Upsmaple) {
 TEST(Method, Downsmaple) {
     MatrixDSP::Vector<float> buf({0, 9, 0, 0, 2, 0, 0, 3, 0});
     
-    buf.downsample(3, 1);
+    MatrixDSP::downsample(buf, 3, 1);
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(9, buf[0]);
     EXPECT_EQ(2, buf[1]);
@@ -473,7 +507,7 @@ TEST(Method, Downsmaple) {
 TEST(Method, CumSum) {
     MatrixDSP::Vector<float> buf({10, 2, 3});
     
-    buf.cumsum();
+    MatrixDSP::cumsum(buf);
     EXPECT_EQ(3, buf.size());
     EXPECT_EQ(10, buf[0]);
     EXPECT_EQ(12, buf[1]);
@@ -483,14 +517,14 @@ TEST(Method, CumSum) {
 TEST(Method, Diff) {
     MatrixDSP::Vector<float> buf1({10, 2, 3});
     
-    buf1.diff();
+    MatrixDSP::diff(buf1);
     EXPECT_EQ(2, buf1.size());
     EXPECT_EQ(-8, buf1[0]);
     EXPECT_EQ(1, buf1[1]);
     
     MatrixDSP::Vector<float> buf2({10, 2, 3});
     float previousVal = 5;
-    buf2.diff(&previousVal);
+    MatrixDSP::diff(buf2, &previousVal);
     EXPECT_EQ(3, buf2.size());
     EXPECT_EQ(5, buf2[0]);
     EXPECT_EQ(-8, buf2[1]);
@@ -501,7 +535,7 @@ TEST(Method, Diff) {
 TEST(Method, Sine) {
     MatrixDSP::Vector<float> buf;
     
-    float phase = buf.sine(0.25, 1, 0, 4);
+    float phase = MatrixDSP::sine(buf, 0.25f, 1.0f, 0.0f, 4);
     EXPECT_EQ(4, buf.size());
     EXPECT_NEAR(0, buf[0], .0001);
     EXPECT_NEAR(1, buf[1], .0001);
@@ -513,7 +547,7 @@ TEST(Method, Sine) {
 TEST(Method, Modulate) {
     MatrixDSP::Vector<float> buf({1, 1, 1, 1});
     
-    float phase = buf.modulate(0.25, 1, 0);
+    float phase = MatrixDSP::modulate(buf, 0.25f, 1.0f, 0.0f);
     EXPECT_EQ(4, buf.size());
     EXPECT_NEAR(0, buf[0], .0001);
     EXPECT_NEAR(1, buf[1], .0001);

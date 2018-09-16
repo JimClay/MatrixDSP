@@ -742,6 +742,271 @@ inline Vector<T> operator/(Vector<T> lhs, const T& rhs)
     return lhs;
 }
 
+template <class T>
+const unsigned size(Vector<T> &vec) {return vec.size();};
+
+template <class T>
+const unsigned length(Vector<T> &vec) {return vec.size();};
+
+/**
+ * \brief Finds the first instance of "val" in \ref vec.
+ *
+ * \param val The value to look for in \ref vec.
+ * \return Index of first instance of "val".  If there aren't any elements equal to "val"
+ *      it returns -1.
+ */
+template <class T>
+const int find(Vector<T> &vec, const T val) {return vec.find(val);}
+
+/**
+ * \brief Returns the sum of all the elements in \ref vec.
+ */
+template <class T>
+T sum(Vector<T> &vec) {return vec.sum();}
+
+/**
+ * \brief Sets each element of \ref buf equal to its value to the power of "exponent".
+ *
+ * \param exponent Exponent to use.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & pow(Vector<T> &vec, const T exponent) {return vec.pow(exponent);}
+
+/**
+ * \brief Returns the mean (average) of the data in \ref buf.
+ */
+template <class T>
+const T mean(Vector<T> &vec) {return vec.mean();}
+
+/**
+ * \brief Returns the variance of the data in \ref buf.
+ */
+template <class T>
+const T var(Vector<T> &vec, const bool subset = true) {return vec.var(subset);}
+
+/**
+ * \brief Returns the standard deviation of the data in \ref buf.
+ */
+template <class T>
+const T stdDev(Vector<T> &vec, const bool subset = true) {return vec.stdDev(subset);}
+
+/**
+ * \brief Returns the median element of \ref buf.
+ */
+template <class T>
+const T median(Vector<T> &vec) {return vec.median();}
+
+/**
+ * \brief Returns the maximum element in \ref buf.
+ *
+ * \param maxLoc If it isn't equal to nullptr the index of the maximum element
+ *      will be returned via this pointer.  If more than one element is equal
+ *      to the maximum value the index of the first will be returned.
+ *      Defaults to nullptr.
+ */
+template <class T>
+const T max(Vector<T> &vec, unsigned *maxLoc = nullptr) {return vec.max(maxLoc);}
+
+/**
+ * \brief Returns the minimum element in \ref buf.
+ *
+ * \param minLoc If it isn't equal to nullptr the index of the minimum element
+ *      will be returned via this pointer.  If more than one element is equal
+ *      to the minimum value the index of the first will be returned.
+ *      Defaults to nullptr.
+ */
+template <class T>
+const T min(Vector<T> &vec, unsigned *minLoc = nullptr) {return vec.min(minLoc);}
+
+/**
+ * \brief Sets the upper and lower limit of the values in \ref buf.
+ *
+ * \param val Limiting value for the data in \ref buf.  Any values that
+ *      are greater than "val" are made equal to "val", and
+ *      any that are less than -val are made equal to -val.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & saturate(Vector<T> &vec, T val) {return vec.saturate(val);}
+
+/**
+ * \brief Does a "ceil" operation on \ref vec.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & ceil(Vector<T> &vec) {return vec.ceil();}
+
+/**
+ * \brief Does a "floor" operation on \ref vec.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & floor(Vector<T> &vec) {return vec.floor();}
+
+/**
+ * \brief Does a "round" operation on \ref vec.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & round(Vector<T> &vec) {return vec.round();}
+
+/**
+ * \brief Changes the elements of \ref vec to their absolute value.
+ *
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & abs(Vector<T> &vec) {return vec.abs();}
+
+/**
+ * \brief Sets each element of \ref vec to e^(element).
+ *
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & exp(Vector<T> &vec) {return vec.exp();}
+
+/**
+ * \brief Sets each element of \ref vec to the natural log of the element.
+ *
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & log(Vector<T> &vec) {return vec.log();}
+
+/**
+ * \brief Sets each element of \ref vec to the base 10 log of the element.
+ *
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & log10(Vector<T> &vec) {return vec.log10();}
+
+/**
+ * \brief Circular rotation.
+ *
+ * \param numToShift Number of positions to shift in the circular rotation.  numToShift
+ *      can be positive or negative.  If you visualize the 0 index value at the left and
+ *      the end of the array at the right, positive numToShift values shift the array to
+ *      the left, and negative values shift it to the right.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & vectorRotate(Vector<T> &vec, int numToShift) {return vec.vectorRotate(numToShift);}
+
+/**
+ * \brief Reverses the order of the elements in \ref vec.
+ *
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & reverse(Vector<T> &vec) {return vec.reverse();}
+
+template <class T>
+Vector<T> & fliplr(Vector<T> &vec) {
+    if (vec.rowVector) {
+        return vec.reverse();
+    }
+    return vec;
+}
+
+template <class T>
+Vector<T> & flipud(Vector<T> &vec) {
+    if (vec.rowVector == false) {
+        return vec.reverse();
+    }
+    return vec;
+}
+
+/**
+ * \brief Sets the length of \ref vec to "len".
+ *
+ * \param len The new length for \ref vec.  If len is longer than vec's current size, the
+ *      new elements will be set to "val".  If len is less than vec's current size the extra
+ *      elements will be cut off and the other elements will remain the same.
+ * \param val The value to set any new elements to.  Defaults to 0.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & resize(Vector<T> &vec, unsigned len, T val = (T) 0) {return vec.resize(len, val);}
+
+/**
+ * \brief Lengthens \ref vec by "len" elements.
+ *
+ * \param len The number of elements to add to \ref vec.
+ * \param val The value to set the new elements to.  Defaults to 0.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & pad(Vector<T> &vec, unsigned len, T val = (T) 0) {return vec.pad(len, val);}
+
+/**
+ * \brief Inserts rate-1 zeros between samples.
+ *
+ * \param rate Indicates how many zeros should be inserted between samples.
+ * \param phase Indicates how many of the zeros should be before the samples (as opposed to
+ *      after).  Valid values are 0 to "rate"-1.  Defaults to 0.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & upsample(Vector<T> &vec, int rate, int phase = 0) {return vec.upsample(rate, phase);}
+
+/**
+ * \brief Removes rate-1 samples out of every rate samples.
+ *
+ * \param rate Indicates how many samples should be removed.
+ * \param phase Tells the method which sample should be the first to be kept.  Valid values
+ *      are 0 to "rate"-1.  Defaults to 0.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & downsample(Vector<T> &vec, int rate, int phase = 0) {return vec.downsample(rate, phase);}
+
+/**
+ * \brief Replaces \ref vec with the cumulative sum of the samples in \ref vec.
+ *
+ * \param initialVal Initializing value for the cumulative sum.  Defaults to zero.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & cumsum(Vector<T> &vec, T initialVal = 0) {return vec.cumsum(initialVal);}
+
+/**
+ * \brief Replaces \ref vec with the difference between successive samples in vec.
+ *
+ * \param previousVal The last value in the sample stream before the current contents
+ *      of \ref vec.  previousVal allows the resulting vec to be the same size as the
+ *      previous vec.  Defaults to nullptr.
+ * \return Reference to "this".
+ */
+template <class T>
+Vector<T> & diff(Vector<T> &vec, T *previousVal = nullptr) {return vec.diff(previousVal);}
+
+/**
+ * \brief Generates a real sinusoid.
+ *
+ * \param freq The tone frequency.
+ * \param sampleFreq The sample frequency.  Defaults to 1 Hz.
+ * \param phase The tone's starting phase, in radians.  Defaults to 0.
+ * \param numSamples The number of samples to generate.  "0" indicates to generate
+ *      this->size() samples.  Defaults to 0.
+ * \return The next phase if the tone were to continue.
+ */
+template <class T>
+T sine(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {return vec.sine(freq, sampleFreq, phase, numSamples);}
+
+/**
+ * \brief Modulates the data with a real sinusoid.
+ *
+ * \param freq The modulating tone frequency.
+ * \param sampleFreq The sample frequency of the data.  Defaults to 1 Hz.
+ * \param phase The modulating tone's starting phase, in radians.  Defaults to 0.
+ * \return The next phase if the tone were to continue.
+ */
+template <class T>
+T modulate(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0) {return vec.modulate(freq, sampleFreq, phase);}
+    
 }
 
 #endif
