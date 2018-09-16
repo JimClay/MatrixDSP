@@ -532,7 +532,7 @@ TEST(Method, Diff) {
     EXPECT_EQ(3, previousVal);
 }
 
-TEST(Method, Sine) {
+TEST(Method, Sin) {
     MatrixDSP::Vector<float> buf;
     
     float phase = MatrixDSP::sin(buf, 0.25f, 1.0f, 0.0f, 4);
@@ -541,6 +541,18 @@ TEST(Method, Sine) {
     EXPECT_NEAR(1, buf[1], .0001);
     EXPECT_NEAR(0, buf[2], .0001);
     EXPECT_NEAR(-1, buf[3], .0001);
+    EXPECT_NEAR(2 * M_PI, phase, .0001);
+}
+
+TEST(Method, Cos) {
+    MatrixDSP::Vector<float> buf;
+    
+    float phase = MatrixDSP::cos(buf, 0.25f, 1.0f, 0.0f, 4);
+    EXPECT_EQ(4, buf.size());
+    EXPECT_NEAR(1, buf[0], .0001);
+    EXPECT_NEAR(0, buf[1], .0001);
+    EXPECT_NEAR(-1, buf[2], .0001);
+    EXPECT_NEAR(0, buf[3], .0001);
     EXPECT_NEAR(2 * M_PI, phase, .0001);
 }
 

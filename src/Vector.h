@@ -666,6 +666,21 @@ public:
     }
     
     /**
+     * \brief Generates a real cosinusoid.
+     *
+     * \param freq The tone frequency.
+     * \param sampleFreq The sample frequency.  Defaults to 1 Hz.
+     * \param phase The tone's starting phase, in radians.  Defaults to 0.
+     * \param numSamples The number of samples to generate.  "0" indicates to generate
+     *      this->size() samples.  Defaults to 0.
+     * \return The next phase if the tone were to continue.
+     */
+    T cos(T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {
+        T sinPhase = this->sin(freq, sampleFreq, phase + ((T) M_PI / 2), numSamples);
+        return sinPhase - ((T) M_PI / 2);
+    }
+    
+    /**
      * \brief Modulates the data with a real sinusoid.
      *
      * \param freq The modulating tone frequency.
@@ -995,6 +1010,19 @@ Vector<T> & diff(Vector<T> &vec, T *previousVal = nullptr) {return vec.diff(prev
  */
 template <class T>
 T sin(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {return vec.sin(freq, sampleFreq, phase, numSamples);}
+
+/**
+ * \brief Generates a real cosinusoid.
+ *
+ * \param freq The tone frequency.
+ * \param sampleFreq The sample frequency.  Defaults to 1 Hz.
+ * \param phase The tone's starting phase, in radians.  Defaults to 0.
+ * \param numSamples The number of samples to generate.  "0" indicates to generate
+ *      this->size() samples.  Defaults to 0.
+ * \return The next phase if the tone were to continue.
+ */
+template <class T>
+T cos(Vector<T> &vec, T freq, T sampleFreq = 1.0, T phase = 0.0, unsigned numSamples = 0) {return vec.cos(freq, sampleFreq, phase, numSamples);}
 
 /**
  * \brief Modulates the data with a real sinusoid.
