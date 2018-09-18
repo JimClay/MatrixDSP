@@ -162,7 +162,8 @@ public:
     /**
      * \brief Add Buffer/Assignment operator.
      */
-    Vector<T> & operator+=(const Vector<T> &rhs) {
+    template <class U>
+    Vector<T> & operator+=(const Vector<U> &rhs) {
         assert(vec.size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
@@ -184,7 +185,8 @@ public:
     /**
      * \brief Subtract Buffer/Assignment operator.
      */
-    Vector<T> & operator-=(const Vector<T> &rhs) {
+    template <class U>
+    Vector<T> & operator-=(const Vector<U> &rhs) {
         assert(vec.size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
@@ -206,7 +208,8 @@ public:
     /**
      * \brief Multiply Buffer/Assignment operator.
      */
-    Vector<T> & operator*=(const Vector<T> &rhs) {
+    template <class U>
+    Vector<T> & operator*=(const Vector<U> &rhs) {
         assert(vec.size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
@@ -228,7 +231,8 @@ public:
     /**
      * \brief Divide Buffer/Assignment operator.
      */
-    Vector<T> & operator/=(const Vector<T> &rhs) {
+    template <class U>
+    Vector<T> & operator/=(const Vector<U> &rhs) {
         assert(vec.size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
@@ -701,8 +705,8 @@ public:
 };
 
 
-template <class T>
-inline Vector<T> operator+(Vector<T> lhs, const Vector<T>& rhs)
+template <class T, class U>
+inline Vector<T> operator+(Vector<T> lhs, const Vector<U>& rhs)
 {
     lhs += rhs;
     return lhs;
@@ -715,8 +719,8 @@ inline Vector<T> operator+(Vector<T> lhs, const T& rhs)
     return lhs;
 }
 
-template <class T>
-inline Vector<T> operator-(Vector<T> lhs, const Vector<T>& rhs)
+template <class T, class U>
+inline Vector<T> operator-(Vector<T> lhs, const Vector<U>& rhs)
 {
     lhs -= rhs;
     return lhs;
@@ -729,8 +733,8 @@ inline Vector<T> operator-(Vector<T> lhs, const T& rhs)
     return lhs;
 }
 
-template <class T>
-inline Vector<T> operator*(Vector<T> lhs, const Vector<T>& rhs)
+template <class T, class U>
+inline Vector<T> operator*(Vector<T> lhs, const Vector<U>& rhs)
 {
     lhs *= rhs;
     return lhs;
@@ -743,8 +747,8 @@ inline Vector<T> operator*(Vector<T> lhs, const T& rhs)
     return lhs;
 }
 
-template <class T>
-inline Vector<T> operator/(Vector<T> lhs, const Vector<T>& rhs)
+template <class T, class U>
+inline Vector<T> operator/(Vector<T> lhs, const Vector<U>& rhs)
 {
     lhs /= rhs;
     return lhs;

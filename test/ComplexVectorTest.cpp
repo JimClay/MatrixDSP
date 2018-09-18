@@ -209,6 +209,94 @@ TEST(ComplexVector_Operator, DivideScalar) {
     EXPECT_EQ(std::complex<float>(1.5f, 0), buf2[2]);
 }
 
+TEST(ComplexVector_Operator, AddEqualVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 9, 10});
+    
+    buf1 += buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(std::complex<float>(9, 0), buf1[0]);
+    EXPECT_EQ(std::complex<float>(11, 0), buf1[1]);
+    EXPECT_EQ(std::complex<float>(13, 0), buf1[2]);
+}
+
+TEST(ComplexVector_Operator, AddVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 9, 10});
+    
+    MatrixDSP::ComplexVector<float> buf3 = buf1 + buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(std::complex<float>(9, 0), buf3[0]);
+    EXPECT_EQ(std::complex<float>(11, 0), buf3[1]);
+    EXPECT_EQ(std::complex<float>(13, 0), buf3[2]);
+}
+
+TEST(ComplexVector_Operator, SubtractEqualVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    buf1 -= buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(std::complex<float>(-7, 0), buf1[0]);
+    EXPECT_EQ(std::complex<float>(-5, 0), buf1[1]);
+    EXPECT_EQ(std::complex<float>(-3, 0), buf1[2]);
+}
+
+TEST(ComplexVector_Operator, SubtractVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    MatrixDSP::ComplexVector<float> buf3 = buf1 - buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(std::complex<float>(-7, 0), buf3[0]);
+    EXPECT_EQ(std::complex<float>(-5, 0), buf3[1]);
+    EXPECT_EQ(std::complex<float>(-3, 0), buf3[2]);
+}
+
+TEST(ComplexVector_Operator, MultiplyEqualVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    buf1 *= buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(std::complex<float>(8, 0), buf1[0]);
+    EXPECT_EQ(std::complex<float>(14, 0), buf1[1]);
+    EXPECT_EQ(std::complex<float>(18, 0), buf1[2]);
+}
+
+TEST(ComplexVector_Operator, MultiplyVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    MatrixDSP::ComplexVector<float> buf3 = buf1 * buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(std::complex<float>(8, 0), buf3[0]);
+    EXPECT_EQ(std::complex<float>(14, 0), buf3[1]);
+    EXPECT_EQ(std::complex<float>(18, 0), buf3[2]);
+}
+
+TEST(ComplexVector_Operator, DivideEqualVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    buf1 /= buf2;
+    EXPECT_EQ(3, buf1.size());
+    EXPECT_EQ(std::complex<float>(1.0f/8, 0), buf1[0]);
+    EXPECT_EQ(std::complex<float>(2.0f/7, 0), buf1[1]);
+    EXPECT_EQ(std::complex<float>(3.0f/6, 0), buf1[2]);
+}
+
+TEST(ComplexVector_Operator, DivideVector_Real) {
+    MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2({8, 7, 6});
+    
+    MatrixDSP::ComplexVector<float> buf3 = buf1 / buf2;
+    EXPECT_EQ(3, buf3.size());
+    EXPECT_EQ(std::complex<float>(1.0f/8, 0), buf3[0]);
+    EXPECT_EQ(std::complex<float>(2.0f/7, 0), buf3[1]);
+    EXPECT_EQ(std::complex<float>(3.0f/6, 0), buf3[2]);
+}
+
 TEST(ComplexVector_Method, Find) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
