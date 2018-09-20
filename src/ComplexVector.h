@@ -295,6 +295,16 @@ class ComplexVector : public Vector< std::complex<T> > {
     }
 };
 
+template <class T>
+ComplexVector<T> & fft(Vector<T> &input, ComplexVector<T> &output, bool inverseFft = false) {
+    return output.fft(input, inverseFft);
+}
+
+template <class T>
+ComplexVector<T> & fft(ComplexVector<T> &input, ComplexVector<T> &output, bool inverseFft = false) {
+    return output.fft(input, inverseFft);
+}
+
 }
 
 #endif

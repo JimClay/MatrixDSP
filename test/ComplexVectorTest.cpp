@@ -642,7 +642,7 @@ TEST(ComplexVector_Method, Fft_Real) {
     MatrixDSP::Vector<float>  bufIn({1, 2, 3, 4});
     MatrixDSP::ComplexVector<float> bufOut;
     
-    bufOut.fft(bufIn);
+    fft(bufIn, bufOut);
     EXPECT_EQ(4, bufOut.size());
     EXPECT_NEAR(10, bufOut[0].real(), .0001);
     EXPECT_NEAR(0, bufOut[0].imag(), .0001);
@@ -658,7 +658,7 @@ TEST(ComplexVector_Method, Fft) {
     MatrixDSP::ComplexVector<float>  bufIn({1, 2, 3, 4});
     MatrixDSP::ComplexVector<float> bufOut;
     
-    bufOut.fft(bufIn);
+    fft(bufIn, bufOut);
     EXPECT_EQ(4, bufOut.size());
     EXPECT_NEAR(10, bufOut[0].real(), .0001);
     EXPECT_NEAR(0, bufOut[0].imag(), .0001);
