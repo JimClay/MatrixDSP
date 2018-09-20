@@ -638,3 +638,35 @@ TEST(ComplexVector_Method, Modulate) {
     EXPECT_NEAR(2 * M_PI, phase, .0001);
 }
 
+TEST(ComplexVector_Method, Fft_Real) {
+    MatrixDSP::Vector<float>  bufIn({1, 2, 3, 4});
+    MatrixDSP::ComplexVector<float> bufOut;
+    
+    bufOut.fft(bufIn);
+    EXPECT_EQ(4, bufOut.size());
+    EXPECT_NEAR(10, bufOut[0].real(), .0001);
+    EXPECT_NEAR(0, bufOut[0].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[1].real(), .0001);
+    EXPECT_NEAR(2, bufOut[1].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[2].real(), .0001);
+    EXPECT_NEAR(0, bufOut[2].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[3].real(), .0001);
+    EXPECT_NEAR(-2, bufOut[3].imag(), .0001);
+}
+
+TEST(ComplexVector_Method, Fft) {
+    MatrixDSP::ComplexVector<float>  bufIn({1, 2, 3, 4});
+    MatrixDSP::ComplexVector<float> bufOut;
+    
+    bufOut.fft(bufIn);
+    EXPECT_EQ(4, bufOut.size());
+    EXPECT_NEAR(10, bufOut[0].real(), .0001);
+    EXPECT_NEAR(0, bufOut[0].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[1].real(), .0001);
+    EXPECT_NEAR(2, bufOut[1].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[2].real(), .0001);
+    EXPECT_NEAR(0, bufOut[2].imag(), .0001);
+    EXPECT_NEAR(-2, bufOut[3].real(), .0001);
+    EXPECT_NEAR(-2, bufOut[3].imag(), .0001);
+}
+
