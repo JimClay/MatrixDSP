@@ -19,9 +19,9 @@ template <class T>
 class ComplexVector : public Vector< std::complex<T> > {
     private:
     
-    static FftSetupManager<T>& GetFftSetupManager()
+    static FftSetupManager<T, typename std::vector<T>::iterator, typename std::vector< std::complex<T> >::iterator >& GetFftSetupManager()
     {
-        static FftSetupManager<T> managerInstance;
+        static FftSetupManager<T, typename std::vector<T>::iterator, typename std::vector< std::complex<T> >::iterator > managerInstance;
         return managerInstance;
     }
 
@@ -271,8 +271,9 @@ class ComplexVector : public Vector< std::complex<T> > {
         
         unsigned halfLen = input.size() / 2;
         this->resize(input.size());
-        kissfft<T> *fftSetup = GetFftSetupManager().getFftSetup(halfLen, inverseFft);
-        fftSetup->transform_real(&(input.vec[0]), &(this->vec[0]));
+        auto *fftSetup = GetFftSetupManager().getFftSetup(halfLen, inverseFft);
+        //fftSetup->transform_real(&(input.vec[0]), &(this->vec[0]));
+        fftSetup->transform_real(input.vec.begin(), this->vec.begin());
         
         // Change from condensed KissFFT form to standard FFT output form
         this->vec[halfLen].real(this->vec[0].imag());
@@ -289,8 +290,9 @@ class ComplexVector : public Vector< std::complex<T> > {
         assert(input.size() > 1);
         
         this->resize(input.size());
-        kissfft<T> *fftSetup = GetFftSetupManager().getFftSetup(input.size(), inverseFft);
-        fftSetup->transform(&(input.vec[0]), &(this->vec[0]));
+        auto *fftSetup = GetFftSetupManager().getFftSetup(input.size(), inverseFft);
+        //fftSetup->transform(&(input.vec[0]), &(this->vec[0]));
+        fftSetup->transform(input.vec.begin(), this->vec.begin());
         return *this;
     }
 };

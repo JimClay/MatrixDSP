@@ -1,6 +1,6 @@
 #include "ComplexVector.h"
 #include "gtest/gtest.h"
-
+#include <ctime>
 
 
 TEST(ComplexVectorInit, Ctor_Size) {
@@ -642,7 +642,13 @@ TEST(ComplexVector_Method, Fft_Real) {
     MatrixDSP::Vector<float>  bufIn({1, 2, 3, 4});
     MatrixDSP::ComplexVector<float> bufOut;
     
+    std::clock_t start = std::clock();
+    //for (int index=0; index<1000000; index++) {
+    {
     fft(bufIn, bufOut);
+    }
+    std::clock_t end = std::clock();
+    printf("FFT Real time = %f s\n", ((double) (end - start)) / CLOCKS_PER_SEC);
     EXPECT_EQ(4, bufOut.size());
     EXPECT_NEAR(10, bufOut[0].real(), .0001);
     EXPECT_NEAR(0, bufOut[0].imag(), .0001);
@@ -658,7 +664,13 @@ TEST(ComplexVector_Method, Fft) {
     MatrixDSP::ComplexVector<float>  bufIn({1, 2, 3, 4});
     MatrixDSP::ComplexVector<float> bufOut;
     
+    std::clock_t start = std::clock();
+    //for (int index=0; index<1000000; index++) {
+    {
     fft(bufIn, bufOut);
+    }
+    std::clock_t end = std::clock();
+    printf("FFT Complex time = %f s\n", ((double) (end - start)) / CLOCKS_PER_SEC);
     EXPECT_EQ(4, bufOut.size());
     EXPECT_NEAR(10, bufOut[0].real(), .0001);
     EXPECT_NEAR(0, bufOut[0].imag(), .0001);

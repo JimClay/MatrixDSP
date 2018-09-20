@@ -11,10 +11,10 @@
 #include <map>
 #include "kissfft.h"
 
-template <class T>
+template <class T, class RealIterator, class ComplexIterator>
 class FftSetupManager {
     private:
-    std::map<int, kissfft<T> * > fftSetups;
+    std::map<int, kissfft<T, RealIterator, ComplexIterator> * > fftSetups;
     
     int genKey(int fftLen, bool inverseFft) {return fftLen * 2 + (int) inverseFft;}
     
@@ -25,7 +25,7 @@ class FftSetupManager {
         cleanUp();
     }
     
-    kissfft<T> * getFftSetup(int fftLen, bool inverseFft = false) {
+    kissfft<T, RealIterator, ComplexIterator> * getFftSetup(int fftLen, bool inverseFft = false) {
         int key = genKey(fftLen, inverseFft);
         
         auto setupPtr = fftSetups.find(key);
@@ -33,7 +33,7 @@ class FftSetupManager {
             return setupPtr->second;
         }
         
-        kissfft<T> *fftSetup = new kissfft<T>(fftLen, inverseFft);
+        kissfft<T, RealIterator, ComplexIterator> *fftSetup = new kissfft<T, RealIterator, ComplexIterator>(fftLen, inverseFft);
         fftSetups[key] = fftSetup;
         return fftSetup;
     }
