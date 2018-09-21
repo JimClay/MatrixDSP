@@ -23,13 +23,49 @@ class Matrix2d {
         unsigned numCols;
         bool transposed;
     
-        void copyToScratchBuf(std::vector<T> &from);
-        void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch);
+        void copyToScratchBuf(std::vector<T> &from) {
+            scratchBuf->resize(from.size());
+            for (unsigned index=0; index<from.size(); index++) {
+                (*scratchBuf)[index] = from[index];
+            }
+        }
+    
+        void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch) {
+            if (scratch == nullptr) {
+                scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
+            }
+            else {
+                scratchBuf = scratch;
+            }
+        }
 
     public:
     
-        Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr);
-        Matrix2d(std::initializer_list< std::initializer_list<T> > data, std::shared_ptr< std::vector<T> > scratch = nullptr);
+        Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+            vec.resize(row * col);
+            numRows = row;
+            numCols = col;
+            transposed = false;
+            initializeScratchBuf(scratch);
+        }
+    
+        Matrix2d(std::initializer_list< std::initializer_list<T> > initVals, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+            numRows = initVals.size();
+            assert(numRows > 0);
+            numCols = initVals.begin()->size();
+            assert(numCols > 0);
+            vec.resize(numRows * numCols);
+            
+            unsigned vecIndex = 0;
+            for (auto rowInitList : initVals) {
+                assert(rowInitList.size() == numCols);
+                for (auto element : rowInitList) {
+                    vec[vecIndex++] = element;
+                }
+            }
+            transposed = false;
+            initializeScratchBuf(scratch);
+        }
     
         const T& operator()(unsigned row, unsigned col) const {
             if (!transposed) {
@@ -85,66 +121,7 @@ class Matrix2d {
             checkAddr(0, colNum);
             return RowColIterator<T>(vec, numRows, numCols, transposed, false, colNum, true);
         }
-    
-    
 };
-    
-
-template <class T>
-void Matrix2d<T>::copyToScratchBuf(std::vector<T> &from)
-{
-    scratchBuf->resize(from.size());
-    for (unsigned index=0; index<from.size(); index++) {
-        (*scratchBuf)[index] = from[index];
-    }
-}
-
-template <class T>
-void Matrix2d<T>::initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch)
-{
-    if (scratch == nullptr) {
-        scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
-    }
-    else {
-        scratchBuf = scratch;
-    }
-}
-
-template <class T>
-Matrix2d<T>::Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch)
-{
-    vec.resize(row * col);
-    numRows = row;
-    numCols = col;
-    transposed = false;
-    initializeScratchBuf(scratch);
-}
-
-template <class T>
-Matrix2d<T>::Matrix2d(std::initializer_list< std::initializer_list<T> > initVals, std::shared_ptr< std::vector<T> > scratch)
-{
-    numRows = initVals.size();
-    assert(numRows > 0);
-    numCols = initVals.begin()->size();
-    assert(numCols > 0);
-    vec.resize(numRows * numCols);
-    
-    unsigned vecIndex = 0;
-    for (auto rowInitList : initVals) {
-        assert(rowInitList.size() == numCols);
-        for (auto element : rowInitList) {
-            vec[vecIndex++] = element;
-        }
-    }
-    transposed = false;
-    initializeScratchBuf(scratch);
-}
-
-
-
-
-
-
 
 }
 

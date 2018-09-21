@@ -643,7 +643,7 @@ TEST(ComplexVector_Method, Fft_Real) {
     MatrixDSP::ComplexVector<float> bufOut;
     
     std::clock_t start = std::clock();
-    //for (int index=0; index<1000000; index++) {
+    //for (int index=0; index<1000000; index++)
     {
     fft(bufIn, bufOut);
     }
@@ -669,7 +669,7 @@ TEST(ComplexVector_Method, Fft) {
     MatrixDSP::ComplexVector<float> bufOut;
     
     std::clock_t start = std::clock();
-    //for (int index=0; index<1000000; index++) {
+    //for (int index=0; index<1000000; index++)
     {
     fft(bufIn, bufOut);
     }
