@@ -12,6 +12,8 @@
 #include <complex>
 #include "Vector.h"
 #include "FftSetupManager.h"
+#include <iostream>
+#include <iomanip>
 
 namespace MatrixDSP {
  
@@ -267,22 +269,10 @@ class ComplexVector : public Vector< std::complex<T> > {
     
     ComplexVector<T> & fft(MatrixDSP::Vector<T> &input, bool inverseFft = false) {
         assert(input.size() > 1);
-        assert((input.size() & 1) == 0);
         
-        unsigned halfLen = input.size() / 2;
         this->resize(input.size());
-        auto *fftSetup = GetFftSetupManager().getFftSetup(halfLen, inverseFft);
-        //fftSetup->transform_real(&(input.vec[0]), &(this->vec[0]));
-        fftSetup->transform_real(input.vec.begin(), this->vec.begin());
-        
-        // Change from condensed KissFFT form to standard FFT output form
-        this->vec[halfLen].real(this->vec[0].imag());
-        this->vec[halfLen].imag(0);
-        this->vec[0].imag(0);
-        
-        for (unsigned from=1, to=input.size()-1; from<halfLen; from++, to--) {
-            this->vec[to] = std::conj(this->vec[from]);
-        }
+        auto *fftSetup = GetFftSetupManager().getFftSetup(input.size(), inverseFft);
+        fftSetup->transform(input.vec.begin(), this->vec.begin());
         return *this;
     }
     
@@ -291,9 +281,23 @@ class ComplexVector : public Vector< std::complex<T> > {
         
         this->resize(input.size());
         auto *fftSetup = GetFftSetupManager().getFftSetup(input.size(), inverseFft);
-        //fftSetup->transform(&(input.vec[0]), &(this->vec[0]));
         fftSetup->transform(input.vec.begin(), this->vec.begin());
         return *this;
+    }
+    
+    void print() {
+        std::string divider;
+        if (this->rowVector) {
+            divider = ", ";
+        }
+        else {
+            divider = "\n";
+        }
+        std::cout << std::setw(8) << std::setprecision(4) << this->vec[0].real() << this->vec[0].imag() << "i";
+        for (unsigned index=1; index<this->size(); index++) {
+            std::cout << divider << std::setw(8) << std::setprecision(4) << this->vec[index].real() << this->vec[index].imag() << "i";
+        }
+        std::cout << std::endl;
     }
 };
 
