@@ -9,6 +9,7 @@
 #define RowColIterator_h
 
 #include <vector>
+#include <cassert>
 
 namespace MatrixDSP {
 

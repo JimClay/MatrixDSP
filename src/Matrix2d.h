@@ -9,7 +9,9 @@
 #define __MATRIX_DSP_MATRIX2D__
 
 #include <vector>
+#include <memory>
 #include <initializer_list>
+#include <cassert>
 #include "RowColIterator.h"
 
 namespace MatrixDSP {
@@ -90,7 +92,7 @@ class Matrix2d {
         }
     
         Matrix2d & transpose(void) {
-            transposed = not transposed;
+            transposed = !transposed;
             return *this;
         }
     

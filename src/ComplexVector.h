@@ -10,6 +10,7 @@
 #define __MATRIX_DSP_COMPLEX_VECTOR__
 
 #include <complex>
+#include <cassert>
 #include "Vector.h"
 #include "FftSetupManager.h"
 #include <iostream>

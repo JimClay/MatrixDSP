@@ -11,6 +11,7 @@
 #include <complex>
 #include <utility>
 #include <vector>
+#include <cassert>
 #include <iostream>
 #include <iomanip>
 
@@ -22,10 +23,10 @@ class kissfft
 
         using cpx_t = std::complex<scalar_t>;
 
-        kissfft( const std::size_t nfft,
-                 const bool inverse )
+        kissfft( const std::size_t nfft, const bool inverse, std::shared_ptr< std::vector<cpx_t> > scratch = nullptr )
             :_nfft(nfft)
             ,_inverse(inverse)
+			,_scratchBuf(scratch)
         {
             // fill twiddle factors
             _twiddles.resize(_nfft);
@@ -51,30 +52,16 @@ class kissfft
                 _stageRadix.push_back(p);
                 _stageRemainder.push_back(n);
             }while(n>1);
-        }
 
-
-        /// Changes the FFT-length and/or the transform direction.
-        ///
-        /// @post The @c kissfft object will be in the same state as if it
-        /// had been newly constructed with the passed arguments.
-        /// However, the implementation may be faster than constructing a
-        /// new fft object.
-        void assign( const std::size_t nfft,
-                     const bool inverse )
-        {
-            if ( nfft != _nfft )
-            {
-                kissfft tmp( nfft, inverse ); // O(n) time.
-                std::swap( tmp, *this ); // this is O(1) in C++11, O(n) otherwise.
-            }
-            else if ( inverse != _inverse )
-            {
-                // conjugate the twiddle factors.
-                for ( typename std::vector<cpx_t>::iterator it = _twiddles.begin();
-                      it != _twiddles.end(); ++it )
-                    it->imag( -it->imag() );
-            }
+			if (p > 5) {
+				// For any factor greater than 5, we'll have to use the generic butterfly, which means we'll need the scratch buffer.
+				if (_scratchBuf == nullptr) {
+					_scratchBuf = std::make_shared< std::vector<cpx_t> >(p);
+				}
+				else {
+					_scratchBuf->resize(p);
+				}
+			}
         }
 
         /// Calculates the complex Discrete Fourier Transform.
@@ -345,30 +332,31 @@ class kissfft
                 ) const
         {
             const cpx_t * twiddles = &_twiddles[0];
-            cpx_t scratchbuf[p];
+            //cpx_t scratchbuf[p];
 
             for ( std::size_t u=0; u<m; ++u ) {
                 std::size_t k = u;
                 for ( std::size_t q1=0 ; q1<p ; ++q1 ) {
-                    scratchbuf[q1] = Fout[ k  ];
+                    (*_scratchBuf)[q1] = Fout[ k  ];
                     k += m;
                 }
 
                 k=u;
                 for ( std::size_t q1=0 ; q1<p ; ++q1 ) {
                     std::size_t twidx=0;
-                    Fout[ k ] = scratchbuf[0];
+                    Fout[ k ] = (*_scratchBuf)[0];
                     for ( std::size_t q=1;q<p;++q ) {
                         twidx += fstride * k;
                         if (twidx>=_nfft)
                           twidx-=_nfft;
-                        Fout[ k ] += scratchbuf[q] * twiddles[twidx];
+                        Fout[ k ] += (*_scratchBuf)[q] * twiddles[twidx];
                     }
                     k += m;
                 }
             }
         }
 
+		std::shared_ptr< std::vector<cpx_t> > _scratchBuf;
         std::size_t _nfft;
         bool _inverse;
         std::vector<cpx_t> _twiddles;

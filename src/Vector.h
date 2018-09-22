@@ -11,8 +11,10 @@
 
 //#include <stdio.h>
 #include <vector>
+#include <memory>
 #include <initializer_list>
 #include <cmath>
+#include <cassert>
 
 namespace MatrixDSP {
  

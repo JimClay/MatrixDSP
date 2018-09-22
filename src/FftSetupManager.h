@@ -9,6 +9,7 @@
 #define FftSetupManager_h
 
 #include <map>
+#include <cassert>
 #include "kissfft.h"
 
 template <class T, class RealIterator, class ComplexIterator>
@@ -19,7 +20,7 @@ class FftSetupManager {
     int genKey(int fftLen, bool inverseFft) {return fftLen * 2 + (int) inverseFft;}
     
     public:
-    FftSetupManager<T>() {}
+    FftSetupManager<T, RealIterator, ComplexIterator>() {}
     
     ~FftSetupManager() {
         cleanUp();
