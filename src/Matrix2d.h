@@ -69,6 +69,15 @@ class Matrix2d {
             initializeScratchBuf(scratch);
         }
     
+        T& operator()(unsigned row, unsigned col) {
+            if (!transposed) {
+                return vec[row * numCols + col];
+            }
+            else {
+                return vec[col * numCols + row];
+            }
+        }
+    
         const T& operator()(unsigned row, unsigned col) const {
             if (!transposed) {
                 return vec[row * numCols + col];
@@ -78,13 +87,13 @@ class Matrix2d {
             }
         }
     
-        unsigned getRows(void) {
+        unsigned getRows(void) const {
             if (!transposed) {
                 return numRows;
             }
             return numCols;
         }
-        unsigned getCols(void)  {
+        unsigned getCols(void) const {
             if (!transposed) {
                 return numCols;
             }
