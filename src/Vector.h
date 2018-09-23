@@ -136,7 +136,11 @@ public:
     /**
      * \brief Index operator.
      */
-    const T& operator[](unsigned index) const {return vec[index];};
+    const T& operator[](unsigned index) const {return vec[index];}
+    
+    T& operator()(unsigned index) {return vec[index];}
+
+    const T& operator()(unsigned index) const {return vec[index];}
     
     /**
      * \brief Assignment operator.

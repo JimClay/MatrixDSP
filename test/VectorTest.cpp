@@ -50,6 +50,14 @@ TEST(VectorInit, Ctor_Initializer_List) {
     EXPECT_EQ(false, buf.rowVector);
 }
 
+TEST(VectorInit, Parenthesis_Indexing) {
+    MatrixDSP::Vector<float> buf({3, 4, 5});
+    
+    EXPECT_EQ(3, buf(0));
+    EXPECT_EQ(4, buf(1));
+    EXPECT_EQ(5, buf(2));
+}
+
 TEST(Operator, AddEqualVector) {
     MatrixDSP::Vector<float> buf1({1, 2, 3});
     MatrixDSP::Vector<float> buf2({8, 9, 10});

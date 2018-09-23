@@ -41,6 +41,17 @@ TEST(ComplexVectorInit, Ctor_Initializer_List) {
     EXPECT_EQ(false, buf.rowVector);
 }
 
+TEST(ComplexVectorInit, Parenthesis_Indexing) {
+    MatrixDSP::ComplexVector<float> buf({3, {4, 1}, 5});
+    
+    EXPECT_EQ(3, buf(0).real());
+    EXPECT_EQ(0, buf(0).imag());
+    EXPECT_EQ(4, buf(1).real());
+    EXPECT_EQ(1, buf(1).imag());
+    EXPECT_EQ(5, buf(2).real());
+    EXPECT_EQ(0, buf(2).imag());
+}
+
 TEST(ComplexVector_Operator, AddEqualVector) {
     MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
     MatrixDSP::ComplexVector<float> buf2({8, 9, 10});
