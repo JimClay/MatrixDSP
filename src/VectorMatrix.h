@@ -25,7 +25,7 @@ Vector<T> operator*(Matrix2d<T> lhs, const Vector<T> &rhs) {
     Vector<T> result(lhs.getRows(), false);
     for (unsigned row=0; row<lhs.getRows(); row++) {
         for (unsigned col=0; col<lhs.getCols(); col++) {
-            result[row] += lhs(row, col) * rhs[col];
+            result(row) += lhs(row, col) * rhs(col);
         }
     }
     return result;
@@ -39,7 +39,7 @@ ComplexVector<T> operator*(Matrix2d<T> lhs, const ComplexVector<T> &rhs) {
     ComplexVector<T> result(lhs.getRows(), false);
     for (unsigned row=0; row<lhs.getRows(); row++) {
         for (unsigned col=0; col<lhs.getCols(); col++) {
-            result[row] += lhs(row, col) * rhs[col];
+            result(row) += lhs(row, col) * rhs(col);
         }
     }
     return result;
@@ -53,7 +53,7 @@ Vector<T> operator*(Vector<T> lhs, const Matrix2d<T> &rhs) {
     Vector<T> result(rhs.getCols(), true);
     for (unsigned col=0; col<rhs.getCols(); col++) {
         for (unsigned row=0; row<rhs.getRows(); row++) {
-            result[col] += lhs[row] * rhs(row, col);
+            result(col) += lhs(row) * rhs(row, col);
         }
     }
     return result;
@@ -67,7 +67,7 @@ ComplexVector<T> operator*(ComplexVector<T> lhs, const Matrix2d<T> &rhs) {
     ComplexVector<T> result(rhs.getCols(), true);
     for (unsigned col=0; col<rhs.getCols(); col++) {
         for (unsigned row=0; row<rhs.getRows(); row++) {
-            result[col] += lhs[row] * rhs(row, col);
+            result(col) += lhs(row) * rhs(row, col);
         }
     }
     return result;
