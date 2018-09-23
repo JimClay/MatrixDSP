@@ -8,6 +8,7 @@
 
 #ifndef KISSFFT_CLASS_HH
 #define KISSFFT_CLASS_HH
+
 #include <complex>
 #include <utility>
 #include <vector>
@@ -85,10 +86,12 @@ class kissfft
             ComplexIterator const Fout_end = fft_out + p*m;
 
             if (m==1) {
+				ComplexIterator const Fout_almost_end = Fout_end - 1;
                 do{
                     *fft_out = *fft_in;
                     fft_in += fstride;
-                }while(++fft_out != Fout_end );
+				}while (++fft_out != Fout_almost_end);
+				*fft_out = *fft_in;
             }else{
                 do{
                     // recursive call:
@@ -125,11 +128,14 @@ class kissfft
             ComplexIterator const Fout_end = fft_out + p*m;
 
             if (m==1) {
+				ComplexIterator const Fout_almost_end = Fout_end - 1;
                 do{
                     (*fft_out).real(*fft_in);
                     (*fft_out).imag(0);
                     fft_in += fstride;
-                }while(++fft_out != Fout_end );
+                }while(++fft_out != Fout_almost_end );
+				(*fft_out).real(*fft_in);
+				(*fft_out).imag(0);
             }else{
                 do{
                     // recursive call:
