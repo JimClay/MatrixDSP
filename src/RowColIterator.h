@@ -101,7 +101,7 @@ class RowColIterator {
             return *this;
         }
     
-        difference_type operator-(const RowColIterator<T>& rhs) {
+        difference_type operator-(const RowColIterator<T>& rhs) const {
             auto dist = std::distance(rhs.iterator, iterator);
             return dist / increment;
         }
