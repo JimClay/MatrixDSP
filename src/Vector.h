@@ -159,8 +159,8 @@ public:
      * \brief Unary minus (negation) operator.
      */
     Vector<T> & operator-() {
-        for (T element : vec) {
-            element = -element;
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = -vec[index];
         }
         return *this;
     }

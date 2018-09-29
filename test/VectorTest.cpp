@@ -58,6 +58,17 @@ TEST(VectorInit, Parenthesis_Indexing) {
     EXPECT_EQ(5, buf(2));
 }
 
+TEST(Operator, Negation) {
+    MatrixDSP::Vector<float> buf1({1, 2, 3});
+    MatrixDSP::Vector<float> buf2;
+    
+    buf2 = -buf1;
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(-1, buf2[0]);
+    EXPECT_EQ(-2, buf2[1]);
+    EXPECT_EQ(-3, buf2[2]);
+}
+
 TEST(Operator, AddEqualVector) {
     MatrixDSP::Vector<float> buf1({1, 2, 3});
     MatrixDSP::Vector<float> buf2({8, 9, 10});

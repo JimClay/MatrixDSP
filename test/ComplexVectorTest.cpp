@@ -52,6 +52,20 @@ TEST(ComplexVectorInit, Parenthesis_Indexing) {
     EXPECT_EQ(0, buf(2).imag());
 }
 
+TEST(ComplexVector_Operator, Negation) {
+    MatrixDSP::ComplexVector<float> buf1({1, {2, 1}, 3});
+    MatrixDSP::ComplexVector<float> buf2;
+    
+    buf2 = -buf1;
+    EXPECT_EQ(3, buf2.size());
+    EXPECT_EQ(-1, buf2[0].real());
+    EXPECT_EQ(0, buf2[0].imag());
+    EXPECT_EQ(-2, buf2[1].real());
+    EXPECT_EQ(-1, buf2[1].imag());
+    EXPECT_EQ(-3, buf2[2].real());
+    EXPECT_EQ(0, buf2[2].imag());
+}
+
 TEST(ComplexVector_Operator, AddEqualVector) {
     MatrixDSP::ComplexVector<float> buf1({1, 2, 3});
     MatrixDSP::ComplexVector<float> buf2({8, 9, 10});
