@@ -26,10 +26,6 @@ class RowColIterator {
         typedef T &reference;
         typedef std::random_access_iterator_tag iterator_category;
     
-        RowColIterator();
-
-        RowColIterator(typename std::vector<T>::iterator iterator, int inc = 1) : iterator(iterator), increment(inc) { }
-    
         RowColIterator(typename std::vector<T> &vec, unsigned numRows, unsigned numCols, bool row, int rowColNum, bool end = false) {
             iterator = vec.begin();
             int numElements;
