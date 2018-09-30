@@ -30,10 +30,10 @@ class RowColIterator {
 
         RowColIterator(typename std::vector<T>::iterator iterator, int inc = 1) : iterator(iterator), increment(inc) { }
     
-        RowColIterator(typename std::vector<T> &vec, unsigned numRows, unsigned numCols, bool transpose, bool row, int rowColNum, bool end = false) {
+        RowColIterator(typename std::vector<T> &vec, unsigned numRows, unsigned numCols, bool row, int rowColNum, bool end = false) {
             iterator = vec.begin();
             int numElements;
-            if ((row && !transpose) || (!row && transpose)) {
+            if (row) {
                 iterator += rowColNum * numCols;
                 increment = 1;
                 numElements = numCols;

@@ -216,19 +216,19 @@ public:
 
     RowColIterator<T> rowBegin(int rowNum) {
         checkAddr(rowNum, 0);
-        return RowColIterator<T>(vec, numRows, numCols, false, true, rowNum, false);
+        return RowColIterator<T>(vec, numRows, numCols, true, rowNum, false);
     }
     RowColIterator<T> rowEnd(int rowNum) {
         checkAddr(rowNum, 0);
-        return RowColIterator<T>(vec, numRows, numCols, false, true, rowNum, true);
+        return RowColIterator<T>(vec, numRows, numCols, true, rowNum, true);
     }
     RowColIterator<T> colBegin(int colNum) {
         checkAddr(0, colNum);
-        return RowColIterator<T>(vec, numRows, numCols, false, false, colNum, false);
+        return RowColIterator<T>(vec, numRows, numCols, false, colNum, false);
     }
     RowColIterator<T> colEnd(int colNum) {
         checkAddr(0, colNum);
-        return RowColIterator<T>(vec, numRows, numCols, false, false, colNum, true);
+        return RowColIterator<T>(vec, numRows, numCols, false, colNum, true);
     }
 };
 
