@@ -18,120 +18,218 @@ namespace MatrixDSP {
  
 template <class T>
 class Matrix2d {
-    protected:
-        std::vector<T> vec;
-        std::shared_ptr< std::vector<T> > scratchBuf;
-        unsigned numRows;
-        unsigned numCols;
-        bool transposed;
-    
-        void copyToScratchBuf(std::vector<T> &from) {
-            scratchBuf->resize(from.size());
-            for (unsigned index=0; index<from.size(); index++) {
-                (*scratchBuf)[index] = from[index];
-            }
-        }
-    
-        void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch) {
-            if (scratch == nullptr) {
-                scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
-            }
-            else {
-                scratchBuf = scratch;
-            }
-        }
+protected:
+    std::vector<T> vec;
+    std::shared_ptr< std::vector<T> > scratchBuf;
+    unsigned numRows;
+    unsigned numCols;
 
-    public:
+    void copyToScratchBuf(std::vector<T> &from) {
+        scratchBuf->resize(from.size());
+        for (unsigned index=0; index<from.size(); index++) {
+            (*scratchBuf)[index] = from[index];
+        }
+    }
+
+    void initializeScratchBuf(std::shared_ptr< std::vector<T> > scratch) {
+        if (scratch == nullptr) {
+            scratchBuf = std::shared_ptr< std::vector<T> >(new std::vector<T>);
+        }
+        else {
+            scratchBuf = scratch;
+        }
+    }
+
+    void checkAddr(unsigned row, unsigned col) {
+        assert(row < numRows);
+        assert(col < numCols);
+    }
+    /*
+    void actuallyDoTranspose() {
+        if (!transposed) {
+            return;
+        }
+        
+        *scratchBuf = vec;
+        unsigned newNumRows = numCols;
+        unsigned newNumCols = numRows;
+        for (unsigned from=0, row=0; row<newNumRows; row++) {
+            for (unsigned col=0; col<newNumCols; col++, from++) {
+                vec[row*newNumRows + col] = (*scratchBuf)[from];
+            }
+        }
+        numRows = newNumRows;
+        numCols = newNumCols;
+        transposed = false;
+    }*/
+
+public:
+    typedef std::pair<unsigned, unsigned> size_type;
     
-        Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr) {
-            vec.resize(row * col);
-            numRows = row;
-            numCols = col;
-            transposed = false;
-            initializeScratchBuf(scratch);
+    /*****************************************************************************************
+                                    Constructors
+    *****************************************************************************************/
+    Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+        vec.resize(row * col);
+        numRows = row;
+        numCols = col;
+        initializeScratchBuf(scratch);
+    }
+
+    Matrix2d(std::initializer_list< std::initializer_list<T> > initVals, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+        numRows = initVals.size();
+        assert(numRows > 0);
+        numCols = initVals.begin()->size();
+        assert(numCols > 0);
+        vec.resize(numRows * numCols);
+        
+        unsigned vecIndex = 0;
+        for (auto rowInitList : initVals) {
+            assert(rowInitList.size() == numCols);
+            for (auto element : rowInitList) {
+                vec[vecIndex++] = element;
+            }
         }
+        initializeScratchBuf(scratch);
+    }
+
+    /**
+     * \brief Virtual destructor.
+     */
+    virtual ~Matrix2d() = default;
+
+    /*****************************************************************************************
+                                        Operators
+    *****************************************************************************************/
+    T& operator()(unsigned row, unsigned col) {return vec[row * numCols + col];}
+
+    const T& operator()(unsigned row, unsigned col) const {return vec[row * numCols + col];}
+
+    /**
+     * \brief Assignment operator.
+     */
+    Matrix2d<T>& operator=(const Matrix2d<T>& rhs) {
+        vec = rhs.vec;
+        scratchBuf = rhs.scratchBuf;
+        numRows = rhs.numRows;
+        numCols = rhs.numCols;
+        return *this;
+    }
     
-        Matrix2d(std::initializer_list< std::initializer_list<T> > initVals, std::shared_ptr< std::vector<T> > scratch = nullptr) {
-            numRows = initVals.size();
-            assert(numRows > 0);
-            numCols = initVals.begin()->size();
-            assert(numCols > 0);
-            vec.resize(numRows * numCols);
-            
-            unsigned vecIndex = 0;
-            for (auto rowInitList : initVals) {
-                assert(rowInitList.size() == numCols);
-                for (auto element : rowInitList) {
-                    vec[vecIndex++] = element;
-                }
-            }
-            transposed = false;
-            initializeScratchBuf(scratch);
+    /**
+     * \brief Unary minus (negation) operator.
+     */
+    Matrix2d<T> & operator-() {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] = -vec[index];
         }
+        return *this;
+    }
     
-        T& operator()(unsigned row, unsigned col) {
-            if (!transposed) {
-                return vec[row * numCols + col];
-            }
-            else {
-                return vec[col * numCols + row];
-            }
+    /**
+     * \brief Add Buffer/Assignment operator.
+     */
+    template <class U>
+    Matrix2d<T> & operator+=(Matrix2d<U> &rhs) {
+        assert(size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] += rhs[index];
         }
+        return *this;
+    }
     
-        const T& operator()(unsigned row, unsigned col) const {
-            if (!transposed) {
-                return vec[row * numCols + col];
-            }
-            else {
-                return vec[col * numCols + row];
-            }
+    /**
+     * \brief Add Scalar/Assignment operator.
+     */
+    Matrix2d<T> & operator+=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] += rhs;
         }
+        return *this;
+    }
     
-        unsigned getRows(void) const {
-            if (!transposed) {
-                return numRows;
-            }
-            return numCols;
+    /**
+     * \brief Subtract Buffer/Assignment operator.
+     */
+    template <class U>
+    Matrix2d<T> & operator-=(Matrix2d<U> &rhs) {
+        assert(size() == rhs.size());
+        
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] -= rhs[index];
         }
-        unsigned getCols(void) const {
-            if (!transposed) {
-                return numCols;
-            }
-            return numRows;
-        }
+        return *this;
+    }
     
-        Matrix2d & transpose(void) {
-            transposed = !transposed;
-            return *this;
+    /**
+     * \brief Subtract Scalar/Assignment operator.
+     */
+    Matrix2d<T> & operator-=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] -= rhs;
         }
+        return *this;
+    }
     
-        void checkAddr(unsigned row, unsigned col) {
-            if (!transposed) {
-                assert(row < numRows);
-                assert(col < numCols);
-            }
-            else {
-                assert(row < numCols);
-                assert(col < numRows);
-            }
+    /**
+     * \brief Multiply Scalar/Assignment operator.
+     */
+    Matrix2d<T> & operator*=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] *= rhs;
         }
+        return *this;
+    }
+
+    /**
+     * \brief Divide Scalar/Assignment operator.
+     */
+    Matrix2d<T> & operator/=(const T &rhs) {
+        for (unsigned index=0; index<vec.size(); index++) {
+            vec[index] /= rhs;
+        }
+        return *this;
+    }
     
-        RowColIterator<T> rowBegin(int rowNum) {
-            checkAddr(rowNum, 0);
-            return RowColIterator<T>(vec, numRows, numCols, transposed, true, rowNum, false);
+    /*****************************************************************************************
+                                            Methods
+    *****************************************************************************************/
+    size_type size() {return std::make_pair(getRows(), getCols());}
+    
+    unsigned getRows(void) const {return numRows;}
+    unsigned getCols(void) const {return numCols;}
+
+    Matrix2d & transpose(void) {
+        *scratchBuf = vec;
+        unsigned newNumRows = numCols;
+        unsigned newNumCols = numRows;
+        for (unsigned from=0, col=0; col<newNumCols; col++) {
+            for (unsigned row=0; row<newNumRows; row++, from++) {
+                vec[row*newNumCols + col] = (*scratchBuf)[from];
+            }
         }
-        RowColIterator<T> rowEnd(int rowNum) {
-            checkAddr(rowNum, 0);
-            return RowColIterator<T>(vec, numRows, numCols, transposed, true, rowNum, true);
-        }
-        RowColIterator<T> colBegin(int colNum) {
-            checkAddr(0, colNum);
-            return RowColIterator<T>(vec, numRows, numCols, transposed, false, colNum, false);
-        }
-        RowColIterator<T> colEnd(int colNum) {
-            checkAddr(0, colNum);
-            return RowColIterator<T>(vec, numRows, numCols, transposed, false, colNum, true);
-        }
+        numRows = newNumRows;
+        numCols = newNumCols;
+        return *this;
+    }
+
+    RowColIterator<T> rowBegin(int rowNum) {
+        checkAddr(rowNum, 0);
+        return RowColIterator<T>(vec, numRows, numCols, false, true, rowNum, false);
+    }
+    RowColIterator<T> rowEnd(int rowNum) {
+        checkAddr(rowNum, 0);
+        return RowColIterator<T>(vec, numRows, numCols, false, true, rowNum, true);
+    }
+    RowColIterator<T> colBegin(int colNum) {
+        checkAddr(0, colNum);
+        return RowColIterator<T>(vec, numRows, numCols, false, false, colNum, false);
+    }
+    RowColIterator<T> colEnd(int colNum) {
+        checkAddr(0, colNum);
+        return RowColIterator<T>(vec, numRows, numCols, false, false, colNum, true);
+    }
 };
 
 }
