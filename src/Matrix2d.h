@@ -44,24 +44,19 @@ protected:
         assert(row < numRows);
         assert(col < numCols);
     }
-    /*
-    void actuallyDoTranspose() {
-        if (!transposed) {
-            return;
-        }
-        
-        *scratchBuf = vec;
+    
+    void doTranspose(const std::vector<T> &input) {
         unsigned newNumRows = numCols;
         unsigned newNumCols = numRows;
-        for (unsigned from=0, row=0; row<newNumRows; row++) {
-            for (unsigned col=0; col<newNumCols; col++, from++) {
-                vec[row*newNumRows + col] = (*scratchBuf)[from];
+        for (unsigned from=0, col=0; col<newNumCols; col++) {
+            for (unsigned row=0; row<newNumRows; row++, from++) {
+                vec[row*newNumCols + col] = input[from];
             }
         }
         numRows = newNumRows;
         numCols = newNumCols;
-        transposed = false;
-    }*/
+    }
+
 
 public:
     typedef std::pair<unsigned, unsigned> size_type;
@@ -200,17 +195,17 @@ public:
     unsigned getRows(void) const {return numRows;}
     unsigned getCols(void) const {return numCols;}
 
-    Matrix2d & transpose(void) {
+    Matrix2d<T> & transpose(void) {
         *scratchBuf = vec;
-        unsigned newNumRows = numCols;
-        unsigned newNumCols = numRows;
-        for (unsigned from=0, col=0; col<newNumCols; col++) {
-            for (unsigned row=0; row<newNumRows; row++, from++) {
-                vec[row*newNumCols + col] = (*scratchBuf)[from];
-            }
-        }
-        numRows = newNumRows;
-        numCols = newNumCols;
+        doTranspose(*scratchBuf);
+        return *this;
+    }
+
+    Matrix2d<T> & transpose(const Matrix2d<T> input) {
+        numRows = input.numRows;
+        numCols = input.numCols;
+        vec.resize(input.vec.size());
+        doTranspose(input.vec);
         return *this;
     }
 
@@ -231,6 +226,12 @@ public:
         return RowColIterator<T>(vec, numRows, numCols, false, colNum, true);
     }
 };
+
+template <class T>
+Matrix2d<T> & transpose(Matrix2d<T> & mat) {return mat.transpose();}
+
+template <class T>
+Matrix2d<T> & transpose(const Matrix2d<T> & input, Matrix2d<T> & output) {return output.transpose(input);}
 
 }
 

@@ -54,7 +54,7 @@ TEST(Iterator, SortTransposed) {
     EXPECT_EQ(-1, mat(1, 1));
     EXPECT_EQ(7, mat(1, 2));
     
-    mat.transpose();
+    transpose(mat);
     
     EXPECT_EQ(3, mat.getRows());
     EXPECT_EQ(2, mat.getCols());
@@ -75,23 +75,19 @@ TEST(Iterator, SortTransposed) {
     EXPECT_EQ(-1, mat(1, 1));
     EXPECT_EQ(7, mat(2, 1));
     
-    std::sort(mat.rowBegin(1), mat.rowEnd(1));
+    MatrixDSP::Matrix2d<float> mat2(1, 1);
+    transpose(mat, mat2);
     
-    EXPECT_EQ(1, mat(0, 0));
-    EXPECT_EQ(-1, mat(1, 0));
-    EXPECT_EQ(3, mat(2, 0));
-    EXPECT_EQ(5, mat(0, 1));
-    EXPECT_EQ(2, mat(1, 1));
-    EXPECT_EQ(7, mat(2, 1));
+    EXPECT_EQ(2, mat2.getRows());
+    EXPECT_EQ(3, mat2.getCols());
     
-    std::sort(mat.colBegin(1), mat.colEnd(1));
+    EXPECT_EQ(1, mat2(0, 0));
+    EXPECT_EQ(2, mat2(0, 1));
+    EXPECT_EQ(3, mat2(0, 2));
+    EXPECT_EQ(5, mat2(1, 0));
+    EXPECT_EQ(-1, mat2(1, 1));
+    EXPECT_EQ(7, mat2(1, 2));
     
-    EXPECT_EQ(1, mat(0, 0));
-    EXPECT_EQ(-1, mat(1, 0));
-    EXPECT_EQ(3, mat(2, 0));
-    EXPECT_EQ(2, mat(0, 1));
-    EXPECT_EQ(5, mat(1, 1));
-    EXPECT_EQ(7, mat(2, 1));
 }
 
 
