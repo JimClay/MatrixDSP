@@ -58,6 +58,12 @@ protected:
         numCols = newNumCols;
     }
 
+	void finishReshape(unsigned rows, unsigned cols) {
+		numRows = cols;
+		numCols = rows;
+		*scratchBuf = vec;
+		doTranspose(*scratchBuf);
+	}
 
 public:
     typedef std::pair<unsigned, unsigned> size_type;
@@ -259,6 +265,21 @@ public:
 		numCols = cols;
 		return *this;
 	}
+
+	Matrix2d<T> & reshape(unsigned rows, unsigned cols) {
+		assert(rows * cols == numRows * numCols);
+		*scratchBuf = vec;
+		doTranspose(*scratchBuf);
+		finishReshape(rows, cols);
+		return *this;
+	}
+
+	Matrix2d<T> & reshape(Matrix2d<T> & mat, unsigned rows, unsigned cols) {
+		assert(rows * cols == mat.numRows * mat.numCols);
+		doTranspose(mat.vec);
+		finishReshape(rows, cols);
+		return *this;
+	}
 };
 
 template <class T>
@@ -270,6 +291,16 @@ Matrix2d<T> & transpose(const Matrix2d<T> & input, Matrix2d<T> & output) {return
 template <class T>
 Matrix2d<T> & resize(Matrix2d<T> & mat, unsigned rows, unsigned cols, T val = 0) {
 	return mat.resize(rows, cols, val);
+}
+
+template <class T>
+Matrix2d<T> & reshape(Matrix2d<T> & fromMat, Matrix2d<T> & toMat, unsigned rows, unsigned cols) {
+	return toMat.reshape(fromMat, rows, cols);
+}
+
+template <class T>
+Matrix2d<T> & reshape(Matrix2d<T> & mat, unsigned rows, unsigned cols) {
+	return mat.reshape(rows, cols);
 }
 
 }
