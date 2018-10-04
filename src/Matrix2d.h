@@ -13,6 +13,7 @@
 #include <initializer_list>
 #include <cassert>
 #include "RowColIterator.h"
+#include "Vector.h"
 
 namespace MatrixDSP {
  
@@ -225,6 +226,39 @@ public:
         checkAddr(0, colNum);
         return RowColIterator<T>(vec, numRows, numCols, false, colNum, true);
     }
+
+	Matrix2d<T> & resize(unsigned rows, unsigned cols, T val = 0) {
+		unsigned minRows = std::min(rows, numRows);
+		if (cols < numCols) {
+			for (unsigned row = 1; row < minRows; row++) {
+				for (unsigned to = row * cols, from = row * numCols; to < row * cols + cols; to++, from++) {
+					vec[to] = vec[from];
+				}
+			}
+			vec.resize(minRows * cols);
+		}
+		else if (cols > numCols) {
+			vec.resize(minRows * cols);
+			unsigned to = minRows * cols - 1;
+			unsigned from = minRows * numCols - 1;
+			unsigned colDiff = cols - numCols;
+			for (unsigned row = minRows - 1; row > 0; row--) {
+				for (unsigned index=0; index<colDiff; to--, index++) {
+					vec[to] = val;
+				}
+				for (unsigned index = 0; index < numCols; index++, to--, from--) {
+					vec[to] = vec[from];
+				}
+			}
+			for (unsigned index = 0; index < colDiff; to--, index++) { // Zero out the end of the first row
+				vec[to] = val;
+			}
+		}
+		vec.resize(rows * cols, val);
+		numRows = rows;
+		numCols = cols;
+		return *this;
+	}
 };
 
 template <class T>
@@ -232,6 +266,11 @@ Matrix2d<T> & transpose(Matrix2d<T> & mat) {return mat.transpose();}
 
 template <class T>
 Matrix2d<T> & transpose(const Matrix2d<T> & input, Matrix2d<T> & output) {return output.transpose(input);}
+
+template <class T>
+Matrix2d<T> & resize(Matrix2d<T> & mat, unsigned rows, unsigned cols, T val = 0) {
+	return mat.resize(rows, cols, val);
+}
 
 }
 
