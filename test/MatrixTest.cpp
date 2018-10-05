@@ -161,6 +161,23 @@ TEST(Matrix2d_Methods, Reshape) {
 	EXPECT_EQ(12, mat1(3, 2));
 }
 
+TEST(Matrix2dIterator, PlusPlus) {
+	MatrixDSP::Matrix2d<float> mat({ {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12} });
+	float horizontalResults[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+	float verticalResults[] = { 1, 5, 9, 2, 6, 10, 3, 7, 11, 4, 8, 12 };
+
+	auto it = mat.begin(true);
+	auto itEnd = mat.end(true);
+	for (int index = 0; it != itEnd; ++it, index++) {
+		EXPECT_EQ(horizontalResults[index], *it);
+	}
+
+	it = mat.begin();
+	itEnd = mat.end();
+	for (int index = 0; it != itEnd; ++it, index++) {
+		EXPECT_EQ(verticalResults[index], *it);
+	}
+}
 
 
 

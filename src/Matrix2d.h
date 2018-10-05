@@ -13,6 +13,7 @@
 #include <initializer_list>
 #include <cassert>
 #include "RowColIterator.h"
+#include "Matrix2dIterator.h"
 #include "Vector.h"
 
 namespace MatrixDSP {
@@ -202,6 +203,9 @@ public:
     unsigned getRows(void) const {return numRows;}
     unsigned getCols(void) const {return numCols;}
 
+	Matrix2dIterator<T> begin(bool horizontalFirst = false) {return Matrix2dIterator<T>(vec, numRows, numCols, false, horizontalFirst);}
+	Matrix2dIterator<T> end(bool horizontalFirst = false) {return Matrix2dIterator<T>(vec, numRows, numCols, true, horizontalFirst);}
+
     Matrix2d<T> & transpose(void) {
         *scratchBuf = vec;
         doTranspose(*scratchBuf);
@@ -278,6 +282,24 @@ public:
 		assert(rows * cols == mat.numRows * mat.numCols);
 		doTranspose(mat.vec);
 		finishReshape(rows, cols);
+		return *this;
+	}
+
+	Matrix2d<T> & appendRow(Vector<T> & appendVec) {
+		assert(appendVec.size() == numCols);
+
+		vec.reserve(vec.size() + appendVec.size());
+		vec.insert(vec.end(), appendVec.begin(), appendVec.end());
+		numRows++;
+		return *this;
+	}
+
+	Matrix2d<T> & appendRows(Matrix2d<T> & appendMat) {
+		assert(appendMat.getCols() == numCols);
+
+		vec.reserve(vec.size() + appendMat.getRows() * appendMat.getCols());
+		vec.insert(vec.end(), appendMat.begin(), appendMat.end());
+		numRows += appendMat.getRows();
 		return *this;
 	}
 };
