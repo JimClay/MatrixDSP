@@ -1,7 +1,7 @@
 #include "Matrix2d.h"
 #include "gtest/gtest.h"
 #include <cstdio>
-
+#include "Timer.h"
 
 TEST(Matrix2d_Iterator, Sort) {
     MatrixDSP::Matrix2d<float> mat({{3, 1, 2}, {5, -1, 7}});
@@ -128,7 +128,14 @@ TEST(Matrix2d_Methods, Reshape) {
 	MatrixDSP::Matrix2d<float> mat1({ {1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10, 11, 12} });
 	MatrixDSP::Matrix2d<float> mat2(mat1);
 
-	reshape(mat1, mat2, 2, 6);
+	//Timer timer;
+	//timer.startTimer();
+	//for (int index = 0; index < 1000000; index++)
+	{
+		reshape(mat1, mat2, 2, 6);
+	}
+	//double timeDiff = timer.getTimeDiff();
+	//printf("Reshape time = %g s\n", timeDiff);
 	EXPECT_EQ(2, mat2.getRows());
 	EXPECT_EQ(6, mat2.getCols());
 	EXPECT_EQ(1, mat2(0, 0));
@@ -143,8 +150,14 @@ TEST(Matrix2d_Methods, Reshape) {
 	EXPECT_EQ(4, mat2(1, 4));
 	EXPECT_EQ(8, mat2(0, 5));
 	EXPECT_EQ(12, mat2(1, 5));
-	
-	reshape(mat1, 4, 3);
+
+	//timer.startTimer();
+	//for (int index = 0; index < 1000000; index++)
+	{
+		reshape(mat1, 4, 3);
+	}
+	//timeDiff = timer.getTimeDiff();
+	//printf("Reshape time = %g s\n", timeDiff);
 	EXPECT_EQ(4, mat1.getRows());
 	EXPECT_EQ(3, mat1.getCols());
 	EXPECT_EQ(1, mat1(0, 0));

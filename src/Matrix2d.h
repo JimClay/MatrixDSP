@@ -21,7 +21,7 @@ namespace MatrixDSP {
 template <class T>
 class Matrix2d {
 protected:
-    std::vector<T> vec;
+    //std::vector<T> vec;
     std::shared_ptr< std::vector<T> > scratchBuf;
     unsigned numRows;
     unsigned numCols;
@@ -59,14 +59,19 @@ protected:
         numCols = newNumCols;
     }
 
-	void finishReshape(unsigned rows, unsigned cols) {
-		numRows = cols;
-		numCols = rows;
-		*scratchBuf = vec;
-		doTranspose(*scratchBuf);
+	void doReshape(std::vector<T> &input, unsigned fromRows, unsigned fromCols, unsigned toRows, unsigned toCols) {
+		Matrix2dIterator<T> itFrom = Matrix2dIterator<T>(input, fromRows, fromCols, false, false);
+		Matrix2dIterator<T> itEnd = Matrix2dIterator<T>(input, fromRows, fromCols, true, false);
+		Matrix2dIterator<T> itTo = Matrix2dIterator<T>(vec, toRows, toCols, false, false);
+		for (; itFrom != itEnd; ++itFrom, ++itTo) {
+			*itTo = *itFrom;
+		}
+		numRows = toRows;
+		numCols = toCols;
 	}
 
 public:
+	std::vector<T> vec;
     typedef std::pair<unsigned, unsigned> size_type;
     
     /*****************************************************************************************
@@ -273,15 +278,13 @@ public:
 	Matrix2d<T> & reshape(unsigned rows, unsigned cols) {
 		assert(rows * cols == numRows * numCols);
 		*scratchBuf = vec;
-		doTranspose(*scratchBuf);
-		finishReshape(rows, cols);
+		doReshape(*scratchBuf, numRows, numCols, rows, cols);
 		return *this;
 	}
 
 	Matrix2d<T> & reshape(Matrix2d<T> & mat, unsigned rows, unsigned cols) {
 		assert(rows * cols == mat.numRows * mat.numCols);
-		doTranspose(mat.vec);
-		finishReshape(rows, cols);
+		doReshape(mat.vec, mat.numRows, mat.numCols, rows, cols);
 		return *this;
 	}
 
