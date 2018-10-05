@@ -179,5 +179,26 @@ TEST(Matrix2dIterator, PlusPlus) {
 	}
 }
 
+TEST(Matrix2dIterator, Sort) {
+	MatrixDSP::Matrix2d<float> matStart({ {4, 3, 2, 1}, {9, 10, 11, 12}, {5, 6, 7, 8} });
+	float results[] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+	MatrixDSP::Matrix2d<float> mat(matStart);
+	std::sort(mat.begin(true), mat.end(true));
+	auto it = mat.begin(true);
+	auto itEnd = mat.end(true);
+	for (int index = 0; it != itEnd; ++it, index++) {
+		EXPECT_EQ(results[index], *it);
+	}
+
+	mat = matStart;
+	std::sort(mat.begin(), mat.end());
+	it = mat.begin();
+	itEnd = mat.end();
+	for (int index = 0; it != itEnd; ++it, index++) {
+		EXPECT_EQ(results[index], *it);
+	}
+}
+
 
 
