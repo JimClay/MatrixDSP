@@ -77,7 +77,7 @@ public:
     /*****************************************************************************************
                                     Constructors
     *****************************************************************************************/
-    Matrix2d(unsigned row, unsigned col, std::shared_ptr< std::vector<T> > scratch = nullptr) {
+    Matrix2d(unsigned row = 0, unsigned col = 0, std::shared_ptr< std::vector<T> > scratch = nullptr) {
         vec.resize(row * col);
         numRows = row;
         numCols = col;
@@ -138,11 +138,11 @@ public:
      * \brief Add Buffer/Assignment operator.
      */
     template <class U>
-    Matrix2d<T> & operator+=(Matrix2d<U> &rhs) {
+    Matrix2d<T> & operator+=(const Matrix2d<U> &rhs) {
         assert(size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
-            vec[index] += rhs[index];
+            vec[index] += rhs.vec[index];
         }
         return *this;
     }
@@ -161,11 +161,11 @@ public:
      * \brief Subtract Buffer/Assignment operator.
      */
     template <class U>
-    Matrix2d<T> & operator-=(Matrix2d<U> &rhs) {
+    Matrix2d<T> & operator-=(const Matrix2d<U> &rhs) {
         assert(size() == rhs.size());
         
         for (unsigned index=0; index<vec.size(); index++) {
-            vec[index] -= rhs[index];
+            vec[index] -= rhs.vec[index];
         }
         return *this;
     }
@@ -306,6 +306,48 @@ public:
 		return *this;
 	}
 };
+
+template <class T, class U>
+inline Matrix2d<T> operator+(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
+{
+	lhs += rhs;
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator+(Matrix2d<T> lhs, const T& rhs)
+{
+	lhs += rhs;
+	return lhs;
+}
+
+template <class T, class U>
+inline Matrix2d<T> operator-(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
+{
+	lhs -= rhs;
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator-(Matrix2d<T> lhs, const T& rhs)
+{
+	lhs -= rhs;
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator*(Matrix2d<T> lhs, const T& rhs)
+{
+	lhs *= rhs;
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator/(Matrix2d<T> lhs, const T& rhs)
+{
+	lhs /= rhs;
+	return lhs;
+}
 
 template <class T>
 Matrix2d<T> & transpose(Matrix2d<T> & mat) {return mat.transpose();}

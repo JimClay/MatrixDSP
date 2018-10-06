@@ -263,5 +263,198 @@ TEST(Matrix2dIterator, Sort) {
 	}
 }
 
+TEST(Matrix2d_Operator, Negation) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2;
+
+	mat2 = -mat1;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(-1, mat2(0, 0));
+	EXPECT_EQ(-2, mat2(0, 1));
+	EXPECT_EQ(-3, mat2(0, 2));
+	EXPECT_EQ(-4, mat2(1, 0));
+	EXPECT_EQ(-5, mat2(1, 1));
+	EXPECT_EQ(-6, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, AddEqualMatrix) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2({ { 2, 3, 4 }, { 6, 7, 8 } });
+
+	mat2 += mat1;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(3, mat2(0, 0));
+	EXPECT_EQ(5, mat2(0, 1));
+	EXPECT_EQ(7, mat2(0, 2));
+	EXPECT_EQ(10, mat2(1, 0));
+	EXPECT_EQ(12, mat2(1, 1));
+	EXPECT_EQ(14, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, AddEqualScalar) {
+	MatrixDSP::Matrix2d<float> mat({ { 1, 2, 3 }, { 4, 5, 6 } });
+
+	mat += 2;
+	EXPECT_EQ(2, mat.getRows());
+	EXPECT_EQ(3, mat.getCols());
+	EXPECT_EQ(3, mat(0, 0));
+	EXPECT_EQ(4, mat(0, 1));
+	EXPECT_EQ(5, mat(0, 2));
+	EXPECT_EQ(6, mat(1, 0));
+	EXPECT_EQ(7, mat(1, 1));
+	EXPECT_EQ(8, mat(1, 2));
+}
+
+TEST(Matrix2d_Operator, AddMatrix) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2({ { 2, 3, 4 }, { 6, 7, 8 } });
+	MatrixDSP::Matrix2d<float> mat3;
+
+	mat3 = mat2 + mat1;
+	EXPECT_EQ(2, mat3.getRows());
+	EXPECT_EQ(3, mat3.getCols());
+	EXPECT_EQ(3, mat3(0, 0));
+	EXPECT_EQ(5, mat3(0, 1));
+	EXPECT_EQ(7, mat3(0, 2));
+	EXPECT_EQ(10, mat3(1, 0));
+	EXPECT_EQ(12, mat3(1, 1));
+	EXPECT_EQ(14, mat3(1, 2));
+}
+
+TEST(Matrix2d_Operator, AddScalar) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2;
+
+	mat2 = mat1 + 2.0f;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(3, mat2(0, 0));
+	EXPECT_EQ(4, mat2(0, 1));
+	EXPECT_EQ(5, mat2(0, 2));
+	EXPECT_EQ(6, mat2(1, 0));
+	EXPECT_EQ(7, mat2(1, 1));
+	EXPECT_EQ(8, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, SubtractEqualMatrix) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2({ { 2, 3, 4 }, { 6, 7, 8 } });
+
+	mat2 -= mat1;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(1, mat2(0, 0));
+	EXPECT_EQ(1, mat2(0, 1));
+	EXPECT_EQ(1, mat2(0, 2));
+	EXPECT_EQ(2, mat2(1, 0));
+	EXPECT_EQ(2, mat2(1, 1));
+	EXPECT_EQ(2, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, SubtractEqualScalar) {
+	MatrixDSP::Matrix2d<float> mat({ { 1, 2, 3 }, { 4, 5, 6 } });
+
+	mat -= 2.0f;
+	EXPECT_EQ(2, mat.getRows());
+	EXPECT_EQ(3, mat.getCols());
+	EXPECT_EQ(-1, mat(0, 0));
+	EXPECT_EQ(0, mat(0, 1));
+	EXPECT_EQ(1, mat(0, 2));
+	EXPECT_EQ(2, mat(1, 0));
+	EXPECT_EQ(3, mat(1, 1));
+	EXPECT_EQ(4, mat(1, 2));
+}
+
+TEST(Matrix2d_Operator, SubtractMatrix) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2({ { 2, 3, 4 }, { 6, 7, 8 } });
+	MatrixDSP::Matrix2d<float> mat3;
+
+	mat3 = mat2 - mat1;
+	EXPECT_EQ(2, mat3.getRows());
+	EXPECT_EQ(3, mat3.getCols());
+	EXPECT_EQ(1, mat3(0, 0));
+	EXPECT_EQ(1, mat3(0, 1));
+	EXPECT_EQ(1, mat3(0, 2));
+	EXPECT_EQ(2, mat3(1, 0));
+	EXPECT_EQ(2, mat3(1, 1));
+	EXPECT_EQ(2, mat3(1, 2));
+}
+
+TEST(Matrix2d_Operator, SubtractScalar) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2;
+
+	mat2 = mat1 - 2.0f;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(-1, mat2(0, 0));
+	EXPECT_EQ(0, mat2(0, 1));
+	EXPECT_EQ(1, mat2(0, 2));
+	EXPECT_EQ(2, mat2(1, 0));
+	EXPECT_EQ(3, mat2(1, 1));
+	EXPECT_EQ(4, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, MultiplyEqualScalar) {
+	MatrixDSP::Matrix2d<float> mat({ { 1, 2, 3 }, { 4, 5, 6 } });
+
+	mat *= 2.0f;
+	EXPECT_EQ(2, mat.getRows());
+	EXPECT_EQ(3, mat.getCols());
+	EXPECT_EQ(2, mat(0, 0));
+	EXPECT_EQ(4, mat(0, 1));
+	EXPECT_EQ(6, mat(0, 2));
+	EXPECT_EQ(8, mat(1, 0));
+	EXPECT_EQ(10, mat(1, 1));
+	EXPECT_EQ(12, mat(1, 2));
+}
+
+TEST(Matrix2d_Operator, MultiplyScalar) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2;
+
+	mat2 = mat1 * 2.0f;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(2, mat2(0, 0));
+	EXPECT_EQ(4, mat2(0, 1));
+	EXPECT_EQ(6, mat2(0, 2));
+	EXPECT_EQ(8, mat2(1, 0));
+	EXPECT_EQ(10, mat2(1, 1));
+	EXPECT_EQ(12, mat2(1, 2));
+}
+
+TEST(Matrix2d_Operator, DivideEqualScalar) {
+	MatrixDSP::Matrix2d<float> mat({ { 2, 4, 6 }, { 8, 10, 12 } });
+
+	mat /= 2.0f;
+	EXPECT_EQ(2, mat.getRows());
+	EXPECT_EQ(3, mat.getCols());
+	EXPECT_EQ(1, mat(0, 0));
+	EXPECT_EQ(2, mat(0, 1));
+	EXPECT_EQ(3, mat(0, 2));
+	EXPECT_EQ(4, mat(1, 0));
+	EXPECT_EQ(5, mat(1, 1));
+	EXPECT_EQ(6, mat(1, 2));
+}
+
+TEST(Matrix2d_Operator, DivideScalar) {
+	MatrixDSP::Matrix2d<float> mat1({ { 2, 4, 6 }, { 8, 10, 12 } });
+	MatrixDSP::Matrix2d<float> mat2;
+
+	mat2 = mat1 / 2.0f;
+	EXPECT_EQ(2, mat2.getRows());
+	EXPECT_EQ(3, mat2.getCols());
+	EXPECT_EQ(1, mat2(0, 0));
+	EXPECT_EQ(2, mat2(0, 1));
+	EXPECT_EQ(3, mat2(0, 2));
+	EXPECT_EQ(4, mat2(1, 0));
+	EXPECT_EQ(5, mat2(1, 1));
+	EXPECT_EQ(6, mat2(1, 2));
+}
+
 
 
