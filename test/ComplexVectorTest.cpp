@@ -321,16 +321,30 @@ TEST(ComplexVector_Operator, DivideVector_Real) {
     EXPECT_EQ(std::complex<float>(2.0f/7, 0), buf3[1]);
     EXPECT_EQ(std::complex<float>(3.0f/6, 0), buf3[2]);
 }
-
+/*
 TEST(ComplexVector_Method, Find) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
-    EXPECT_EQ(-1, buf.find(6));
-    EXPECT_EQ(0, buf.find(std::complex<float>(5, 0)));
-    EXPECT_EQ(2, buf.find(std::complex<float>(3, 0)));
-    EXPECT_EQ(5, buf.find(std::complex<float>(1, 0)));
-}
+	auto locs = find(buf == std::complex<float>(6, 0));
+	EXPECT_EQ(0, locs.size());
 
+	locs = find(buf == std::complex<float>(5, 0));
+	EXPECT_EQ(1, locs.size());
+	EXPECT_EQ(0, locs[0]);
+
+	locs = find(buf != std::complex<float>(5, 0));
+	EXPECT_EQ(5, locs.size());
+	EXPECT_EQ(1, locs[0]);
+	EXPECT_EQ(2, locs[1]);
+	EXPECT_EQ(3, locs[2]);
+	EXPECT_EQ(4, locs[3]);
+	EXPECT_EQ(5, locs[4]);
+
+	locs = find(buf == std::complex<float>(1, 0));
+	EXPECT_EQ(1, locs.size());
+	EXPECT_EQ(5, locs[0]);
+}
+*/
 TEST(ComplexVector_Method, Sum) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     

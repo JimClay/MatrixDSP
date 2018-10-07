@@ -265,23 +265,17 @@ public:
      */
     const unsigned size() const {return (const unsigned) vec.size();};
     
-	auto begin() const { return vec.begin(); }
-	auto end() const { return vec.end(); }
+	auto begin() { return vec.begin(); }
+	auto end() { return vec.end(); }
 
-    /**
-     * \brief Finds the first instance of "val" in \ref vec.
-     *
-     * \param val The value to look for in \ref vec.
-     * \return Index of first instance of "val".  If there aren't any elements equal to "val"
-     *      it returns -1.
-     */
-    const int find(const T val) const {
-        for (int index=0; index<vec.size(); index++) {
-            if (vec[index] == val) {
-                return index;
+    std::vector<unsigned> find() const {
+		std::vector<unsigned> list(0);
+        for (unsigned index=0; index<vec.size(); index++) {
+            if (vec[index]) {
+				list.push_back(index);
             }
         }
-        return -1;
+        return list;
     }
     
     /**
@@ -771,6 +765,54 @@ inline Vector<T> operator/(Vector<T> lhs, const T& rhs)
 }
 
 template <class T>
+inline Vector<T> operator==(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it == rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Vector<T> operator!=(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it != rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Vector<T> operator<(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it < rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Vector<T> operator<=(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it <= rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Vector<T> operator>(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it > rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Vector<T> operator>=(Vector<T> lhs, const T& rhs) {
+	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
+		*it = (T)(*it >= rhs);
+	}
+	return lhs;
+}
+
+template <class T>
 const unsigned size(Vector<T> &vec) {return vec.size();};
 
 template <class T>
@@ -784,7 +826,7 @@ const unsigned length(Vector<T> &vec) {return vec.size();};
  *      it returns -1.
  */
 template <class T>
-const int find(Vector<T> &vec, const T val) {return vec.find(val);}
+std::vector<unsigned> find(Vector<T> &vec) {return vec.find();}
 
 /**
  * \brief Returns the sum of all the elements in \ref vec.

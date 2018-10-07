@@ -239,11 +239,25 @@ TEST(Operator, DivideScalar) {
 
 TEST(Method, Find) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
-    
-    EXPECT_EQ(-1, MatrixDSP::find(buf, 6.0f));
-    EXPECT_EQ(0, buf.find(5));
-    EXPECT_EQ(2, buf.find(3));
-    EXPECT_EQ(5, buf.find(1));
+
+	auto locs = find(buf == 6.0f);
+	EXPECT_EQ(0, locs.size());
+
+	locs = find(buf == 5.0f);
+	EXPECT_EQ(1, locs.size());
+	EXPECT_EQ(0, locs[0]);
+
+	locs = find(buf != 5.0f);
+	EXPECT_EQ(5, locs.size());
+	EXPECT_EQ(1, locs[0]);
+	EXPECT_EQ(2, locs[1]);
+	EXPECT_EQ(3, locs[2]);
+	EXPECT_EQ(4, locs[3]);
+	EXPECT_EQ(5, locs[4]);
+
+	locs = find(buf == 1.0f);
+	EXPECT_EQ(1, locs.size());
+	EXPECT_EQ(5, locs[0]);
 }
 
 TEST(Method, Sum) {
