@@ -12,9 +12,11 @@
 #include <memory>
 #include <initializer_list>
 #include <cassert>
+#include <utility>
 #include "RowColIterator.h"
 #include "Matrix2dIterator.h"
 #include "Vector.h"
+
 
 namespace MatrixDSP {
  
@@ -342,6 +344,18 @@ public:
 		numCols += appendMat.getCols();
 		return *this;
 	}
+
+	std::vector< std::pair<unsigned, unsigned> > find() {
+		std::vector< std::pair<unsigned, unsigned> > list(0);
+		Matrix2dIterator<T> it = this->begin(true);
+		Matrix2dIterator<T> itEnd = this->end(true);
+		for (; it != itEnd; ++it) {
+			if (*it) {
+				list.push_back(std::make_pair(it.getRow(), it.getCol()));
+			}
+		}
+		return list;
+	}
 };
 
 template <class T, class U>
@@ -383,6 +397,15 @@ template <class T>
 inline Matrix2d<T> operator/(Matrix2d<T> lhs, const T& rhs)
 {
 	lhs /= rhs;
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator>=(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it >= rhs);
+	}
 	return lhs;
 }
 

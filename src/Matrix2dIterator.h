@@ -191,6 +191,9 @@ class Matrix2dIterator {
 			tempIt += index;
 			return *tempIt;
 		}
+
+		unsigned getRow() { return row; }
+		unsigned getCol() { return col; }
 };
 
 template <class T>

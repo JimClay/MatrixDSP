@@ -535,3 +535,33 @@ TEST(Matrix2d_Method, AppendCols) {
 	EXPECT_EQ(10, mat1(1, 4));
 }
 
+TEST(Matrix2d_Method, Find) {
+	MatrixDSP::Matrix2d<float> mat({ { 1, 2}, {2, 3}, {0, 1} });
+
+	auto locs = mat.find();
+	EXPECT_EQ(5, locs.size());
+	EXPECT_EQ(std::make_pair(0, 0).first, locs[0].first);
+	EXPECT_EQ(std::make_pair(0, 0).second, locs[0].second);
+	EXPECT_EQ(std::make_pair(0, 1).first, locs[1].first);
+	EXPECT_EQ(std::make_pair(0, 1).second, locs[1].second);
+	EXPECT_EQ(std::make_pair(1, 0).first, locs[2].first);
+	EXPECT_EQ(std::make_pair(1, 0).second, locs[2].second);
+	EXPECT_EQ(std::make_pair(1, 1).first, locs[3].first);
+	EXPECT_EQ(std::make_pair(1, 1).second, locs[3].second);
+	EXPECT_EQ(std::make_pair(2, 1).first, locs[4].first);
+	EXPECT_EQ(std::make_pair(2, 1).second, locs[4].second);
+
+	auto mat2 = mat >= 2.0f;
+	locs = mat2.find();
+	EXPECT_EQ(3, locs.size());
+	EXPECT_EQ(std::make_pair(0, 1).first, locs[0].first);
+	EXPECT_EQ(std::make_pair(0, 1).second, locs[0].second);
+	EXPECT_EQ(std::make_pair(1, 0).first, locs[1].first);
+	EXPECT_EQ(std::make_pair(1, 0).second, locs[1].second);
+	EXPECT_EQ(std::make_pair(1, 1).first, locs[2].first);
+	EXPECT_EQ(std::make_pair(1, 1).second, locs[2].second);
+
+	mat2 = mat >= 4.0f;
+	locs = mat2.find();
+	EXPECT_EQ(0, locs.size());
+}
