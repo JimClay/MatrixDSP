@@ -305,6 +305,43 @@ public:
 		numRows += appendMat.getRows();
 		return *this;
 	}
+
+	Matrix2d<T> & appendCol(Vector<T> & appendVec) {
+		assert(appendVec.size() == numRows);
+
+		vec.resize(vec.size() + appendVec.size());
+		for (unsigned from = numRows * numCols - 1, to = numRows * (numCols + 1) - 1, row = numRows - 1; row > 0; row--) {
+			vec[to--] = appendVec[row];
+			for (unsigned col = 0; col < numCols; col++) {
+				vec[to--] = vec[from--];
+			}
+		}
+		vec[numCols] = appendVec[0];
+		numCols++;
+		return *this;
+	}
+
+	Matrix2d<T> & appendCols(Matrix2d<T> & appendMat) {
+		assert(appendMat.getRows() == numRows);
+
+		vec.resize(vec.size() + appendMat.getRows() * appendMat.getCols());
+		unsigned from = numRows * numCols - 1;
+		unsigned to = numRows * (numCols + appendMat.getCols()) - 1;
+		unsigned fromAppend = appendMat.getRows() * appendMat.getCols() - 1;
+		for (unsigned row = numRows - 1; row > 0; row--) {
+			for (unsigned col = 0; col < appendMat.getCols(); col++) {
+				vec[to--] = appendMat.vec[fromAppend--];
+			}
+			for (unsigned col = 0; col < numCols; col++) {
+				vec[to--] = vec[from--];
+			}
+		}
+		for (unsigned col = 0; col < appendMat.getCols(); col++) {
+			vec[to--] = appendMat.vec[fromAppend--];
+		}
+		numCols += appendMat.getCols();
+		return *this;
+	}
 };
 
 template <class T, class U>
