@@ -456,5 +456,44 @@ TEST(Matrix2d_Operator, DivideScalar) {
 	EXPECT_EQ(6, mat2(1, 2));
 }
 
+TEST(Matrix2d_Method, AppendRow) {
+	MatrixDSP::Matrix2d<float> mat({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Vector<float> buf({ 7, 8, 9 });
 
+	mat.appendRow(buf);
+
+	EXPECT_EQ(3, mat.getRows());
+	EXPECT_EQ(3, mat.getCols());
+	EXPECT_EQ(1, mat(0, 0));
+	EXPECT_EQ(2, mat(0, 1));
+	EXPECT_EQ(3, mat(0, 2));
+	EXPECT_EQ(4, mat(1, 0));
+	EXPECT_EQ(5, mat(1, 1));
+	EXPECT_EQ(6, mat(1, 2));
+	EXPECT_EQ(7, mat(2, 0));
+	EXPECT_EQ(8, mat(2, 1));
+	EXPECT_EQ(9, mat(2, 2));
+}
+
+TEST(Matrix2d_Method, AppendRows) {
+	MatrixDSP::Matrix2d<float> mat1({ { 1, 2, 3 }, { 4, 5, 6 } });
+	MatrixDSP::Matrix2d<float> mat2({ { 7, 8, 9 }, {10, 11, 12} });
+
+	mat1.appendRows(mat2);
+
+	EXPECT_EQ(4, mat1.getRows());
+	EXPECT_EQ(3, mat1.getCols());
+	EXPECT_EQ(1, mat1(0, 0));
+	EXPECT_EQ(2, mat1(0, 1));
+	EXPECT_EQ(3, mat1(0, 2));
+	EXPECT_EQ(4, mat1(1, 0));
+	EXPECT_EQ(5, mat1(1, 1));
+	EXPECT_EQ(6, mat1(1, 2));
+	EXPECT_EQ(7, mat1(2, 0));
+	EXPECT_EQ(8, mat1(2, 1));
+	EXPECT_EQ(9, mat1(2, 2));
+	EXPECT_EQ(10, mat1(3, 0));
+	EXPECT_EQ(11, mat1(3, 1));
+	EXPECT_EQ(12, mat1(3, 2));
+}
 

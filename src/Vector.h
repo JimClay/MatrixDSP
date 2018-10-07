@@ -265,6 +265,9 @@ public:
      */
     const unsigned size() const {return (const unsigned) vec.size();};
     
+	auto begin() const { return vec.begin(); }
+	auto end() const { return vec.end(); }
+
     /**
      * \brief Finds the first instance of "val" in \ref vec.
      *

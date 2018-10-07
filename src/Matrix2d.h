@@ -301,7 +301,7 @@ public:
 		assert(appendMat.getCols() == numCols);
 
 		vec.reserve(vec.size() + appendMat.getRows() * appendMat.getCols());
-		vec.insert(vec.end(), appendMat.begin(), appendMat.end());
+		vec.insert(vec.end(), appendMat.begin(true), appendMat.end(true));
 		numRows += appendMat.getRows();
 		return *this;
 	}
