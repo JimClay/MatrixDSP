@@ -601,3 +601,55 @@ TEST(Method, Modulate) {
     EXPECT_NEAR(2 * M_PI, phase, .0001);
 }
 
+TEST(Operator, Comparison) {
+	MatrixDSP::Vector<float> buf({ 11, 2, 3, 3, 1});
+	MatrixDSP::Vector<float> result;
+
+	result = buf == 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0]);
+	EXPECT_EQ(0, result[1]);
+	EXPECT_EQ(1, result[2]);
+	EXPECT_EQ(1, result[3]);
+	EXPECT_EQ(0, result[4]);
+
+	result = buf != 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0]);
+	EXPECT_EQ(1, result[1]);
+	EXPECT_EQ(0, result[2]);
+	EXPECT_EQ(0, result[3]);
+	EXPECT_EQ(1, result[4]);
+
+	result = buf > 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0]);
+	EXPECT_EQ(0, result[1]);
+	EXPECT_EQ(0, result[2]);
+	EXPECT_EQ(0, result[3]);
+	EXPECT_EQ(0, result[4]);
+
+	result = buf >= 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0]);
+	EXPECT_EQ(0, result[1]);
+	EXPECT_EQ(1, result[2]);
+	EXPECT_EQ(1, result[3]);
+	EXPECT_EQ(0, result[4]);
+
+	result = buf < 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0]);
+	EXPECT_EQ(1, result[1]);
+	EXPECT_EQ(0, result[2]);
+	EXPECT_EQ(0, result[3]);
+	EXPECT_EQ(1, result[4]);
+
+	result = buf <= 3.0f;
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0]);
+	EXPECT_EQ(1, result[1]);
+	EXPECT_EQ(1, result[2]);
+	EXPECT_EQ(1, result[3]);
+	EXPECT_EQ(1, result[4]);
+}

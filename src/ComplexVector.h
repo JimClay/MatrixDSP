@@ -303,6 +303,46 @@ class ComplexVector : public Vector< std::complex<T> > {
 };
 
 template <class T>
+ComplexVector<T> operator<(ComplexVector<T> lhs, const std::complex<T> & rhs) {
+	T rhsSquareVal = rhs.real() * rhs.real() + rhs.imag() * rhs.imag();
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		T lhsSquareVal = lhs[index].real() * lhs[index].real() + lhs[index].imag() * lhs[index].imag();
+		lhs[index] = (std::complex<T>)(lhsSquareVal < rhsSquareVal);
+	}
+	return lhs;
+}
+
+template <class T>
+ComplexVector<T> operator<=(ComplexVector<T> lhs, const std::complex<T> & rhs) {
+	T rhsSquareVal = rhs.real() * rhs.real() + rhs.imag() * rhs.imag();
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		T lhsSquareVal = lhs[index].real() * lhs[index].real() + lhs[index].imag() * lhs[index].imag();
+		lhs[index] = (std::complex<T>)(lhsSquareVal <= rhsSquareVal);
+	}
+	return lhs;
+}
+
+template <class T>
+ComplexVector<T> operator>(ComplexVector<T> lhs, const std::complex<T> & rhs) {
+	T rhsSquareVal = rhs.real() * rhs.real() + rhs.imag() * rhs.imag();
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		T lhsSquareVal = lhs[index].real() * lhs[index].real() + lhs[index].imag() * lhs[index].imag();
+		lhs[index] = (std::complex<T>)(lhsSquareVal > rhsSquareVal);
+	}
+	return lhs;
+}
+
+template <class T>
+ComplexVector<T> operator>=(ComplexVector<T> lhs, const std::complex<T> & rhs) {
+	T rhsSquareVal = rhs.real() * rhs.real() + rhs.imag() * rhs.imag();
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		T lhsSquareVal = lhs[index].real() * lhs[index].real() + lhs[index].imag() * lhs[index].imag();
+		lhs[index] = (std::complex<T>)(lhsSquareVal >= rhsSquareVal);
+	}
+	return lhs;
+}
+
+template <class T>
 ComplexVector<T> & fft(Vector<T> &input, ComplexVector<T> &output, bool inverseFft = false) {
     return output.fft(input, inverseFft);
 }

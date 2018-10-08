@@ -781,7 +781,7 @@ inline Vector<T> operator!=(Vector<T> lhs, const T& rhs) {
 }
 
 template <class T>
-inline Vector<T> operator<(Vector<T> lhs, const T& rhs) {
+Vector<T> operator<(Vector<T> lhs, const T& rhs) {
 	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
 		*it = (T)(*it < rhs);
 	}
@@ -789,7 +789,7 @@ inline Vector<T> operator<(Vector<T> lhs, const T& rhs) {
 }
 
 template <class T>
-inline Vector<T> operator<=(Vector<T> lhs, const T& rhs) {
+Vector<T> operator<=(Vector<T> lhs, const T& rhs) {
 	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
 		*it = (T)(*it <= rhs);
 	}
@@ -797,7 +797,7 @@ inline Vector<T> operator<=(Vector<T> lhs, const T& rhs) {
 }
 
 template <class T>
-inline Vector<T> operator>(Vector<T> lhs, const T& rhs) {
+Vector<T> operator>(Vector<T> lhs, const T& rhs) {
 	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
 		*it = (T)(*it > rhs);
 	}
@@ -805,7 +805,7 @@ inline Vector<T> operator>(Vector<T> lhs, const T& rhs) {
 }
 
 template <class T>
-inline Vector<T> operator>=(Vector<T> lhs, const T& rhs) {
+Vector<T> operator>=(Vector<T> lhs, const T& rhs) {
 	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
 		*it = (T)(*it >= rhs);
 	}

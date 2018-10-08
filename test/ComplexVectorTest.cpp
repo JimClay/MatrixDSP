@@ -729,3 +729,56 @@ TEST(ComplexVector_Method, Fft) {
     EXPECT_NEAR(-5.1962, bufOut[5].imag(), .0001);
 }
 
+TEST(ComplexVector_Operator, Comparison) {
+	MatrixDSP::ComplexVector<float> buf({ 11, 2, {3, 1}, 3, 1 });
+	MatrixDSP::ComplexVector<float> result;
+
+	result = buf == std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0].real());
+	EXPECT_EQ(0, result[1].real());
+	EXPECT_EQ(0, result[2].real());
+	EXPECT_EQ(1, result[3].real());
+	EXPECT_EQ(0, result[4].real());
+
+	result = buf != std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0].real());
+	EXPECT_EQ(1, result[1].real());
+	EXPECT_EQ(1, result[2].real());
+	EXPECT_EQ(0, result[3].real());
+	EXPECT_EQ(1, result[4].real());
+
+	result = buf > std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0].real());
+	EXPECT_EQ(0, result[1].real());
+	EXPECT_EQ(1, result[2].real());
+	EXPECT_EQ(0, result[3].real());
+	EXPECT_EQ(0, result[4].real());
+
+	result = buf >= std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(1, result[0].real());
+	EXPECT_EQ(0, result[1].real());
+	EXPECT_EQ(1, result[2].real());
+	EXPECT_EQ(1, result[3].real());
+	EXPECT_EQ(0, result[4].real());
+
+	result = buf < std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0].real());
+	EXPECT_EQ(1, result[1].real());
+	EXPECT_EQ(0, result[2].real());
+	EXPECT_EQ(0, result[3].real());
+	EXPECT_EQ(1, result[4].real());
+
+	result = buf <= std::complex<float>(3, 0);
+	EXPECT_EQ(5, result.size());
+	EXPECT_EQ(0, result[0].real());
+	EXPECT_EQ(1, result[1].real());
+	EXPECT_EQ(0, result[2].real());
+	EXPECT_EQ(1, result[3].real());
+	EXPECT_EQ(1, result[4].real());
+}
+
