@@ -766,48 +766,48 @@ inline Vector<T> operator/(Vector<T> lhs, const T& rhs)
 
 template <class T>
 inline Vector<T> operator==(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it == rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] == rhs);
 	}
 	return lhs;
 }
 
 template <class T>
 inline Vector<T> operator!=(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it != rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] != rhs);
 	}
 	return lhs;
 }
 
 template <class T>
 Vector<T> operator<(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it < rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] < rhs);
 	}
 	return lhs;
 }
 
 template <class T>
 Vector<T> operator<=(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it <= rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] <= rhs);
 	}
 	return lhs;
 }
 
 template <class T>
 Vector<T> operator>(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it > rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] > rhs);
 	}
 	return lhs;
 }
 
 template <class T>
 Vector<T> operator>=(Vector<T> lhs, const T& rhs) {
-	for (auto it = lhs.begin(); it != lhs.end(); ++it) {
-		*it = (T)(*it >= rhs);
+	for (unsigned index = 0; index < lhs.size(); index++) {
+		lhs[index] = (T)(lhs[index] >= rhs);
 	}
 	return lhs;
 }
