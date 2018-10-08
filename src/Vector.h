@@ -271,7 +271,7 @@ public:
     std::vector<unsigned> find() const {
 		std::vector<unsigned> list(0);
         for (unsigned index=0; index<vec.size(); index++) {
-            if (vec[index]) {
+            if (std::abs(vec[index])) {
 				list.push_back(index);
             }
         }
