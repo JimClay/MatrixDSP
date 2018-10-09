@@ -23,7 +23,7 @@ namespace MatrixDSP {
 template <class T>
 class Matrix2d {
 protected:
-    //std::vector<T> vec;
+    std::vector<T> vec;
     std::shared_ptr< std::vector<T> > scratchBuf;
     unsigned numRows;
     unsigned numCols;
@@ -73,7 +73,6 @@ protected:
 	}
 
 public:
-	std::vector<T> vec;
     typedef std::pair<unsigned, unsigned> size_type;
     
     /*****************************************************************************************
