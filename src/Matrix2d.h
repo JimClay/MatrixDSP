@@ -358,49 +358,49 @@ public:
 };
 
 template <class T, class U>
-inline Matrix2d<T> operator+(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
+Matrix2d<T> operator+(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
 {
 	lhs += rhs;
 	return lhs;
 }
 
 template <class T>
-inline Matrix2d<T> operator+(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator+(Matrix2d<T> lhs, const T& rhs)
 {
 	lhs += rhs;
 	return lhs;
 }
 
 template <class T, class U>
-inline Matrix2d<T> operator-(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
+Matrix2d<T> operator-(Matrix2d<T> lhs, const Matrix2d<U>& rhs)
 {
 	lhs -= rhs;
 	return lhs;
 }
 
 template <class T>
-inline Matrix2d<T> operator-(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator-(Matrix2d<T> lhs, const T& rhs)
 {
 	lhs -= rhs;
 	return lhs;
 }
 
 template <class T>
-inline Matrix2d<T> operator*(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator*(Matrix2d<T> lhs, const T& rhs)
 {
 	lhs *= rhs;
 	return lhs;
 }
 
 template <class T>
-inline Matrix2d<T> operator/(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator/(Matrix2d<T> lhs, const T& rhs)
 {
 	lhs /= rhs;
 	return lhs;
 }
 
 template <class T>
-inline Matrix2d<T> operator==(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator==(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it == rhs);
@@ -409,7 +409,7 @@ inline Matrix2d<T> operator==(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
-inline Matrix2d<T> operator!=(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator!=(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it != rhs);
@@ -418,7 +418,7 @@ inline Matrix2d<T> operator!=(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
-inline Matrix2d<T> operator<=(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator<=(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it <= rhs);
@@ -427,7 +427,7 @@ inline Matrix2d<T> operator<=(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
-inline Matrix2d<T> operator<(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator<(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it < rhs);
@@ -436,7 +436,7 @@ inline Matrix2d<T> operator<(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
-inline Matrix2d<T> operator>=(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator>=(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it >= rhs);
@@ -445,7 +445,7 @@ inline Matrix2d<T> operator>=(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
-inline Matrix2d<T> operator>(Matrix2d<T> lhs, const T& rhs)
+Matrix2d<T> operator>(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it > rhs);
