@@ -565,3 +565,58 @@ TEST(Matrix2d_Method, Find) {
 	locs = mat2.find();
 	EXPECT_EQ(0, locs.size());
 }
+
+TEST(Matrix2d_Operator, Comparison) {
+	MatrixDSP::Matrix2d<float> mat({{ 11, 2, 3 }, { 3, 1, 5 }});
+	MatrixDSP::Matrix2d<float> result;
+
+	result = mat == 3.0f;
+	EXPECT_EQ(2, result.getRows());
+	EXPECT_EQ(3, result.getCols());
+	EXPECT_EQ(0, result(0, 0));
+	EXPECT_EQ(0, result(0, 1));
+	EXPECT_EQ(1, result(0, 2));
+	EXPECT_EQ(1, result(1, 0));
+	EXPECT_EQ(0, result(1, 1));
+	EXPECT_EQ(0, result(1, 2));
+
+	result = mat != 3.0f;
+	EXPECT_EQ(1, result(0, 0));
+	EXPECT_EQ(1, result(0, 1));
+	EXPECT_EQ(0, result(0, 2));
+	EXPECT_EQ(0, result(1, 0));
+	EXPECT_EQ(1, result(1, 1));
+	EXPECT_EQ(1, result(1, 2));
+
+	result = mat > 3.0f;
+	EXPECT_EQ(1, result(0, 0));
+	EXPECT_EQ(0, result(0, 1));
+	EXPECT_EQ(0, result(0, 2));
+	EXPECT_EQ(0, result(1, 0));
+	EXPECT_EQ(0, result(1, 1));
+	EXPECT_EQ(1, result(1, 2));
+
+	result = mat >= 3.0f;
+	EXPECT_EQ(1, result(0, 0));
+	EXPECT_EQ(0, result(0, 1));
+	EXPECT_EQ(1, result(0, 2));
+	EXPECT_EQ(1, result(1, 0));
+	EXPECT_EQ(0, result(1, 1));
+	EXPECT_EQ(1, result(1, 2));
+
+	result = mat < 3.0f;
+	EXPECT_EQ(0, result(0, 0));
+	EXPECT_EQ(1, result(0, 1));
+	EXPECT_EQ(0, result(0, 2));
+	EXPECT_EQ(0, result(1, 0));
+	EXPECT_EQ(1, result(1, 1));
+	EXPECT_EQ(0, result(1, 2));
+
+	result = mat <= 3.0f;
+	EXPECT_EQ(0, result(0, 0));
+	EXPECT_EQ(1, result(0, 1));
+	EXPECT_EQ(1, result(0, 2));
+	EXPECT_EQ(1, result(1, 0));
+	EXPECT_EQ(1, result(1, 1));
+	EXPECT_EQ(0, result(1, 2));
+}

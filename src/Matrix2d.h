@@ -401,10 +401,55 @@ inline Matrix2d<T> operator/(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
+inline Matrix2d<T> operator==(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it == rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator!=(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it != rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator<=(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it <= rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator<(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it < rhs);
+	}
+	return lhs;
+}
+
+template <class T>
 inline Matrix2d<T> operator>=(Matrix2d<T> lhs, const T& rhs)
 {
 	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
 		*it = (T)(*it >= rhs);
+	}
+	return lhs;
+}
+
+template <class T>
+inline Matrix2d<T> operator>(Matrix2d<T> lhs, const T& rhs)
+{
+	for (auto it = lhs.begin(true); it != lhs.end(true); ++it) {
+		*it = (T)(*it > rhs);
 	}
 	return lhs;
 }
