@@ -456,8 +456,9 @@ Matrix2d<T> operator>(Matrix2d<T> lhs, const T& rhs)
 template <class T>
 Matrix2d<T> operator==(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] == rhs.vec[index]);
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs == *itRhs);
 	}
 	return lhs;
 }
@@ -465,45 +466,50 @@ Matrix2d<T> operator==(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 template <class T>
 Matrix2d<T> operator!=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] != rhs.vec[index]);
-	}
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs != *itRhs);
+    }
 	return lhs;
 }
 
 template <class T>
 Matrix2d<T> operator<=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] <= rhs.vec[index]);
-	}
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs <= *itRhs);
+    }
 	return lhs;
 }
 
 template <class T>
 Matrix2d<T> operator<(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] < rhs.vec[index]);
-	}
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs < *itRhs);
+    }
 	return lhs;
 }
 
 template <class T>
 Matrix2d<T> operator>=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] >= rhs.vec[index]);
-	}
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs >= *itRhs);
+    }
 	return lhs;
 }
 
 template <class T>
 Matrix2d<T> operator>(Matrix2d<T> lhs, Matrix2d<T> & rhs)
 {
-	for (unsigned index = 0; index < lhs.vec.size(); index++) {
-		lhs.vec[index] = (T)(lhs.vec[index] > rhs.vec[index]);
-	}
+    assert(lhs.size() == rhs.size());
+    for (auto itLhs = lhs.begin(true), itRhs = rhs.begin(true); itLhs != lhs.end(true); ++itLhs, ++itRhs) {
+        *itLhs = (T)(*itLhs > *itRhs);
+    }
 	return lhs;
 }
 

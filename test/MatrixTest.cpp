@@ -566,7 +566,7 @@ TEST(Matrix2d_Method, Find) {
 	EXPECT_EQ(0, locs.size());
 }
 
-TEST(Matrix2d_Operator, Comparison) {
+TEST(Matrix2d_Operator, ComparisonScalar) {
 	MatrixDSP::Matrix2d<float> mat({{ 11, 2, 3 }, { 3, 1, 5 }});
 	MatrixDSP::Matrix2d<float> result;
 
@@ -619,4 +619,60 @@ TEST(Matrix2d_Operator, Comparison) {
 	EXPECT_EQ(1, result(1, 0));
 	EXPECT_EQ(1, result(1, 1));
 	EXPECT_EQ(0, result(1, 2));
+}
+
+TEST(Matrix2d_Operator, ComparisonMatrix) {
+    MatrixDSP::Matrix2d<float> mat1({{ 11, 2, 3 }, { 3, 1, 5 }});
+    MatrixDSP::Matrix2d<float> mat2({{ 10, 2, 4 }, { 4, 2, 4 }});
+    MatrixDSP::Matrix2d<float> result;
+
+    result = mat1 == mat2;
+    EXPECT_EQ(2, result.getRows());
+    EXPECT_EQ(3, result.getCols());
+    EXPECT_EQ(0, result(0, 0));
+    EXPECT_EQ(1, result(0, 1));
+    EXPECT_EQ(0, result(0, 2));
+    EXPECT_EQ(0, result(1, 0));
+    EXPECT_EQ(0, result(1, 1));
+    EXPECT_EQ(0, result(1, 2));
+
+    result = mat1 != mat2;
+    EXPECT_EQ(1, result(0, 0));
+    EXPECT_EQ(0, result(0, 1));
+    EXPECT_EQ(1, result(0, 2));
+    EXPECT_EQ(1, result(1, 0));
+    EXPECT_EQ(1, result(1, 1));
+    EXPECT_EQ(1, result(1, 2));
+
+    result = mat1 > mat2;
+    EXPECT_EQ(1, result(0, 0));
+    EXPECT_EQ(0, result(0, 1));
+    EXPECT_EQ(0, result(0, 2));
+    EXPECT_EQ(0, result(1, 0));
+    EXPECT_EQ(0, result(1, 1));
+    EXPECT_EQ(1, result(1, 2));
+
+    result = mat1 >= mat2;
+    EXPECT_EQ(1, result(0, 0));
+    EXPECT_EQ(1, result(0, 1));
+    EXPECT_EQ(0, result(0, 2));
+    EXPECT_EQ(0, result(1, 0));
+    EXPECT_EQ(0, result(1, 1));
+    EXPECT_EQ(1, result(1, 2));
+
+    result = mat1 < mat2;
+    EXPECT_EQ(0, result(0, 0));
+    EXPECT_EQ(0, result(0, 1));
+    EXPECT_EQ(1, result(0, 2));
+    EXPECT_EQ(1, result(1, 0));
+    EXPECT_EQ(1, result(1, 1));
+    EXPECT_EQ(0, result(1, 2));
+
+    result = mat1 <= mat2;
+    EXPECT_EQ(0, result(0, 0));
+    EXPECT_EQ(1, result(0, 1));
+    EXPECT_EQ(1, result(0, 2));
+    EXPECT_EQ(1, result(1, 0));
+    EXPECT_EQ(1, result(1, 1));
+    EXPECT_EQ(0, result(1, 2));
 }
