@@ -454,6 +454,60 @@ Matrix2d<T> operator>(Matrix2d<T> lhs, const T& rhs)
 }
 
 template <class T>
+Matrix2d<T> operator==(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] == rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
+Matrix2d<T> operator!=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] != rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
+Matrix2d<T> operator<=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] <= rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
+Matrix2d<T> operator<(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] < rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
+Matrix2d<T> operator>=(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] >= rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
+Matrix2d<T> operator>(Matrix2d<T> lhs, Matrix2d<T> & rhs)
+{
+	for (unsigned index = 0; index < lhs.vec.size(); index++) {
+		lhs.vec[index] = (T)(lhs.vec[index] > rhs.vec[index]);
+	}
+	return lhs;
+}
+
+template <class T>
 Matrix2d<T> & transpose(Matrix2d<T> & mat) {return mat.transpose();}
 
 template <class T>
