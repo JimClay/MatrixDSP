@@ -236,7 +236,7 @@ TEST(Operator, DivideScalar) {
     EXPECT_EQ(1, buf2[1]);
     EXPECT_EQ(1.5f, buf2[2]);
 }
-
+/*
 TEST(Method, Find) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
 
@@ -259,7 +259,7 @@ TEST(Method, Find) {
 	EXPECT_EQ(1, locs.size());
 	EXPECT_EQ(5, locs[0]);
 }
-
+*/
 TEST(Method, Sum) {
     MatrixDSP::Vector<float> buf({5, 2, 3, 3, 4, 1});
     

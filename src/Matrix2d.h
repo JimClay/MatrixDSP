@@ -204,7 +204,7 @@ public:
     /*****************************************************************************************
                                             Methods
     *****************************************************************************************/
-    size_type size() {return std::make_pair(getRows(), getCols());}
+    size_type size() const {return std::make_pair(getRows(), getCols());}
     
     unsigned getRows(void) const {return numRows;}
     unsigned getCols(void) const {return numCols;}

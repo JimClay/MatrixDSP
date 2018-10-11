@@ -9,7 +9,6 @@
 #define Matrix2dIterator_h
 
 #include <vector>
-#include <cassert>
 
 namespace MatrixDSP {
 
@@ -140,8 +139,6 @@ class Matrix2dIterator {
         }
     
         Matrix2dIterator<T> & operator+=(const difference_type &rhs) {
-			assert(rhs > 0);
-
 			difference_type diff = rhs;
 			while (diff >= numCols) {
 				iterator += entireRowIncrement;
@@ -155,8 +152,6 @@ class Matrix2dIterator {
         }
 
         Matrix2dIterator<T> & operator-=(const difference_type &rhs) {
-			assert(rhs > 0);
-
 			difference_type diff = rhs;
 			while (diff >= numCols) {
 				iterator -= entireRowIncrement;
