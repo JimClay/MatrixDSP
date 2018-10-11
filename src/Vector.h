@@ -826,7 +826,7 @@ const unsigned length(Vector<T> &vec) {return vec.size();};
  *      it returns -1.
  */
 template <class T>
-std::vector<unsigned> find(Vector<T> &vec) {return vec.find();}
+std::vector<unsigned> find(const Vector<T> &vec) {return vec.find();}
 
 /**
  * \brief Returns the sum of all the elements in \ref vec.

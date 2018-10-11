@@ -321,7 +321,7 @@ TEST(ComplexVector_Operator, DivideVector_Real) {
     EXPECT_EQ(std::complex<float>(2.0f/7, 0), buf3[1]);
     EXPECT_EQ(std::complex<float>(3.0f/6, 0), buf3[2]);
 }
-/*
+
 TEST(ComplexVector_Method, Find) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
@@ -344,7 +344,7 @@ TEST(ComplexVector_Method, Find) {
 	EXPECT_EQ(1, locs.size());
 	EXPECT_EQ(5, locs[0]);
 }
-*/
+
 TEST(ComplexVector_Method, Sum) {
     MatrixDSP::ComplexVector<float> buf({5, 2, 3, 3, 4, 1});
     
