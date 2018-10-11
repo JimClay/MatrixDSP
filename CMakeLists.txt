@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project (MatrixDSP)
 
 #set(CMAKE_SUPPRESS_REGENERATION TRUE) # For doing test coverage
-SET(CMAKE_CXX_FLAGS "-std=c++11")
+SET(CMAKE_CXX_FLAGS "-std=c++14")
 
 file (GLOB SOURCE_HEADERS "src/*.h")
 
