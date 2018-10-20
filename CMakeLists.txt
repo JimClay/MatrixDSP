@@ -7,7 +7,7 @@ SET(CMAKE_CXX_FLAGS "-std=c++14")
 
 file (GLOB SOURCE_HEADERS "src/*.h")
 
-set( GOOGLETEST_DIR ../googletest-read-only )
+set( GOOGLETEST_DIR gtest )
 INCLUDE_DIRECTORIES(src ${GOOGLETEST_DIR}/include)
 add_subdirectory (${GOOGLETEST_DIR} gtest)
 
