@@ -15,6 +15,7 @@
 #include <initializer_list>
 #include <cmath>
 #include <cassert>
+#include <algorithm>
 
 namespace MatrixDSP {
  
