@@ -14,13 +14,8 @@ before_install:
   - pip install --user cpp-coveralls
 
 script:
-  - SET(COVERAGE ON CACHE BOOL "Coverage")
-  - if (COVERAGE)
-  -    target_compile_options(tests PRIVATE --coverage)
-  -    target_link_libraries(tests PRIVATE --coverage)
-  - endif()
   - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake -DCOVERAGE=1 .
-  - cmake --build .
+  - cmake --coverage --build .
   - ./MatrixDspTests
 
 after_success:
